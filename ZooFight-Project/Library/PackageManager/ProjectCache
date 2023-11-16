@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638357406073101696
-    m_Hash: 1646665576
+      ticks: 638357410879150847
+    m_Hash: 105689471
   m_LockFileStatus:
     m_FilePath: C:/Users/User/Desktop/GitHub/ZooFightProject/ZooFight-Project/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638357406251527069
-    m_Hash: 3233714513
+      ticks: 638357410879150847
+    m_Hash: 546165422
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
