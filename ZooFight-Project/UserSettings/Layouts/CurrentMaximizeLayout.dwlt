@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 4365
+  controlID: 52612
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 4366
+  controlID: 52613
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 50}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 4367
+  controlID: 52614
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -237,9 +237,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: a2f8ffff
-      m_LastClickedID: -1886
-      m_ExpandedIDs: c0d5ffff1cd6ffffc2d6ffff48d7fffffaf6ffff66f9ffffaaf9ffffe8faffff
+      m_SelectedIDs: 6ea40000
+      m_LastClickedID: 42094
+      m_ExpandedIDs: 785bfeffa25cfeffba8ffeffce8ffeff84aafeff2aaffeffe4b7feffe6b7feff98c5feff0acafeff0e0fffff300fffff400fffff500fffff580fffff5e0fffff600fffff602fffff3ce0ffff0af4ffffa6f7fffff8f8ffff58faffffc2a000006ea1000038a20000bea2000042a300006ea40000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -606,9 +606,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 946.8556, y: 682.8992, z: -5.2050104}
+    m_Target: {x: 960, y: 610, z: 0}
     speed: 2
-    m_Value: {x: 946.8556, y: 682.8992, z: -5.2050104}
+    m_Value: {x: 960, y: 610, z: 0}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -658,9 +658,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 838.50366
+    m_Target: 726.7221
     speed: 2
-    m_Value: 838.50366
+    m_Value: 726.7221
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -783,7 +783,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/TextMesh Pro/Resources/Fonts & Materials
+    - Assets/Scenes
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -791,16 +791,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/TextMesh Pro/Resources/Fonts & Materials
+  - Assets/Scenes
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\User\Desktop\GitHub\ZooFightProject\ZooFight-Project
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 6e5a0000
-    m_LastClickedID: 23150
-    m_ExpandedIDs: 0000000088590000a05900005a5a000000ca9a3bffffff7f
+    m_SelectedIDs: 7e5a0000
+    m_LastClickedID: 23166
+    m_ExpandedIDs: 000000006c5a000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -828,7 +828,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000008859000000ca9a3bffffff7f
+    m_ExpandedIDs: 000000006c5a000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -853,10 +853,10 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: a2f8ffff
-    m_LastClickedInstanceID: -1886
+    m_SelectedInstanceIDs: 6ea40000
+    m_LastClickedInstanceID: 42094
     m_HadKeyboardFocusLastEvent: 0
-    m_ExpandedInstanceIDs: c6230000
+    m_ExpandedInstanceIDs: c6230000745c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
