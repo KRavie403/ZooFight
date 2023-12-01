@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IOCountorlSystem : MonoBehaviour
+public class RangeChecker : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
