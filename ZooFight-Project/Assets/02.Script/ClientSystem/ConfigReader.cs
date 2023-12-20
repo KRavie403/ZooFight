@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClientInputManager : MonoBehaviour
+public class ConfigReader : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
