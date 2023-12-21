@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Clientmanager : MonoBehaviour
+public class Clientmanager : Singletone<Clientmanager>
 {
 
+
+    public ConfigReader ConfigReader;
 
     // Start is called before the first frame update
     void Start()

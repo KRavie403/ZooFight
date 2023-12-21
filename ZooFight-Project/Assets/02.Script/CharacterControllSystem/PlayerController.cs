@@ -7,33 +7,20 @@ public class PlayerController : MovementController
 {
 
 
-    KeyInputCode currentSelect = KeyInputCode.None;
+    public float AxisX,AxisY = 0;
 
-    KeyInputCode NowSelect = KeyInputCode.None;
 
     bool isUIOpen = false;
 
+    Vector2 acceleration = Vector2.zero;
 
-    public void WeaponSwap()
+    protected override void Awake()
     {
-        if (currentSelect != NowSelect)
-        {
-            WeaponRelease();
-            WeaponSelect();
-        }
-        
-    }
-
-    public void WeaponRelease()
-    {
+        base.Awake();
+        AxisX = 0;
+        AxisY = 0;
 
     }
-
-    public void WeaponSelect()
-    {
-
-    }
-
 
     // Start is called before the first frame update
     protected override void Start()
@@ -44,58 +31,11 @@ public class PlayerController : MovementController
     // Update is called once per frame
     protected override void Update()
     {
+
+
+
         if(!isUIOpen)
         {
-
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                if(currentSelect != KeyInputCode.Key1)
-                {
-                    NowSelect = KeyInputCode.Key1;
-                    WeaponSwap();
-                }
-            }
-            else if(Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                if(currentSelect != KeyInputCode.Key2)
-                {
-                    NowSelect = KeyInputCode.Key2;
-                    WeaponSwap();
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                if(currentSelect == KeyInputCode.Key3)
-                {
-                    NowSelect = KeyInputCode.Key3;
-                    WeaponSwap();
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                if (currentSelect == KeyInputCode.Key4)
-                {
-                    NowSelect = KeyInputCode.Key4;
-                    WeaponSwap();
-
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-                if (currentSelect == KeyInputCode.Key5)
-                {
-                    NowSelect = KeyInputCode.Key5;
-                    WeaponSwap();
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha6))
-            {
-                if (currentSelect == KeyInputCode.Key6)
-                {
-                    NowSelect = KeyInputCode.Key6;
-                    WeaponSwap();
-                }
-            }
 
         }
         else
@@ -105,9 +45,21 @@ public class PlayerController : MovementController
         
     }
 
-    public enum KeyInputCode
+    public void WeaponSwap()
     {
-        None, Key1, Key2, Key3, Key4, Key5, Key6
+
+            WeaponRelease();
+            WeaponSelect();
+        
+    }
+
+    public void WeaponRelease()
+    {
+
+    }
+
+    public void WeaponSelect()
+    {
 
     }
 

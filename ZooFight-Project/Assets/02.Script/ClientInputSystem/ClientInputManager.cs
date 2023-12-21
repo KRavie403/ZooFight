@@ -2,8 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClientInputManager : MonoBehaviour
+public class ClientInputManager : Singletone<ClientInputManager>
 {
+
+    public KeyInputMapper InputMapper;
+
+    public KeySettingDecoder InputSettingDecoder;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,43 +22,149 @@ public class ClientInputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (Input.anyKeyDown)
-        //{
-        //    isKeyDown = true;
-        //    Debug.Log("AA");
-        //}
-        //else if (Input.anyKey)
-        //{
 
-        //    Debug.Log("BB");
-        //}
-        //else
-        //{
-        //    if(isKeyDown)
-        //    {
-        //        Debug.Log("CC");
-        //        isKeyDown = false;
-        //    }
-        //}
-        
+        InputKeyDown();
+        InputKeyStay();
+        InputKeyUp();
 
     }
 
 
     public void InputKeyDown()
     {
-        
 
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.Forward]))
+        {
+            Debug.Log("Down");
+        }
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.Backward]))
+        {
+
+        }
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.Left]))
+        {
+
+        }
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.Right]))
+        {
+
+        }
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.Jump]))
+        {
+
+        }
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.Attack]))
+        {
+
+        }
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.Selectskill]))
+        {
+
+        }
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.Usingskill]))
+        {
+
+        }
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.Grab]))
+        {
+
+        }
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.Menu]))
+        {
+
+        }
 
     }
 
     public void InputKeyStay()
     {
 
+        if (Input.GetKey(KeySetting.keys[KeyAction.Forward]))
+        {
+            Debug.Log("Stay");
+        }
+        if (Input.GetKey(KeySetting.keys[KeyAction.Backward]))
+        {
+
+        }
+        if (Input.GetKey(KeySetting.keys[KeyAction.Left]))
+        {
+
+        }
+        if (Input.GetKey(KeySetting.keys[KeyAction.Right]))
+        {
+
+        }
+        if (Input.GetKey(KeySetting.keys[KeyAction.Jump]))
+        {
+
+        }
+        if (Input.GetKey(KeySetting.keys[KeyAction.Attack]))
+        {
+
+        }
+        if (Input.GetKey(KeySetting.keys[KeyAction.Selectskill]))
+        {
+
+        }
+        if (Input.GetKey(KeySetting.keys[KeyAction.Usingskill]))
+        {
+
+        }
+        if (Input.GetKey(KeySetting.keys[KeyAction.Grab]))
+        {
+
+        }
+        if (Input.GetKey(KeySetting.keys[KeyAction.Menu]))
+        {
+
+        }
+
     }
 
     public void InputKeyUp()
     {
+
+        if (Input.GetKeyUp(KeySetting.keys[KeyAction.Forward]))
+        {
+            Debug.Log("Up");
+        }
+        if (Input.GetKeyUp(KeySetting.keys[KeyAction.Backward]))
+        {
+
+        }
+        if (Input.GetKeyUp(KeySetting.keys[KeyAction.Left]))
+        {
+
+        }
+        if (Input.GetKeyUp(KeySetting.keys[KeyAction.Right]))
+        {
+
+        }
+        if (Input.GetKeyUp(KeySetting.keys[KeyAction.Jump]))
+        {
+
+        }
+        if (Input.GetKeyUp(KeySetting.keys[KeyAction.Attack]))
+        {
+
+        }
+        if (Input.GetKeyUp(KeySetting.keys[KeyAction.Selectskill]))
+        {
+
+        }
+        if (Input.GetKeyUp(KeySetting.keys[KeyAction.Usingskill]))
+        {
+
+        }
+        if (Input.GetKeyUp(KeySetting.keys[KeyAction.Grab]))
+        {
+
+        }
+        if (Input.GetKeyUp(KeySetting.keys[KeyAction.Menu]))
+        {
+
+        }
 
     }
 

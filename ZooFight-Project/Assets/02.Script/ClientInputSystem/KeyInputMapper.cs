@@ -8,27 +8,43 @@ using TMPro;
 using UnityEngine.Events;
 using System.Linq;
 
+public enum KeyAction
+{
+    Forward=0,Backward,Left,Right,Jump,Attack,Selectskill,Usingskill,Grab,Menu,KeyCount
+}
+
+public static class KeySetting
+{
+    public static Dictionary<KeyAction,KeyCode> keys = new Dictionary<KeyAction,KeyCode>();
+}
+
+
+
+
 public class KeyInputMapper : MonoBehaviour 
 {
+    KeyCode[] defaultKeys = new KeyCode[]
+    {
+        KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D, KeyCode.Space, KeyCode.Mouse0, KeyCode.E, KeyCode.F,KeyCode.Mouse1, KeyCode.Escape
+    };
 
-    public UnityAction Forward;
-    public UnityAction Backward;
-    public UnityAction Leftmove;
-    public UnityAction Rightmove;
+    private void Awake()
+    {
+        for (int i = 0; i < (int)KeyAction.KeyCount; i++)
+        {
+            KeySetting.keys.Add((KeyAction)i, defaultKeys[i]);
+        }
 
 
-    public UnityAction Jump;
-    public UnityAction Attack;
-    public UnityAction UsingSkill;
-    public UnityAction SelectSkill;
+    }
 
-    public string JumpCode = "Jump";
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-        JumpCode = "Jump";
+
     }
 
 
@@ -37,24 +53,10 @@ public class KeyInputMapper : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetAxis($"{JumpCode}") > 0)
-        {
-            Debug.Log("A");
-            if(Input.GetAxis($"{JumpCode}") < 1)
-            {
-                Debug.Log(Input.GetAxis($"{JumpCode}"));
-            }
-        }
-        else if (Input.GetAxis($"{JumpCode}") < 0)
-        {
-            Debug.Log("B");
-            if (Input.GetAxis($"{JumpCode}") > -1)
-            {
-                Debug.Log(Input.GetAxis($"{JumpCode}"));
-            }
-        }
+        
 
 
+           
         if (Input.anyKeyDown)
         {
             

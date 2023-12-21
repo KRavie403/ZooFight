@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UImanager : MonoBehaviour
+public class UIManager : Singletone<UIManager>
 {
-    
+
+    public TestUI TestUI;
+
 
     // Start is called before the first frame update
     void Start()
@@ -17,9 +19,4 @@ public class UImanager : MonoBehaviour
     {
         
     }
-
-
-
-
-
 }
