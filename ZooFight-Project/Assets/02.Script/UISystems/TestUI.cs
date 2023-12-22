@@ -21,10 +21,10 @@ public class TestUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < txt.Length; i++)
-        {
-            txt[i].text = KeySetting.keys[(KeyAction)i].ToString();
-        }
+        //for (int i = 0; i < txt.Length; i++)
+        //{
+        //    txt[i].text = KeySetting.keys[(KeyAction)i].ToString();
+        //}
     }
 
     private void OnGUI()
@@ -33,11 +33,30 @@ public class TestUI : MonoBehaviour
 
         if (keyevent.isKey)
         {
-            KeySetting.keys[(KeyAction)key] = keyevent.keyCode;
-            key = -1;
+            if (!KeySetting.keys.ContainsValue(keyevent.keyCode))
+            {
+                KeySetting.keys[(KeyAction)key] = keyevent.keyCode;
+                key = -1;
+                RefeshUI();
+            }
+            else
+            {
+                //KeyCode tempcode = KeySetting.keys[(KeyAction)key];
+
+                key = -1;
+            }
         }
     }
     int key = -1;
+
+    public void RefeshUI()
+    {
+        for (int i = 0; i < txt.Length; i++)
+        {
+            txt[i].text = KeySetting.keys[(KeyAction)i].ToString();
+        }
+    }
+
 
     public void ChangeKey(int num)
     {

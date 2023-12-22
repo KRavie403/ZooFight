@@ -82,17 +82,20 @@ public class ClientInputManager : Singletone<ClientInputManager>
         if (Input.GetKey(KeySetting.keys[KeyAction.Forward]))
         {
             Debug.Log("Stay");
+            Gamemanager.Inst.currentPlayer.AxisY += Time.deltaTime;
         }
         if (Input.GetKey(KeySetting.keys[KeyAction.Backward]))
         {
-
+            Gamemanager.Inst.currentPlayer.AxisY -= Time.deltaTime;
         }
         if (Input.GetKey(KeySetting.keys[KeyAction.Left]))
         {
+            Gamemanager.Inst.currentPlayer.AxisX -= Time.deltaTime;
 
         }
         if (Input.GetKey(KeySetting.keys[KeyAction.Right]))
         {
+            Gamemanager.Inst.currentPlayer.AxisX += Time.deltaTime;
 
         }
         if (Input.GetKey(KeySetting.keys[KeyAction.Jump]))
@@ -128,18 +131,20 @@ public class ClientInputManager : Singletone<ClientInputManager>
         if (Input.GetKeyUp(KeySetting.keys[KeyAction.Forward]))
         {
             Debug.Log("Up");
+            Gamemanager.Inst.currentPlayer.AxisY = 0;
         }
         if (Input.GetKeyUp(KeySetting.keys[KeyAction.Backward]))
         {
 
+            Gamemanager.Inst.currentPlayer.AxisY = 0;
         }
         if (Input.GetKeyUp(KeySetting.keys[KeyAction.Left]))
         {
-
+            Gamemanager.Inst.currentPlayer.AxisX = 0;
         }
         if (Input.GetKeyUp(KeySetting.keys[KeyAction.Right]))
         {
-
+            Gamemanager.Inst.currentPlayer.AxisX = 0;
         }
         if (Input.GetKeyUp(KeySetting.keys[KeyAction.Jump]))
         {

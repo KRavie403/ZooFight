@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CharacterProperty : MonoBehaviour
 {
+
+    [Range(0f, 3f)]
     public float MoveSpeed;
 
     public float MaxHP;
@@ -22,6 +24,10 @@ public class CharacterProperty : MonoBehaviour
         }
 
     }
+
+
+
+
 
     private void Awake()
     {
