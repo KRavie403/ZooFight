@@ -25,8 +25,8 @@ public class CharacterProperty : MonoBehaviour
 
     }
 
-
-
+    public int CharacterID = -1;
+    public HitScanner.Team myTeam = HitScanner.Team.NotSetting;
 
 
     private void Awake()

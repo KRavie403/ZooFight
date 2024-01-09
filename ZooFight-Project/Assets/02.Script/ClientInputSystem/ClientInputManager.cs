@@ -26,9 +26,17 @@ public class ClientInputManager : Singletone<ClientInputManager>
         InputKeyDown();
         InputKeyStay();
         InputKeyUp();
+        MouseAxis();
 
     }
 
+    public void MouseAxis()
+    {
+        Gamemanager.Inst.currentPlayer.GetComponentInChildren<CharacterCamera>().AxisX
+            = Input.GetAxis("Mouse X");
+        Gamemanager.Inst.currentPlayer.GetComponentInChildren<CharacterCamera>().AxisY
+            = Input.GetAxis("Mouse Y");
+    }
 
     public void InputKeyDown()
     {

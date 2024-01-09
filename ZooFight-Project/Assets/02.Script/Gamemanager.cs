@@ -8,7 +8,10 @@ public class Gamemanager : MonoBehaviour
     private static Gamemanager inst;
     public static Gamemanager Inst => inst;
 
+    // 현재 플레이중인 캐릭터의 정보
     public PlayerController currentPlayer;
+    public int CharacterID = -1;
+
 
     public void Awake()
     {
