@@ -39,7 +39,6 @@ Material:
   - DRAW_ORIG_POLYGON
   - _ENVIRONMENTREFLECTIONS_OFF
   - _GLOSSYREFLECTIONS_OFF
-  - _USESHADOWS_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -213,6 +212,7 @@ Material:
     - _OverlayUVTilling: 0
     - _PaperTilling: 1
     - _Parallax: 0.005
+    - _QueueControl: -1
     - _QueueOffset: 0
     - _RampDiffuseTextureLoaded: 1
     - _RandomDirection: 0
@@ -276,7 +276,7 @@ Material:
     - _UseScreenUvs: 0
     - _UseScreenUvsSpecular: 0
     - _UseScreenUvsWarp: 0
-    - _UseShadows: 1
+    - _UseShadows: 0
     - _UseSpecular: 1
     - _UseSpecularMask: 0
     - _WarpStrength: 0
