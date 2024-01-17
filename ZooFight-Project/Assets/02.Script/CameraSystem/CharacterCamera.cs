@@ -19,9 +19,9 @@ public class CharacterCamera : BasicCamera
     public float CamVerticalRotSpeed = 10;
     public Vector3 curRot = Vector3.zero;
 
+
     [SerializeField]
-    public Vector2 VertiaclAngle = new Vector2(-60.0f, 60.0f);
-    //public float VerticalAngle;
+    public Vector2 VertiaclAngle = new Vector2(-60.0f, 60.0f); // 상하시야각도 (하향,상향) 최대각도
 
 
     private void Awake()
@@ -50,11 +50,9 @@ public class CharacterCamera : BasicCamera
     {
 
         CharacterRot.transform.Rotate(0, AxisX * CamHorizontalRotSpeed * Time.deltaTime, 0);
-        
 
-        //VerticalAngle = curRot.x;
-        //VerticalAngle += AxisY * CamVerticalRotSpeed * Time.deltaTime;
-        curRot.x = Mathf.Clamp(curRot.x - (AxisX*CamVerticalRotSpeed *Time.deltaTime), VertiaclAngle.x, VertiaclAngle.y);
+
+        curRot.x = Mathf.Clamp(curRot.x - (AxisY * CamVerticalRotSpeed * Time.deltaTime), VertiaclAngle.x, VertiaclAngle.y);
         //temp.y = temp.z = 0;
 
         CameraPos.localRotation = Quaternion.Euler(curRot.x,0,0);
