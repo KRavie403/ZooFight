@@ -289,7 +289,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 1.46
+  RunSpeedRate: 1
   MaxHP: 0
+  UpdateHp:
+    m_PersistentCalls:
+      m_Calls: []
+  MotionSpeed: 5
   CharacterID: -1
   myTeam: -1
   AxisX: 1
@@ -4948,6 +4953,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: cat_V2
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 8d372d6464c19564f878415495dcc79f, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 5c3b46db1ccdfd143850e675c4b8e34a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -81,6 +81,10 @@ public class ClientInputManager : Singletone<ClientInputManager>
         {
 
         }
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.Run]))
+        {
+            Gamemanager.Inst.currentPlayer.SetRunning(true);
+        }
 
     }
 
@@ -130,6 +134,10 @@ public class ClientInputManager : Singletone<ClientInputManager>
         {
 
         }
+        if (Input.GetKey(KeySetting.keys[KeyAction.Run]))
+        {
+
+        }
 
     }
 
@@ -176,6 +184,11 @@ public class ClientInputManager : Singletone<ClientInputManager>
         }
         if (Input.GetKeyUp(KeySetting.keys[KeyAction.Menu]))
         {
+
+        }
+        if (Input.GetKeyUp(KeySetting.keys[KeyAction.Run]))
+        {
+            Gamemanager.Inst.currentPlayer.SetRunning(false);
 
         }
 
