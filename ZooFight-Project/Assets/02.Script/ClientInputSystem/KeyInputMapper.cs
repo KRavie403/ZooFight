@@ -19,8 +19,6 @@ public static class KeySetting
 }
 
 
-
-
 public class KeyInputMapper : MonoBehaviour 
 {
     KeyCode[] defaultKeys = new KeyCode[]
@@ -38,7 +36,7 @@ public class KeyInputMapper : MonoBehaviour
 
     }
 
-
+    
 
 
     // Start is called before the first frame update

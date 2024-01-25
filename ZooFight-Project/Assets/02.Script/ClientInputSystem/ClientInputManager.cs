@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Searcher;
 using UnityEngine;
 
 public class ClientInputManager : Singletone<ClientInputManager>
@@ -67,7 +68,7 @@ public class ClientInputManager : Singletone<ClientInputManager>
         }
         if (Input.GetKeyDown(KeySetting.keys[KeyAction.Selectskill]))
         {
-
+            ItemSystem.Inst.RangeViewer.gameObject.SetActive(!(ItemSystem.Inst.RangeViewer.gameObject.activeSelf));
         }
         if (Input.GetKeyDown(KeySetting.keys[KeyAction.Usingskill]))
         {
