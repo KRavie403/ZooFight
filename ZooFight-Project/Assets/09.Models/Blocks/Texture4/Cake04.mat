@@ -177,7 +177,7 @@ Material:
     - _MainLightIntesity: 1
     - _MaxScaleDependingOnCamera: 1
     - _Metallic: 0
-    - _NormalMapStrength: 0.6
+    - _NormalMapStrength: 0.2
     - _OcclusionStrength: 1
     - _OutlineDynamicSpeed: 0
     - _OutlineNoiseIntesity: 1
