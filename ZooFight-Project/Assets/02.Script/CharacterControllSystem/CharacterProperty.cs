@@ -27,7 +27,23 @@ public class CharacterProperty : MonoBehaviour
             _curHP = Mathf.Clamp(value, 0.0f, MaxHP);
             UpdateHp?.Invoke(Mathf.Approximately(MaxHP, 0.0f) ? 0.0f : _curHP);
         }
+    }
 
+    public UnityEvent<float> UpdateSp;
+    public float MaxSP;
+    private float _curSP = -100.0f;
+    public float CurSP
+    {
+        get
+        {
+            if (_curSP < 0.0f) _curSP = MaxSP;
+            return _curSP;
+        }
+        set
+        {
+            _curSP = Mathf.Clamp(value, 0.0f, MaxSP);
+            UpdateSp?.Invoke(Mathf.Approximately(MaxSP, 0.0f) ? 0.0f : _curSP);
+        }
     }
 
     public float MotionSpeed;

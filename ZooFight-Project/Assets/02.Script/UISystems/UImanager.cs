@@ -8,6 +8,7 @@ public class UIManager : Singletone<UIManager>
     public TestUI TestUI;
 
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,4 +20,7 @@ public class UIManager : Singletone<UIManager>
     {
         
     }
+
+
+
 }

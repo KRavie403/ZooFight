@@ -10,7 +10,8 @@ public class ClientInputManager : Singletone<ClientInputManager>
 
     public KeySettingDecoder InputSettingDecoder;
 
-
+    public Vector3 WorldMousePos;
+    public Vector2 ScreenMousePos;
 
     // Start is called before the first frame update
     void Start()
@@ -28,15 +29,37 @@ public class ClientInputManager : Singletone<ClientInputManager>
         InputKeyStay();
         InputKeyUp();
         MouseAxis();
-
+        if(Input.GetMouseButtonDown(0))
+        {
+            RangeUse(RangeTypeSetting.keys[0].GetComponent<IRangeEvent>().comp);
+            //ItemSystem.Inst.UseItem(Gamemanager.Inst.currentPlayer.curItems);
+        }
+        
     }
 
     public void MouseAxis()
     {
-        Gamemanager.Inst.currentPlayer.GetComponentInChildren<CharacterCamera>().AxisX
-            = Input.GetAxis("Mouse X");
-        Gamemanager.Inst.currentPlayer.GetComponentInChildren<CharacterCamera>().AxisY
-            = Input.GetAxis("Mouse Y");
+        Gamemanager.Inst.currentPlayer.TargetCamera.AxisX = Input.GetAxis("Mouse X");
+        Gamemanager.Inst.currentPlayer.TargetCamera.AxisY = Input.GetAxis("Mouse Y");
+
+        //Gamemanager.Inst.currentPlayer.GetComponentInChildren<CharacterCamera>().AxisX
+        //    = Input.GetAxis("Mouse X");
+        //Gamemanager.Inst.currentPlayer.GetComponentInChildren<CharacterCamera>().AxisY
+        //    = Input.GetAxis("Mouse Y");
+    }
+
+    public void RangeUse(Component rangeChecker)
+    {
+        if(rangeChecker.GetComponent<IRangeEvent>() != null)
+        {
+            Ray ray = Gamemanager.Inst.currentPlayer.TargetCamera.Cam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                // 
+                rangeChecker.GetComponent<IRangeEvent>().RouteStart(hit.point);
+            }
+            //rangeChecker.GetComponent<IRangeEvent>().RouteStart(Gamemanager.Inst.currentPlayer.TargetCamera.Cam.ScreenToWorldPoint(Input.mousePosition));
+        }
     }
 
     public void InputKeyDown()
@@ -192,6 +215,11 @@ public class ClientInputManager : Singletone<ClientInputManager>
             Gamemanager.Inst.currentPlayer.SetRunning(false);
 
         }
+
+    }
+
+    public void InputMouseDrag()
+    {
 
     }
 

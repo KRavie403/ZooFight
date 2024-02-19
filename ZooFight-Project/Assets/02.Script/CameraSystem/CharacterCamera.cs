@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 
 public class CharacterCamera : BasicCamera
 {
+    public Camera Cam;
 
     public Transform CameraPos;
 
@@ -19,6 +20,12 @@ public class CharacterCamera : BasicCamera
     public float CamVerticalRotSpeed = 10;
     public Vector3 curRot = Vector3.zero;
 
+    public bool isPlayerCam
+    {
+        get => (Gamemanager.Inst.currentPlayer.GetComponentInChildren<CharacterCamera>() == this ?
+                true : false);
+    }
+
 
     [SerializeField]
     public Vector2 VertiaclAngle = new Vector2(-60.0f, 60.0f); // 상하시야각도 (하향,상향) 최대각도
@@ -29,6 +36,7 @@ public class CharacterCamera : BasicCamera
         base.CamTranform = this.transform;
         base.targetCam = this.GetComponent<Camera>();
         CameraPos = this.transform.parent;
+
     }
 
     // Start is called before the first frame update
@@ -36,6 +44,7 @@ public class CharacterCamera : BasicCamera
     {
         //VerticalAngle = 0;
         curRot = CameraPos.localRotation.eulerAngles;
+        Cam = GetComponent<Camera>();
     }
 
     // Update is called once per frame

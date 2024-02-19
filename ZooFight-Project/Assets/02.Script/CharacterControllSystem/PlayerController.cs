@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Transactions;
@@ -10,10 +11,11 @@ public class PlayerController : MovementController ,IHitBox
     [Range(-1.0f, 1.0f)]
     public float AxisX,AxisY = 0;
 
-    public Transform TargetCamera;
+    public CharacterCamera TargetCamera;
 
     Vector2 SetNetPos = Vector2.zero;
 
+    public Items curItems;
 
     bool isUIOpen = false;
     bool IsRunning = false;
@@ -36,13 +38,15 @@ public class PlayerController : MovementController ,IHitBox
         base.Awake();
         AxisX = 0;
         AxisY = 0;
-
+        TargetCamera = GetComponentInChildren<CharacterCamera>();
         
     }
 
     // Start is called before the first frame update
     protected override void Start()
     {
+        // 나중에는 패킷 묶는곳에 던지고 묶인 패킷을 주기적으로 전송하기
+        //Gamemanager.OnPollingRate += () => Debug.Log(transform.position);
 
     }
 
@@ -111,10 +115,11 @@ public class PlayerController : MovementController ,IHitBox
         {
             myAnim.SetBool("IsMoving", false);
             myAnim.SetBool("IsRunning", false);
-
-
-
         }
+    }
+
+    public void CharacterMove(Vector3 pos , Vector3 dir , bool denial)
+    {
 
     }
 
@@ -146,6 +151,25 @@ public class PlayerController : MovementController ,IHitBox
     {
         Debug.Log("Damaged");
         //throw new System.NotImplementedException();
+    }
+
+    // 
+    public void SetHp(float Value,bool isSet)
+    {
+        if (Value > MaxHP) return;
+        if(isSet)
+        {
+            CurHP += Value;
+        }
+        else
+        {
+            CurHP = Value;
+        }
+    }
+
+    public HitScanner.Team GetEnemyTeam()
+    {
+        return (HitScanner.Team)((int)myTeam * -1);
     }
 
 
