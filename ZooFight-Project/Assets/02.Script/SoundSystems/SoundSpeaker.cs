@@ -21,4 +21,10 @@ public class SoundSpeaker : MonoBehaviour
     {
         
     }
+
+    public void SoundPlay()
+    {
+
+    }
+
 }

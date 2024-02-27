@@ -15,6 +15,8 @@ interface IHitBox
         get; 
     }
 
+    // 히트박스를 가진 오브젝트가 타격판정이 났을때
+    // 타격판정이 난 컴포넌트의 정보를 전달해주어서 작동
     public void HitAction(Component comp);
 }
 

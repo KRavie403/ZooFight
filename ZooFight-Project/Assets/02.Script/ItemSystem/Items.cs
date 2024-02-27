@@ -7,12 +7,12 @@ using UnityEngine;
 
 interface IItems
 {
-
+    public void UseItems();
 }
 
-public class Items : ItemProperty
+public class Items : ItemProperty , IItems , IEffect
 {
-    PlayerController myPlayer = null;
+    protected PlayerController myPlayer = null;
 
     public IEnumerator ItemAction;
 
@@ -21,6 +21,10 @@ public class Items : ItemProperty
     public event Action ItemReady = delegate { };
 
     protected Vector3 dir = Vector3.zero;
+
+    [SerializeField]
+    EffectCode ItemEffect;
+    EffectCode IEffect.EffectCode => ItemEffect;
 
     protected virtual void Awake()
     {
@@ -74,8 +78,10 @@ public class Items : ItemProperty
 
     public virtual void ItemUse(PlayerController player)
     {
-        
-        StartCoroutine(ItemAction);
+        if(ItemAction != null)
+        {
+            StartCoroutine(ItemAction);
+        }
 
     }
 
@@ -119,5 +125,14 @@ public class Items : ItemProperty
         return myPlayer;
     }
 
+    EffectCode IEffect.GetEffectCode()
+    {
+        return ItemEffect;
+    }
+
+    public virtual void UseItems()
+    {
+        throw new NotImplementedException();
+    }
 }
 

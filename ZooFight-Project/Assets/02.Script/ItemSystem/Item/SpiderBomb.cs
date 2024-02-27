@@ -2,14 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : Singletone<UIManager>
+public class SpiderBomb : MonoBehaviour
 {
-
-    // 테스트용 UI - 삭제예정
-    public TestUI TestUI;
-
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +15,4 @@ public class UIManager : Singletone<UIManager>
     {
         
     }
-
-
-
 }

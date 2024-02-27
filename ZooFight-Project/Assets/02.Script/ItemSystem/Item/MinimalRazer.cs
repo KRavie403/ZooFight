@@ -2,12 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Value1 레이저길이
-// Value2 사출속도
-// Value3 효과지속시간
-// Value4 
-public class MinimalRazer : Items
+/// <summary>
+/// 아이템명 : 소형화 광선
+/// Value1 레이저길이
+/// Value2 사출속도
+/// Value3 효과지속시간
+/// Value4 사출시간
+/// </summary>
+
+
+public class MinimalRazer : Items 
 {
+   
 
     public EffectPlayer effectPlayer;
     // 방향테스트용
@@ -16,17 +22,18 @@ public class MinimalRazer : Items
 
     Vector3 Dir = Vector3.zero;
 
+
     protected override void Awake()
     {
         base.Awake();
-        Effectmanager.Inst.CreateEffectObj(effectPlayer, transform);
+        //Effectmanager.Inst.CreateEffectObj(effectPlayer, transform);
     }
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
        
-        effectPlayer = EffectSetting.keys[EffectCode.MinimalRazer];
+        //effectPlayer = EffectSetting.keys[EffectCode.MinimalRazer];
 
     }
 
@@ -44,14 +51,24 @@ public class MinimalRazer : Items
         //Effectmanager.Inst.GetEffectObj(effectPlayer)
     }
 
+    
     public IEnumerator RazerShooting(Vector3 pos)
     {
+        // 사출방향 설정
+        Vector3 dir = Vector3.Normalize(pos - myPlayer.transform.position) * Value1;
 
-        Vector3 dir = new Vector3(pos.x, 0, pos.z);
+
+
+        // 이펙트 발동상태 설정 - 함수화 예정
+        RazerEffectSetting();
+
+        // 사운드 재생상태 설정 - 함수화 예정
+        RazerSoundSetting();
 
         //effectPlayer.myEffect[1].main.startLifetime;
 
-        while (effectPlayer.myEffect[1].main.duration < 1.0)
+        // 사출시간동안 동작
+        while (effectPlayer.myEffect[1].main.duration < Value4)
         {
 
             yield return null;
@@ -59,6 +76,18 @@ public class MinimalRazer : Items
 
     }
     
+    public void RazerEffectSetting()
+    {
+        // 1번이펙트 간단실행
+
+        // 2번이펙트 사출거리만큼 실행
+
+    }
+
+    public void RazerSoundSetting()
+    {
+        // 사출 사운드 재생
+    }
 
     public void RazerShoot()
     {
@@ -70,7 +99,6 @@ public class MinimalRazer : Items
         base.ItemUse(player);
         //effectPlayer.
     }
-
 
 
 }

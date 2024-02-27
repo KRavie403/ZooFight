@@ -48,6 +48,10 @@ public class Gamemanager : MonoBehaviour
     public PlayerController currentPlayer;
     public int CharacterID = -1;
 
+    // ÆÀ¸â¹ö <Id,ÄÄÆ÷³ÍÆ®> Á¶ÇÕ 
+    public Dictionary<int,PlayerController> RedTeamPlayers;
+    public Dictionary<int,PlayerController> BlueTeamPlayers;
+
 
     public void Awake()
     {
@@ -100,6 +104,36 @@ public class Gamemanager : MonoBehaviour
             OnPollingRate();
         }
     }
+
+
+    public Dictionary<int,PlayerController> GetTeam(HitScanner.Team team)
+    {
+        switch (team)
+        {
+            case HitScanner.Team.RedTeam:
+                return RedTeamPlayers;
+            case HitScanner.Team.BlueTeam:
+                return BlueTeamPlayers;
+            case HitScanner.Team.NotSetting:
+                return null;
+            default:
+                return null;
+        }
+    }
+    public Dictionary<int,PlayerController> GetEnemyTeam(HitScanner.Team team)
+    {
+        switch (team)
+        {
+            case HitScanner.Team.RedTeam:
+                return BlueTeamPlayers;
+            case HitScanner.Team.BlueTeam:
+                return RedTeamPlayers;
+            case HitScanner.Team.NotSetting:
+                    return null;
+                default: return null;
+        }
+    }
+
 
 
 }

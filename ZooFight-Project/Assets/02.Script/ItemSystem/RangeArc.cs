@@ -10,6 +10,7 @@ public class RangeArc : MonoBehaviour , IRangeEvent ,IPointerDownHandler ,IDragH
     public List<GameObject> DetectedObject;
 
     Vector2 RouteValues;
+
     public Transform TargetObjs;
     public float objSpeed = 10.0f;
 
@@ -90,134 +91,101 @@ public class RangeArc : MonoBehaviour , IRangeEvent ,IPointerDownHandler ,IDragH
 
     public void StartRoute(Vector3 RouteValues,PlayerController player)
     {
-        StartCoroutine(RouteMaker3(RouteValues, TargetObjs,player));
+
+        StartCoroutine(RouteMaker(RouteValues, TargetObjs,player));
     }
 
-    public float WholeTime = 2.0f;
+    public float DropSpeed = 2.0f;
 
-    public IEnumerator RouteMaker(Vector3 Value,Transform Target)
-    {
-
-        Vector3 startPos = Gamemanager.Inst.currentPlayer.transform.position;
-        Plane PlayerPlane = new Plane(Vector3.up, startPos);
-        float hitdist = 0.0f;
-
-        float circleR = Mathf.Sqrt(Mathf.Pow(Value.x, 2) + Mathf.Pow(Value.z, 2)) / 2;
-
-        Vector3 center = (startPos + Value) * 0.5f;
-        center.y -= 2.0f;
-
-        Quaternion targetRotation = Quaternion.LookRotation(center - startPos);
-
-        Target.rotation = Quaternion.Slerp(Target.rotation, targetRotation, WholeTime * Time.deltaTime);
-
-
-
-        //Vector3 Angle = Quaternion.AngleAxis(90, Vector3.up) * -dir;
-
-
-        Debug.Log(Value);
-
-        float deg = 0;
-
-        while (true)
-        {
-            deg += Time.deltaTime * objSpeed;
-
-            if(deg < 180)
-            {
-
-                yield return null;
-            }
-            else
-                yield break;
-        }
-
-    }
-
-    public float duringTime = 0.0f;
-    public IEnumerator RouteMaker2(Vector3 Value,Transform Target)
+    //public float duringTime = 0.0f;
+    public float startHeight = 1.5f;
+    public float endHeight = 1.0f;
+    public float ShootAngle = 45.0f;
+    public float DownForce = 10.0f;
+    public IEnumerator RouteMaker(Vector3 Value,Transform Target,PlayerController player)
     {
         // 변수 초기화
-        duringTime = 0;
+        float duringTime = 0;
 
-        // 변수선언
-        float circleR = Mathf.Sqrt(Mathf.Pow(Value.x, 2) + Mathf.Pow(Value.z, 2));
+        //DrawRoute(Value,Target,player);
 
-        Vector3 dir = new Vector3(Value.x,0, Value.z);
+        // 기본벡터 정의
+        Vector3 startPos = player.transform.position;
+        Vector3 dir = Value - startPos;
+        startPos.y = dir.y = startHeight;
 
-        Vector3 startPos = Gamemanager.Inst.currentPlayer.transform.position;
+        Vector3 dirUp = Vector3.up;
 
-        float deg = 0;
-        float dist = 0;
-        Debug.Log(Value + " , " + circleR);
+        float dist = dir.magnitude;
+        float VelX = dist / (Mathf.Cos(Mathf.Deg2Rad * ShootAngle) * DropSpeed);
+        float VelY = dist / Mathf.Sin(Mathf.Deg2Rad * ShootAngle);
 
-        while (duringTime < 2.0f)
+        float downForce = (VelY * 2) / DropSpeed; 
+
+        float distX = 0.0f;
+        float distY = 0.0f;
+
+        Vector3 dirN = Vector3.Normalize(dir);
+
+        while (Target.position.y < endHeight)
         {
             duringTime += Time.deltaTime;
-            deg = duringTime;
-            dist += Time.deltaTime / circleR ;
-            //Debug.Log(deg + " , " + dist);
-            if(deg < 180)
-            {
-                var rad = (180 / Mathf.Rad2Deg) * deg;
-                Vector3 pos = dir * dist + new Vector3(0, Mathf.Sin(rad) * circleR / 2 ,0) ;
 
-                Target.position = - startPos + pos;
+            VelY -= Time.deltaTime * downForce;
 
-                yield return null;
-            }
-            else
-            {
-                yield break;
-            }
+            distX += VelX * Time.deltaTime;
+            distY += VelY * Time.deltaTime;
+            Target.position = startPos + dirN * distX + dirUp * distY;
+
+            yield return null;
         }
     }
 
-    public IEnumerator RouteMaker3(Vector3 Value,Transform target,PlayerController player)
+    public void DrawRoute(Vector3 Value, Transform Target, PlayerController player)
     {
-        duringTime = 0;
-        target.rotation = Quaternion.identity;
+        // 기본벡터 정의
         Vector3 startPos = player.transform.position;
-        Vector3 center = (startPos + Value) / 2;
-        center.y = 0.5f;
-        Quaternion baseRot = Quaternion.AngleAxis(-90, startPos - center);
-        Vector3 dir = baseRot * center;
-        Vector3 lerp = startPos - center;
+        Vector3 dir = Value - startPos;
+        startPos.y = dir.y = startHeight;
 
+        Vector3 dirUp = Vector3.up;
 
-        LineRenderer line = new LineRenderer();
+        float dist = dir.magnitude;
+        float VelX = dist / (Mathf.Cos(Mathf.Deg2Rad * ShootAngle) * DropSpeed);
+        float VelY = dist / Mathf.Sin(Mathf.Deg2Rad * ShootAngle);
 
-        int index = 0;
+        float downForce = (VelY * 2) / DropSpeed;
 
-        while (duringTime < WholeTime)
+        float distX = 0.0f;
+        float distY = 0.0f;
+
+        Vector3 dirN = Vector3.Normalize(dir);
+
+        LineRenderer lines = new LineRenderer();
+        //lines.
+
+        for (int i = 0; distX < dist; i++)
         {
-            index++;
-            duringTime += Time.deltaTime;
+            lines.positionCount = i+1;
+            VelY -= (1 / Gamemanager.Inst.PollingRate) * downForce;
 
-            target.position = startPos + Quaternion.AngleAxis(180 * (duringTime / WholeTime), dir) * center - lerp ;
-            
-
-            //line.SetPosition(index, target.position);
-            yield return null;
+            distX += VelX * (1 / Gamemanager.Inst.PollingRate);
+            distY += VelY * (1 / Gamemanager.Inst.PollingRate);
+            lines.SetPosition(i, startPos + dirN * distX + dirUp * distY);
         }
+
     }
 
 
 
     void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
     {
-        //Vector3 TargetPos = Gamemanager.Inst.currentPlayer.TargetCamera.Cam.ScreenToWorldPoint(eventData.position);
-
+        
         throw new System.NotImplementedException();
     }
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
-        
-
         throw new System.NotImplementedException();
     }
-
-
 }

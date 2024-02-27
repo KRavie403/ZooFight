@@ -14,13 +14,17 @@ public class Config
 [System.Serializable]
 public class GraphicSetting
 {
-
+    public Vector2 resolution;
 }
 
 [System.Serializable]
 public class SoundSetting
 {
 
+    public float Totalvolume;
+    public float Bgm;
+    public float EffectVolume;
+    public float BgmVolume;
 }
 
 [System.Serializable]

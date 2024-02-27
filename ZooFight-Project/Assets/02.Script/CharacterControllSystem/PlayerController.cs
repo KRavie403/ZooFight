@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Transactions;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 public class PlayerController : MovementController ,IHitBox
 {
@@ -118,9 +118,19 @@ public class PlayerController : MovementController ,IHitBox
         }
     }
 
-    public void CharacterMove(Vector3 pos , Vector3 dir , bool denial)
+    public void CharacterMove(Vector3 pos, Vector3 dir, bool denial, UnityAction e = null)
     {
 
+    }
+    public IEnumerator BasicMove(Vector3 pos, Vector3 dir, UnityAction e = null)
+    {
+
+        while (true)
+        {
+            yield return null;
+        }
+
+        e?.Invoke();
     }
 
     public void BlockGrab(Transform targat)
