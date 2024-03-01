@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Eye 1
   m_Shader: {fileID: 4800000, guid: 60e29b7951f20da47b11861d166b7036, type: 3}
-  m_Parent: {fileID: 2100000, guid: bab858089a3bf7e428e68d7aa4724af3, type: 2}
+  m_Parent: {fileID: 2100000, guid: f695f776b02d70147b3bc5db4128f9b8, type: 2}
   m_ModifiedSerializedProperties: 2
   m_ValidKeywords:
   - _OUTLINETYPE_NORMAL
@@ -21,8 +21,7 @@ Material:
   - _USELIGHTRAMP_STEP
   - _USEPURESKETCH_ON
   - _USESPECULAR_ON
-  m_InvalidKeywords:
-  - _USESHADOWS_ON
+  m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
