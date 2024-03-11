@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : Singletone<UIManager>
+public class UIManager : Singleton<UIManager>
 {
 
     // 테스트용 UI - 삭제예정

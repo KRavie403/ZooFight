@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 
-public class ItemSystem : Singletone<ItemSystem> 
+public class ItemSystem : Singleton<ItemSystem> 
 {
 
     public RangeViewer RangeViewer;

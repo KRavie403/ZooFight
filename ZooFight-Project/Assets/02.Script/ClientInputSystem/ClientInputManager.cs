@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.Searcher;
 using UnityEngine;
 
-public class ClientInputManager : Singletone<ClientInputManager>
+public class ClientInputManager : Singleton<ClientInputManager>
 {
 
     public KeyInputMapper InputMapper;

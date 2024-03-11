@@ -36,7 +36,7 @@ interface IEffect
     public EffectCode GetEffectCode();
 }
 
-public class Effectmanager : Singletone<Effectmanager>
+public class Effectmanager : Singleton<Effectmanager>
 {
     public EffectPool effectPool;
 

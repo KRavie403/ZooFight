@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Clientmanager : Singletone<Clientmanager>
+public class Clientmanager : Singleton<Clientmanager>
 {
 
 

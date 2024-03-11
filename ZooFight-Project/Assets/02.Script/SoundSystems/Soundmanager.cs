@@ -32,7 +32,7 @@ public static class SoundSettings
     public static Dictionary<SoundCode, SoundSpeaker> keys = new();
 }
 
-public class Soundmanager : Singletone<Soundmanager>
+public class Soundmanager : Singleton<Soundmanager>
 {
 
     public List<SoundSpeaker> SoundSpeakers;
