@@ -30,6 +30,22 @@ public class GuardDrink : Items
         base.Awake();
     }
 
+    public override void Initate(List<float> Values, PlayerController player)
+    {
+        base.Initate(Values, player);
+        if(Values.Count >= 2)
+        {
+            Value1 = Values[0];
+            Value2 = Values[1];
+        }
+        myPlayer = player;
+    }
+
+    public void ItemSetUp()
+    {
+
+    }
+
     public IEnumerator DrinkActive()
     {
         // 보호막 대상 세팅

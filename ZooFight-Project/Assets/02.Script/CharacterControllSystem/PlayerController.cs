@@ -7,6 +7,30 @@ using UnityEngine.Events;
 
 public class PlayerController : MovementController ,IHitBox
 {
+    public enum pState
+    {
+        Create=0,
+        Idle,
+        Jump,
+        SkillReady,
+        SKillUse,
+
+        Down,
+        Recovery,
+
+        S_Idle,
+        S_Jump,
+        S_SkillReady,
+        S_SKillUse
+
+    }
+
+    protected StateMachine PlayerSM;
+
+    public Dictionary<pState,BaseState> p_States = new Dictionary<pState,BaseState>();
+
+    public bool IsDown => PlayerSM.CurrentState != p_States[pState.Down];
+
 
     [Range(-1.0f, 1.0f)]
     public float AxisX,AxisY = 0;
@@ -15,10 +39,13 @@ public class PlayerController : MovementController ,IHitBox
 
     Vector2 SetNetPos = Vector2.zero;
 
+    public GrabPoint grabPoint;
+
     public Items curItems;
 
     bool isUIOpen = false;
     bool IsRunning = false;
+    public bool isGrab = false;
     // 캐릭터 위치 검증여부
     bool isDenial = false;
     Vector2 acceleration = Vector2.zero;
@@ -39,6 +66,7 @@ public class PlayerController : MovementController ,IHitBox
         AxisX = 0;
         AxisY = 0;
         TargetCamera = GetComponentInChildren<CharacterCamera>();
+        grabPoint = GetComponentInChildren<GrabPoint>();
         
     }
 
@@ -53,7 +81,8 @@ public class PlayerController : MovementController ,IHitBox
     // Update is called once per frame
     protected override void Update()
     {
-        
+        base.Update();
+
         CharacterMove(AxisX, AxisY,isDenial);
 
         if(!isUIOpen)
@@ -77,6 +106,17 @@ public class PlayerController : MovementController ,IHitBox
     {
         Vector3 vector3 = new Vector3(AxisX,0,AxisY);
         vector3 = Vector3.Normalize(vector3);
+        Vector2 BlockDir = Vector2.zero;
+
+        
+        if (isGrab)
+        { 
+            Vector3 tmp = new(transform.position.x,0,transform.position.z);
+            //Vector3 tmp2 = vector3 * transform.forward;
+            Debug.Log(Quaternion.LookRotation(transform.forward, Vector3.up));
+            BlockDir = grabPoint.curGrabBlock.DistSelect(vector3,transform.forward);
+        }
+
         // 검증된위치일경우
         if(!denial )
         {
@@ -94,6 +134,10 @@ public class PlayerController : MovementController ,IHitBox
             {
                 myAnim.SetBool("IsMoving", false);
                 myAnim.SetBool("IsRunning", false);
+                if (isGrab)
+                {
+                    grabPoint.curGrabBlock.SetcurDir(Vector3.zero,transform.forward);
+                }
             }
             else // 움직임이 있을때
             {
@@ -107,6 +151,10 @@ public class PlayerController : MovementController ,IHitBox
                 {
                     myAnim.SetBool("IsMoving", false);
                     myAnim.SetBool("IsRunning", true);
+                }
+                if (isGrab)
+                {
+                    grabPoint.curGrabBlock.SetcurDir(BlockDir,transform.forward);
                 }
             }
         }
@@ -133,10 +181,24 @@ public class PlayerController : MovementController ,IHitBox
         e?.Invoke();
     }
 
+    public void Grab()
+    {
+        BlockGrab(grabPoint.GrabableBlock.transform);
+    }
+    public void DeGrab()
+    {
+        isGrab = false;
+        grabPoint.curGrabBlock.DeGrab(this);
+    }
+
     public void BlockGrab(Transform targat)
     {
-        targat.GetComponent<BlockObject>().Grab();
+        targat.GetComponent<BlockObject>().Grab(this);
+    }
 
+    public void DeBlockGrab(Transform targat)
+    {
+        targat.GetComponent<BlockObject>().DeGrab(this);
     }
 
     public void WeaponSwap()

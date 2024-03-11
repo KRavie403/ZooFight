@@ -99,9 +99,10 @@ public class Gamemanager : MonoBehaviour
         WaitForSeconds ws = new WaitForSeconds(1 / PollingRate);
         while (true)
         {
+
             //Debug.Log(Times);
-            yield return ws;
             OnPollingRate();
+            yield return ws;
         }
     }
 

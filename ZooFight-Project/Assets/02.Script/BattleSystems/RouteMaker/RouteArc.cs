@@ -61,6 +61,13 @@ public class RouteArc : Route , IRoute
         SetupCoroutine = RouteMaker(pos, target, player, RouteInfo);
         Debug.Log("aa");
     }
+    protected override void RouteSetUp(RouteInfo rInfo)
+    {
+        base.RouteSetUp(rInfo);
+        RouteInfo = rInfo.RouteBase;
+        SetupCoroutine = RouteMaker(rInfo.Pos, rInfo.Target, rInfo.myPlayer, rInfo.RouteBase);
+        Debug.Log("aa");
+    }
 
     Transform myTargetObj = null;
     PlayerController myPlayer = null;
@@ -72,6 +79,10 @@ public class RouteArc : Route , IRoute
 
     }
 
+    public void MoveStart()
+    {
+        StartCoroutine(SetupCoroutine);
+    }
 
     public IEnumerator RouteMaker(Vector3 Value, Transform Target, PlayerController player,float4 Rinfo)
     {

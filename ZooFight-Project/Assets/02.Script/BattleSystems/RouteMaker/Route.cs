@@ -35,6 +35,10 @@ public class Route : MonoBehaviour
     {
         Debug.Log("BB");
     }
+    protected virtual void RouteSetUp(RouteInfo rInfo)
+    {
+        Debug.Log("BB");
+    }
 
     public void SetUp(Vector3 pos,Vector4 RouteInfo,Transform target,PlayerController player)
     {

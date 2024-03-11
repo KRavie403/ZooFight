@@ -31,7 +31,7 @@ public class ClientInputManager : Singletone<ClientInputManager>
         MouseAxis();
         if(Input.GetMouseButtonDown(0))
         {
-            RangeUse(RangeTypeSetting.keys[0].GetComponent<IRangeEvent>().comp);
+            //RangeUse(RangeTypeSetting.keys[0].GetComponent<IRangeEvent>().comp);
             //ItemSystem.Inst.UseItem(Gamemanager.Inst.currentPlayer.curItems);
         }
         
@@ -52,13 +52,13 @@ public class ClientInputManager : Singletone<ClientInputManager>
     {
         if(rangeChecker.GetComponent<IRangeEvent>() != null)
         {
-            Ray ray = Gamemanager.Inst.currentPlayer.TargetCamera.Cam.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Gamemanager.Inst.currentPlayer.TargetCamera.myCam.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 // 
                 rangeChecker.GetComponent<IRangeEvent>().RouteStart(hit.point);
             }
-            //rangeChecker.GetComponent<IRangeEvent>().RouteStart(Gamemanager.Inst.currentPlayer.TargetCamera.Cam.ScreenToWorldPoint(Input.mousePosition));
+            //rangeChecker.GetComponent<IRangeEvent>().RouteStart(Gamemanager.Inst.currentPlayer.TargetCamera.myCam.ScreenToWorldPoint(Input.mousePosition));
         }
     }
 
@@ -99,7 +99,7 @@ public class ClientInputManager : Singletone<ClientInputManager>
         }
         if (Input.GetKeyDown(KeySetting.keys[KeyAction.Grab]))
         {
-
+            Gamemanager.Inst.currentPlayer.Grab();
         }
         if (Input.GetKeyDown(KeySetting.keys[KeyAction.Menu]))
         {
@@ -204,6 +204,8 @@ public class ClientInputManager : Singletone<ClientInputManager>
         }
         if (Input.GetKeyUp(KeySetting.keys[KeyAction.Grab]))
         {
+            //Gamemanager.Inst.currentPlayer.isGrab = false;
+            Gamemanager.Inst.currentPlayer.DeGrab();
 
         }
         if (Input.GetKeyUp(KeySetting.keys[KeyAction.Menu]))
