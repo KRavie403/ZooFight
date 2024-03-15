@@ -29,6 +29,7 @@ public class GrabPoint : MonoBehaviour
             GrabableBlock = other.GetComponent<BlockObject>();
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
         if(other.GetComponent<BlockObject>() != null)
@@ -39,6 +40,7 @@ public class GrabPoint : MonoBehaviour
             }
         }
     }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.GetComponent<BlockObject>() != null)
