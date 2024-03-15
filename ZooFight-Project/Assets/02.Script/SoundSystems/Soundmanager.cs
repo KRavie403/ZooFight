@@ -1,52 +1,87 @@
 using System.Collections;
 using System.Collections.Generic;
-//using UnityEditor.SearchService;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
 
-public class SoundManager : Singleton<SoundManager>
+
+/// <summary>
+/// 사운드 코드 기준
+/// 0 ~ 99 캐릭터 관련 사운드
+/// 100 ~ 300 아이템 관련 사운드
+/// 300 ~ 400 UI 관련 사운드
+/// 추후 확장가능
+/// </summary>
+public enum SoundCode
 {
-    public AudioMixer mixer;
-    public AudioSource BGM;
-    public AudioClip[] BGMList;
+    MainBgm =0,CharacterMove,CharacterJump,CharacterDameged , CharacterAttack,
 
-    private void Start()
-    {
-        BGMPlay(BGMList[0]);
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
+    BananaTrap = 100,
+    GuardDrink, StaminaDrink, PowerDrink,
+    Bomb, SpiderBomb, InkBomb,
+    ToyHammer, WhippingMachine, MinimalRazer,
+    CurseScroll, BlockChangeScroll,
+    Item11,
+    ButtonClick = 200, 
 
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
 
-    public GameObject SFXPlay(string sfxName, AudioClip clip)
-    {
-        GameObject go = new GameObject(sfxName + "Sound");
-        AudioSource audiosource = go.AddComponent<AudioSource>();
-        audiosource.clip = clip;
-        audiosource.Play();
-        //if(sfxName != "")
-        return go;
-    }
+    CodeCount
+}
 
-    public void BGMPlay(AudioClip clip)
-    {
-        BGM.outputAudioMixerGroup = mixer.FindMatchingGroups("BGM")[0];
-        BGM.clip = clip;
-        BGM.loop = true;
-        BGM.volume = 0.1f;
-        BGM.Play();
-    }
+public static class SoundSettings
+{
+    public static Dictionary<SoundCode, SoundSpeaker> keys = new();
+}
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+public class Soundmanager : Singleton<Soundmanager>
+{
+
+    public List<SoundSpeaker> SoundSpeakers;
+
+    public SoundPool SoundPool;
+
+    private void Awake()
     {
-        for (int i = 0; i < BGMList.Length; i++)
+        for (int i = 0; i < (int)SoundCode.CodeCount; i++)
         {
-            if(scene.name == BGMList[i].name)
-                BGMPlay(BGMList[i]);
+            if (SoundSpeakers[i] != null)
+            {
+                SoundSettings.keys.Add((SoundCode)i, SoundSpeakers[i]);
+            }
         }
     }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    public void MakeClone(SoundSpeaker sound)
+    {
+        if(!SoundPool.Clones.Contains(sound))
+        {
+            GameObject obj = Instantiate(sound.gameObject, SoundPool.transform);
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    public SoundSpeaker GetClone(SoundSpeaker sound)
+    {
+        if (!SoundPool.Clones.Contains(sound))
+        {
+            MakeClone(sound);
+        }
+        return SoundPool.Clones[SoundPool.Clones.IndexOf(sound)];
+    }
+
+
 }

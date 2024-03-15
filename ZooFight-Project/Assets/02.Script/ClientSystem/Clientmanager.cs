@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClientInputManager : MonoBehaviour
+public class Clientmanager : Singleton<Clientmanager>
 {
+
+
+    public ConfigReader ConfigReader;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,4 +19,7 @@ public class ClientInputManager : MonoBehaviour
     {
         
     }
+
+
+
 }
