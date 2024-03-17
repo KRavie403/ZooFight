@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MovementController : CharacterProperty
 {
+
     #region 유니티 이벤트 함수
 
     // Awake 함수 추가

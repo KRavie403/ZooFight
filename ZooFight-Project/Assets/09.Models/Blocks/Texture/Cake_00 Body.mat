@@ -29,7 +29,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: _AdaptiveThicnkess
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -43,6 +43,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AdaptiveThicnkess: 0.04
     - _IndirectLightStrength: 0.56
-    m_Colors: []
+    - _OutlineTextureStrength: 0
+    - _OutlineType: 0
+    - _Thicnkess: 0.05
+    - _UseOutline: 0
+    m_Colors:
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
