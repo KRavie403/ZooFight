@@ -6,17 +6,23 @@ using UnityEngine.SceneManagement;
 
 public class BtnType : Singleton<BtnType>
 {
-    public CanvasGroup SetGroup;
+    public GameObject Settings;
+    public GameObject Set;
+    public CanvasGroup SettingGroup;
     public CanvasGroup DisplayGroup;
     public CanvasGroup AudioGroup;
     public CanvasGroup ControlGroup;
-    public CanvasGroup SettingGroup;
+    public CanvasGroup SetGroup;
 
-    private bool isESC = false;
+    private bool isESC = true;
+    private bool isSetESC = true;
 
     void Start()
     {
+        Settings.SetActive(false);
+        Set.SetActive(false);
         CanvasGroupOff(SetGroup);
+        CanvasGroupOff(SettingGroup);
     }
 
     private void Update()
@@ -31,16 +37,18 @@ public class BtnType : Singleton<BtnType>
 
     public void ClickSetting()
     {
-        Pause(true);                                                    // 일시정지 추가
-        CanvasGroupOn(SetGroup);
+        //Pause(true);                                                    // 일시정지 추가
+        Settings.SetActive(true);
+        isESC = false;
+        CanvasGroupOn(SettingGroup);
         CanvasGroupOn(DisplayGroup);
         CanvasGroupOff(AudioGroup);
         CanvasGroupOff(ControlGroup);
     }
     public void ClickContinue()
     {
-        Pause(false);
-        CanvasGroupOff(SetGroup);
+        //Pause(false);
+        CanvasGroupOff(SettingGroup);
     }
     public void ClickStart()
     {
@@ -81,39 +89,43 @@ public class BtnType : Singleton<BtnType>
 
     public void ClickESC()
     {
-        isESC = false;
-        CanvasGroupOff(SetGroup);
+        isESC = true;
+        CanvasGroupOff(SettingGroup);
     }
 
     public void ESC()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isESC)
+            if(isESC && isSetESC) 
             {
-                isESC = false;
-                CanvasGroupOff(SettingGroup);
-                ClickESC();
+                isSetESC = false;
+                Set.SetActive(true);
+                CanvasGroupOn(SetGroup); 
             }
-            else
+            else if(isESC && !isSetESC) 
             {
-                isESC = true;
-                CanvasGroupOn(SettingGroup);
+                isSetESC = true;
+                CanvasGroupOff(SetGroup);
+            }
+            else if (!isESC)
+            {
+                ClickESC();
             }
         }
     }
 
-    void Pause(bool isPause)
-    {
-        if (true == isPause)     // 일시정지 상태
-        {
-            Time.timeScale = 0;
-        }
-        else                            // 일시정지 해제
-        {
-            Time.timeScale = 1;
-        }
-    }
+    //void Pause(bool isPause)
+    //{
+    //    if (true == isPause)     // 일시정지 상태
+    //    {
+    //        Time.timeScale = 0;
+    //    }
+    //    else                            // 일시정지 해제
+    //    {
+    //        Time.timeScale = 1;
+    //    }
+    //}
     public void CanvasGroupOn(CanvasGroup cg)
     {
         cg.alpha = 1;

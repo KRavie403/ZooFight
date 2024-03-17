@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Overlays;
 using UnityEngine;
 
 public class BlockPlacement : MonoBehaviour
@@ -8,7 +7,7 @@ public class BlockPlacement : MonoBehaviour
     public GameObject[] block1x1;
     public GameObject[] block1x2;
     public GameObject[] block2x1;
-    public GameObject pinkBlock;
+    public GameObject redBlock;
     public GameObject blueBlock;
 
 
@@ -54,7 +53,7 @@ public class BlockPlacement : MonoBehaviour
         // 탈출 블록 배치
         Vector3 pinkBlockPosition = new Vector3(20.5f, 0.5f, 10.5f);
         Vector3 blueBlockPosition = new Vector3(40.5f, 0.5f, 10.5f);
-        Instantiate(pinkBlock, pinkBlockPosition, Quaternion.identity);
+        Instantiate(redBlock, pinkBlockPosition, Quaternion.identity);
         Instantiate(blueBlock, blueBlockPosition, Quaternion.identity);
         mapCoordinates[FindMapCoordinatesKey(mapCoordinates, pinkBlockPosition)] = new Vector3(0, 0, 0);
         mapCoordinates[FindMapCoordinatesKey(mapCoordinates, blueBlockPosition)] = new Vector3(0, 0, 0);

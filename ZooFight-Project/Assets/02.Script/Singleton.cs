@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Singleton<T> : MonoBehaviour where T : Component
 {
-    private static T _inst;
+    private static T _inst = null;
     //public static T Inst => inst;
     public static T Inst
     {
@@ -29,6 +29,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
         if (_inst == null)
         {
             _inst = this as T;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {

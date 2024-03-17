@@ -1,31 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GraphicManager : MonoBehaviour
+public class GraphicManager : Singleton<GraphicManager>
 {
     [SerializeField] private TMP_Text graphicsCardName;
     [SerializeField] private TMP_Dropdown displayModeDropdown;
-    //[SerializeField] private TMP_Dropdown resolutionDropdown;
+    [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private Slider _contrastSlider;
     [SerializeField] private Slider _brightnessSlider;
     [SerializeField] private Image _overLay;
 
-    List<Resolution> displayModes = new List<Resolution>();
-    //List<Resolution> resolutions = new List<Resolution>();
+    //List<Resolution> displayModes = new List<Resolution>();
+    List<Resolution> resolutions = new List<Resolution>();
 
     FullScreenMode screenMode;
-    private int displayNum;
-    //private int resolutionNum;
+    //private int displayNum;
+    private int resolutionNum;
 
     void Start()
     {
         GraphicsCardInfo();
+        //DisplayDropboxOptionChange(1);  // 본 모니터의 해상도와 일치하는지 확인
         InitDisplayMode();
-        //InitResolution();
+        InitResolution();
     }
 
     // 그래픽 카드 정보
@@ -67,48 +67,43 @@ public class GraphicManager : MonoBehaviour
                 break;
         }
         displayModeDropdown.RefreshShownValue();
+    }
 
-        Debug.Log("DisplayNum:" + displayNum);
-        Screen.SetResolution(displayModes[displayNum].width,
-                                          displayModes[displayNum].height,
+    // 해상도 조절
+    private void InitResolution()
+    {
+        resolutions.AddRange(Screen.resolutions);
+        resolutionDropdown.options.Clear();
+
+        int optionNum = 0; //처음에 drop된 값 초기화
+        foreach (Resolution value in resolutions)
+        {
+            Debug.Log(value.width + "x" + value.height + " " + value.refreshRateRatio);
+            TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData();
+            option.text = value.ToString(); //해상도값 넣어줌
+            resolutionDropdown.options.Add(option);//option 추가
+
+            if (value.width == Screen.width && value.height == Screen.height) //현재 해상도의 너비는 Screen.width 높이는 Screen.height를 사용해서 알 수 있음
+            {
+                resolutionDropdown.value = optionNum;
+            }
+            optionNum++;
+        }
+        resolutionDropdown.RefreshShownValue();
+    }
+
+    //public void DisplayDropboxOptionChange(int x)
+    //{
+    //    Debug.Log("DisplayDropboxOptionChange-DisplayNum:" + displayNum);
+    //    displayNum = x;
+    //}
+    public void ResolutionDropboxOptionChange(int x)
+    {
+        resolutionNum = x;
+        Screen.SetResolution(resolutions[resolutionNum].width,
+                                          resolutions[resolutionNum].height,
                                           screenMode);
     }
-
-    //// 해상도 조절
-    //private void InitResolution()
-    //{
-    //    resolutions.AddRange(Screen.resolutions);
-    //    resolutionDropdown.options.Clear();
-
-    //    int optionNum = 0; //처음에 drop된 값 초기화
-    //    foreach (Resolution item in resolutions)
-    //    {
-    //        Debug.Log(item.width + "x" + item.height + " " + item.refreshRateRatio);
-    //        TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData();
-    //        option.text = item.ToString(); //해상도값 넣어줌
-    //        resolutionDropdown.options.Add(option);//option 추가
-
-    //        if (item.width == Screen.width && item.height == Screen.height) //현재 해상도의 너비는 Screen.width 높이는 Screen.height를 사용해서 알 수 있음
-    //        {
-    //            resolutionDropdown.value = optionNum;
-    //        }
-    //        optionNum++;
-    //    }
-    //    resolutionDropdown.RefreshShownValue();
-
-    //    Screen.SetResolution(resolutions[resolutionNum].width,
-    //    resolutions[resolutionNum].height,
-    //    screenMode);
-    //}
-
-    public void DisplayDropboxOptionChange(int x)
-    {
-        displayNum = x;
-    }
-    //public void ResolutionDropboxOptionChange(int x)
-    //{
-    //    resolutionNum = x;
-    //}
 
     public void FullScreenBtn(bool isFull)
     {
