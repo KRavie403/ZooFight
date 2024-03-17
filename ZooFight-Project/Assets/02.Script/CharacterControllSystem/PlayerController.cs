@@ -25,6 +25,12 @@ public class PlayerController : MovementController ,IHitBox
 
     }
 
+    public enum pFunc
+    {
+        Move,
+        FuncCount
+    }
+
     protected StateMachine PlayerSM;
 
     public Dictionary<pState,BaseState> p_States = new Dictionary<pState,BaseState>();
@@ -99,6 +105,11 @@ public class PlayerController : MovementController ,IHitBox
     public void SetRunning(bool isRunning)
     {
         IsRunning = isRunning;
+    }
+
+    public void CurAxisMove()
+    {
+        CharacterMove(AxisX, AxisY, isDenial);
     }
 
     // 캐릭터 이동 함수 
