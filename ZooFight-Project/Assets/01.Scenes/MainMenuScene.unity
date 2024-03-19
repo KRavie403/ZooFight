@@ -7263,8 +7263,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1142224782}
-  - {fileID: 1433817096}
   - {fileID: 1211611670}
+  - {fileID: 1433817096}
   m_Father: {fileID: 567083641}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -11579,7 +11579,7 @@ GameObject:
   - component: {fileID: 1142224782}
   - component: {fileID: 1142224783}
   m_Layer: 5
-  m_Name: MainMenu
+  m_Name: MainMenuUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12087,7 +12087,7 @@ GameObject:
   - component: {fileID: 1211611671}
   - component: {fileID: 1211611672}
   m_Layer: 5
-  m_Name: SettingMenu
+  m_Name: SettingsUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12139,7 +12139,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1211611669}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fc65119a08fb1448eb6db58aa10ee1, type: 3}
+  m_Script: {fileID: 11500000, guid: 9096192cbb36e544ab26d8a51e55dc5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1280552248
@@ -19440,7 +19440,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae92a2ec11f7a9d4aa3c9443c2d57e8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PollingRate: 30
   currentPlayer: {fileID: 0}
+  CharacterID: -1
 --- !u!1 &2059220746
 GameObject:
   m_ObjectHideFlags: 0

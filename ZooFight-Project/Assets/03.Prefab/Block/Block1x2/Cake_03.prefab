@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7852752084582094157, guid: e735d220df33f0644bbaca0ab757d53b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3ce3a822d47d1f24c894603c42c31a77, type: 2}
     - target: {fileID: -7511558181221131132, guid: e735d220df33f0644bbaca0ab757d53b, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -72,6 +76,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cake_03
       objectReference: {fileID: 0}
+    - target: {fileID: 6490120539590112805, guid: e735d220df33f0644bbaca0ab757d53b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3ce3a822d47d1f24c894603c42c31a77, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

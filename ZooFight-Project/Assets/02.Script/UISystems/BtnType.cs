@@ -33,6 +33,7 @@ public class BtnType : Singleton<BtnType>
     private void Awake()
     {
         base.Initialize();
+        DontDestroyOnLoad(gameObject);
     }
 
     public void ClickSetting()
