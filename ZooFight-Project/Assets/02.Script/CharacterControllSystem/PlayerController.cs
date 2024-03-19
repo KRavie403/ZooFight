@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Transactions;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEditor.PlayerSettings;
 
 public class PlayerController : MovementController ,IHitBox
 {
@@ -25,6 +26,7 @@ public class PlayerController : MovementController ,IHitBox
 
     }
 
+    // 캐릭터동작에 필요한 함수들 목록
     public enum pFunc
     {
         Move,
@@ -80,7 +82,7 @@ public class PlayerController : MovementController ,IHitBox
     protected override void Start()
     {
         // 나중에는 패킷 묶는곳에 던지고 묶인 패킷을 주기적으로 전송하기
-        //Gamemanager.OnPollingRate += () => Debug.Log(transform.position);
+        //Gamemanager.OnPollingRate += () => ;
 
     }
 
@@ -88,7 +90,7 @@ public class PlayerController : MovementController ,IHitBox
     protected override void Update()
     {
         base.Update();
-
+        PlayerSM.CurrentState.LogicUpdate();
         CharacterMove(AxisX, AxisY,isDenial);
 
         if(!isUIOpen)
@@ -100,6 +102,28 @@ public class PlayerController : MovementController ,IHitBox
 
         }
         
+    }
+    protected override void LateUpdate()
+    {
+        base.LateUpdate();
+        PlayerSM.CurrentState.PhysicsUpdate();
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+
+    }
+
+    // 현재 이 캐릭터의 상태정보 전송
+    public void StatusPolling()
+    {
+
+    }
+
+    public void StatusRenewal()
+    {
+
     }
 
     public void SetRunning(bool isRunning)
@@ -119,7 +143,13 @@ public class PlayerController : MovementController ,IHitBox
         vector3 = Vector3.Normalize(vector3);
         Vector2 BlockDir = Vector2.zero;
 
-        
+        Quaternion rot = Quaternion.FromToRotation(Vector3.forward, transform.forward);
+
+        Vector3 vector32 = rot * vector3;
+
+        Vector2 dir = new Vector2(vector3.x, vector3.z);
+
+        // 물체를 잡고 움직일때
         if (isGrab)
         { 
             Vector3 tmp = new(transform.position.x,0,transform.position.z);
@@ -181,6 +211,13 @@ public class PlayerController : MovementController ,IHitBox
     {
 
     }
+
+
+    public void CharacterJump()
+    {
+
+    }
+
     public IEnumerator BasicMove(Vector3 pos, Vector3 dir, UnityAction e = null)
     {
 
