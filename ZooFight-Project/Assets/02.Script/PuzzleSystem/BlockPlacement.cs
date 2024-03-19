@@ -14,7 +14,7 @@ public class BlockPlacement : MonoBehaviour
     private float mapWidth = 60.0f;
     private float mapHeight = 40.0f;
     public Dictionary<int, Vector3> mapCoordinates = new Dictionary<int, Vector3>();
-    private List<Vector3> placedBlockPositions = new List<Vector3>();
+    private Dictionary<int, Vector3> placedBlockPositions = new Dictionary<int, Vector3>();
 
     // CharacterPlacement.cs에서 User Position 값 받음
     private List<Vector3> receivedSpawnUsers = new List<Vector3>();
@@ -57,8 +57,10 @@ public class BlockPlacement : MonoBehaviour
         Instantiate(blueBlock, blueBlockPosition, Quaternion.identity);
         mapCoordinates[FindMapCoordinatesKey(mapCoordinates, pinkBlockPosition)] = new Vector3(0, 0, 0);
         mapCoordinates[FindMapCoordinatesKey(mapCoordinates, blueBlockPosition)] = new Vector3(0, 0, 0);
-        MarkPositionAsOccupied(pinkBlockPosition);
-        MarkPositionAsOccupied(blueBlockPosition);
+        MarkPositionAsOccupied(blockCount++, pinkBlockPosition);
+        Debug.Log("blockCount: " + blockCount);
+        MarkPositionAsOccupied(blockCount++, blueBlockPosition);
+        Debug.Log("blockCount: " + blockCount);
         //// 랜덤으로 캐릭터 배치
         //for (int i = 0; i < receivedSpawnUsers.Count; i++)
         //{
@@ -98,7 +100,7 @@ public class BlockPlacement : MonoBehaviour
 
                                 blockNum %= block1x2.Length;
                                 Instantiate(block1x2[blockNum++], blockPosition, Quaternion.identity);
-                                MarkPositionAsOccupied(blockPosition);
+                                MarkPositionAsOccupied(blockCount, blockPosition);
                             }
                         }
                     }
@@ -115,8 +117,8 @@ public class BlockPlacement : MonoBehaviour
                                 blockPosition.x += 0.5f;
 
                                 blockNum %= block2x1.Length;
-                                Instantiate(block2x1[blockNum++], blockPosition, Quaternion.identity);
-                                MarkPositionAsOccupied(blockPosition);
+                                Instantiate(block2x1[blockNum++], blockPosition, Quaternion.Euler(0, 90, 0)); //Y 축으로 90도 회전 => Quaternion.identity나중에 수정
+                                MarkPositionAsOccupied(blockCount, blockPosition);
                             }
                         }
                     }
@@ -129,7 +131,7 @@ public class BlockPlacement : MonoBehaviour
 
                         blockNum %= block1x1.Length;
                         Instantiate(block1x1[blockNum++], blockPosition, Quaternion.identity);
-                        MarkPositionAsOccupied(blockPosition);
+                        MarkPositionAsOccupied(blockCount, blockPosition);
                     }
                 }
                 blockCount++;
@@ -159,9 +161,9 @@ public class BlockPlacement : MonoBehaviour
         return 0;
     }
 
-    public void MarkPositionAsOccupied(Vector3 position)
+    public void MarkPositionAsOccupied(int num, Vector3 position)   // (Key)블록ID  (Value)및 위치
     {
-        placedBlockPositions.Add(position);
+        placedBlockPositions.Add(num, position);
     }
 
     bool IsPositionInsideMap(Vector3 position)

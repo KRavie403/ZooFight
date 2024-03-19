@@ -28,6 +28,11 @@ public class GraphicManager : Singleton<GraphicManager>
         InitResolution();
     }
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     // 그래픽 카드 정보
     private void GraphicsCardInfo()
     {
