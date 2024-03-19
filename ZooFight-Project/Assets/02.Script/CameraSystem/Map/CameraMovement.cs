@@ -9,10 +9,10 @@ public class CameraMovement : MonoBehaviour
     private float boundary = 20f;
 
     // 정사각형의 테두리 정보
-    private float boundaryXMin = 20.7f;
-    private float boundaryXMax = 39.3f;
-    private float boundaryZMin = 11.3f;
-    private float boundaryZMax = 29.5f;
+    private float boundaryXMin = 15.7f;
+    private float boundaryXMax = 44.3f;
+    private float boundaryZMin = 6.3f;
+    private float boundaryZMax = 34.5f;
 
     void Update()
     {

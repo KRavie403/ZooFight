@@ -12,9 +12,6 @@ EditorBuildSettings:
     path: Assets/01.Scenes/LoadingScene.unity
     guid: 8756b4c74c8654b47aac9a2bf5de8e79
   - enabled: 1
-    path: Assets/Scenes/MultiplayerLobbyScene.unity
-    guid: bfefc1d2ad1f77e49a156c7cfb747293
-  - enabled: 1
     path: Assets/01.Scenes/GameScene.unity
     guid: 487db92cf93627d498d96152375016de
   m_configObjects:
