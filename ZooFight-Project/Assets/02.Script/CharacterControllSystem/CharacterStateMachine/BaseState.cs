@@ -13,8 +13,13 @@ public abstract class BaseState
     {
         this.player = player;
         this.stateMachine = stateMachine;
+
     }
 
+    public virtual void Initate()
+    {
+
+    }
 
     public virtual void Enter()
     {
