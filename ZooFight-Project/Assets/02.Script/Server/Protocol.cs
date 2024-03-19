@@ -202,38 +202,31 @@ namespace Protocol
     public class ImmediateUseItem : Message
     {
         public SessionId playerSession;
-        public byte teamColor;
-        public ImmediateUseItem(SessionId session, byte team) : base(Type.ImmediateUseItem)
+        PlayerController player;
+        public ImmediateUseItem(SessionId session,PlayerController p) : base(Type.ImmediateUseItem)
         {
             this.playerSession = session;
-            this.teamColor= team;
+            this.player = p;
         }
     }
 
     public class ProjectileUseItem : Message
     {
         public SessionId playerSession;
-        public float xPos;
-        public float yPos;
-        public float zPos;
+        PlayerController player;
         public float xDes;
         public float yDes;
         public float zDes;
         public float xDir;
         public float yDir;
         public float zDir;
-        public ProjectileUseItem(SessionId session, Vector3 pos,Vector3 destination, Vector3 direction) : base(Type.ProjectileUseItem)
+        public ProjectileUseItem(SessionId session, PlayerController p,Vector3 destination) : base(Type.ProjectileUseItem)
         {
             this.playerSession = session;
-            this.xPos = pos.x;
-            this.yPos = pos.y;
-            this.zPos = pos.z;
+            this.player = p;
             this.xDes = destination.x;
             this.yDes = destination.y;
             this.zDes = destination.z;
-            this.xDir = direction.x;
-            this.yDir = direction.y;
-            this.zDir = direction.z;
         }
     }
 
@@ -247,9 +240,10 @@ namespace Protocol
         public float xDir;
         public float yDir;
         public float zDir;
-        public BlockMove(SessionId session, Vector3 pos,Vector3 dir) : base(Type.BlockMove)
+        public BlockMove(SessionId session,byte blockId,Vector3 pos,Vector3 dir) : base(Type.BlockMove)
         {
             this.playerSession = session;
+            this.blockId = blockId;
             this.xPos = pos.x;
             this.yPos = pos.y;
             this.zPos = pos.z;
@@ -262,12 +256,14 @@ namespace Protocol
     public class BlockNoMove : Message
     {
         public SessionId playerSession;
+        public byte blockId;
         public float xPos;
         public float yPos;
         public float zPos;
-        public BlockNoMove(SessionId session, Vector3 pos) : base(Type.BlockNoMove)
+        public BlockNoMove(SessionId session, byte blockId,Vector3 pos) : base(Type.BlockNoMove)
         {
             this.playerSession = session;
+            this.blockId = blockId;
             this.xPos = pos.x;
             this.yPos = pos.y;
             this.zPos = pos.z;
