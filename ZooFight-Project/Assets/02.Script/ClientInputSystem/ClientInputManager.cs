@@ -83,7 +83,7 @@ public class ClientInputManager : Singleton<ClientInputManager>
         }
         if (Input.GetKeyDown(KeySetting.keys[KeyAction.Jump]))
         {
-
+            Gamemanager.Inst.currentPlayer.CharacterJump();
         }
         if (Input.GetKeyDown(KeySetting.keys[KeyAction.Attack]))
         {

@@ -83,6 +83,11 @@ public class PlayerController : MovementController ,IHitBox
     {
         // 나중에는 패킷 묶는곳에 던지고 묶인 패킷을 주기적으로 전송하기
         //Gamemanager.OnPollingRate += () => ;
+        PlayerSM = new StateMachine();
+
+        p_States.Add(pState.Create,new Character_Create(this,PlayerSM));
+
+        PlayerSM.Initalize(p_States[pState.Create]);
 
     }
 
@@ -215,7 +220,7 @@ public class PlayerController : MovementController ,IHitBox
 
     public void CharacterJump()
     {
-
+        GetComponent<Rigidbody>().AddForce(Vector3.up*5, ForceMode.Impulse);
     }
 
     public IEnumerator BasicMove(Vector3 pos, Vector3 dir, UnityAction e = null)
