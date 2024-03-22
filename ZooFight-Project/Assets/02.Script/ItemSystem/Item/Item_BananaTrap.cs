@@ -4,13 +4,13 @@ using UnityEngine;
 
 /// <summary>
 /// 아이템명 : 바나나
-/// Value 1 밀려나는 거리
-/// Value 2 밀려나는 시간
-/// Value 3 투사체 속도
-/// Value 4 함정 유지시간
+/// Value 1 밀려나는 시간
+/// Value 2 함정 유지시간
+/// Value 3 밀려나는 거리
+/// Value 4 투사체 속도 
 /// </summary>
 
-public class BananaTrap : Items
+public class Item_BananaTrap : Items
 {
     [SerializeField]
     EffectPlayer myEffect;

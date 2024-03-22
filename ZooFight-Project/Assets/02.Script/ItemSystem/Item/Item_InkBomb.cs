@@ -4,12 +4,14 @@ using UnityEngine;
 
 /// <summary>
 /// 아이템명 : 먹물폭탄
-/// Value 1 효과 지속시간
-/// Value 2 효과 적용 범위
-/// Value 3 ???
+/// Value 1 시야 방해 정도
+/// Value 2 효과 지속 시간
+/// Value 3 효과 적용 범위
+/// Value 4 폭탄 속도
+/// Value 5 사거리
 /// </summary>
 
-public class InkBomb : Items
+public class Item_InkBomb : Items
 {
 
     bool isItemActive = false;

@@ -16,6 +16,9 @@ public abstract class BaseState
 
     }
 
+    public delegate void ableFunc();
+    public Dictionary<PlayerController.pFunc, ableFunc> ableFuncs = new();
+
     public virtual void Initate()
     {
 

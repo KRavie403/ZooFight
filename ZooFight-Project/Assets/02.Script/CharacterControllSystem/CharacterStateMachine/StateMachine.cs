@@ -23,9 +23,8 @@ public class StateMachine
         CurrentState = newState;
         newState.Enter();
 
-
     }
-
+    
 
 
 

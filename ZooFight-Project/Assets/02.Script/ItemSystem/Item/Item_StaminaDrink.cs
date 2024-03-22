@@ -6,9 +6,10 @@ using UnityEngine;
 /// 아이템명 : 스테미너드링크
 /// Value 1 스테미너 회복량
 /// Value 2 스테미너 회복시간 - 미사용 가능성 존재
+/// 
 /// </summary>
 
-public class StaminaDrink : Items
+public class Item_StaminaDrink : Items
 {
 
 

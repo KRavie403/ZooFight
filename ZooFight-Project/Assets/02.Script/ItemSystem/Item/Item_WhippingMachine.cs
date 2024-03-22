@@ -10,7 +10,7 @@ using UnityEngine;
 /// Value 4 미는 길이
 /// </summary>
 
-public class WhippingMachine : Items
+public class Item_WhippingMachine : Items
 {
     EffectPlayer myEffect;
 

@@ -6,8 +6,11 @@ using UnityEngine;
 /// <summary>
 /// 아이템명 : 저주 스크롤
 /// Value 1 지속시간
+/// 
 /// </summary>
-public class CurseScroll : Items
+
+
+public class Item_CurseScroll : Items
 {
 
     public EffectPlayer effectPlayer;

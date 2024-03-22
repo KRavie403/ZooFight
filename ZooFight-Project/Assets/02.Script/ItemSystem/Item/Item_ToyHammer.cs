@@ -4,12 +4,14 @@ using UnityEngine;
 
 /// <summary>
 /// 아이템명 : 뿅망치
-/// Value 1 효과 지속시간
-/// Value 2 발동 범위
-/// ???
+/// Value 1 데미지 -  미사용 가능성 O
+/// Value 2 스턴 시간
+/// Value 3 발동 범위 - 타격지점주위 범위
+/// Value 4 
+/// Value 5 사거리 - 휘두를수 있는 범위
 /// </summary>
 
-public class ToyHammer : Items
+public class Item_ToyHammer : Items
 {
     [SerializeField]
     EffectPlayer myEffect;

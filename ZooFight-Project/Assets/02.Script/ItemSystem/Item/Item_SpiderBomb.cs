@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 아이템명 : 파워 드링크
-/// 
+/// 아이템명 : 거미줄 폭탄
+/// Value 1 둔화량
+/// Value 2 효과 지속 시간
+/// Value 3 폭발 범위
+/// Value 4 폭탄 속도
+/// Value 5 폭탄 사거리
 /// </summary>
 
-
-public class PowerDrink : Items
+public class Item_SpiderBomb : Items
 {
 
     EffectPlayer myEffect;
@@ -28,20 +31,4 @@ public class PowerDrink : Items
     {
         base.Update();
     }
-
-    public IEnumerator DrinkActive()
-    {
-        // 회복대상 캐릭터 확정
-
-        // 회복 이펙트 출력준비
-
-        // 회복 사운드 재생준비
-
-        // 회복 동작 작동
-        while (true)
-        {
-            yield return null;
-        }
-    }
-
 }
