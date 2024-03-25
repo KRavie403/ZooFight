@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class BtnType : Singleton<BtnType>
+public class BtnType : MonoBehaviour/* Singleton<BtnType>*/
 {
     public GameObject Settings;
     public GameObject Set;
@@ -30,11 +30,11 @@ public class BtnType : Singleton<BtnType>
         ESC();
     }
 
-    private void Awake()
-    {
-        base.Initialize();
-        DontDestroyOnLoad(gameObject);
-    }
+    //private void Awake()
+    //{
+    //    base.Initialize();
+    //    DontDestroyOnLoad(gameObject);
+    //}
 
     public void ClickSetting()
     {
@@ -53,7 +53,7 @@ public class BtnType : Singleton<BtnType>
     }
     public void ClickStart()
     {
-        LoadingManager.LoadSceneHandle("MultiplayerLobbyScene", 0);
+        SceneManager.LoadScene("LoadingScene");
     }
     public void ClickDisplay()
     {
