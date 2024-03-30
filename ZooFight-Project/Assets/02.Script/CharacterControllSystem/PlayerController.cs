@@ -109,7 +109,7 @@ public class PlayerController : MovementController, IHitBox
         p_States.Add(pState.ItemReady, new Charcater_SkillReady(this, PlayerSM));
         p_States.Add(pState.ItemUse, new Character_SKillUse(this, PlayerSM));
 
-
+        //CharacterInitalize(myTeam, SessionId, CharacterID);
 
         StateInitiate();
 
@@ -171,7 +171,9 @@ public class PlayerController : MovementController, IHitBox
     {
         myTeam = PlayerTeam;
         SessionId = SessionID;
-        CharacterID = PlayerID; 
+        CharacterID = PlayerID;
+        Gamemanager.Inst.GetTeam(PlayerTeam).Add(CharacterID, this);
+        Gamemanager.Inst.GetTeamId(PlayerTeam).Add(CharacterID);
     }
 
     public void CharacterInitate()
@@ -558,12 +560,12 @@ public class PlayerController : MovementController, IHitBox
 
     public void WinAction()
     {
-        myAnim.SetTrigger("");
+        myAnim.SetTrigger("Win");
     }
 
     public void LoseAction()
     {
-
+        myAnim.SetTrigger("Lose");
     }
 
     #endregion

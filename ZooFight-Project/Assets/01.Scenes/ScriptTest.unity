@@ -6483,8 +6483,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff0b30bba8536b646baf344473124fd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SessionId: 0
-  CharacterID: -1
+  SessionId: 11
+  CharacterID: 1111
   myTeam: -1
   MoveSpeed: 1
   RunSpeedRate: 2
@@ -6917,6 +6917,11 @@ MonoBehaviour:
   PollingRate: 30
   currentPlayer: {fileID: 1881647177}
   CharacterID: -1
+  IsGameEnd: 0
+  VictoryTeam: 0
+  MaxTeamMember: 3
+  RedTeamId: 
+  BlueTeamId: 
 --- !u!4 &1944853664
 Transform:
   m_ObjectHideFlags: 0

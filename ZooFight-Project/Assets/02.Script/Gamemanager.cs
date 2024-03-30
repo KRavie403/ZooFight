@@ -48,8 +48,14 @@ public class Gamemanager : MonoBehaviour
     public PlayerController currentPlayer;
     public int CharacterID = -1;
 
+    public bool IsGameEnd = false;
+    public HitScanner.Team VictoryTeam = HitScanner.Team.NotSetting;
+
     // ÆÀ¸â¹ö <Id,ÄÄÆ÷³ÍÆ®> Á¶ÇÕ 
+    public int MaxTeamMember = 1;
+    public List<int> RedTeamId;
     public Dictionary<int,PlayerController> RedTeamPlayers;
+    public List<int> BlueTeamId;
     public Dictionary<int,PlayerController> BlueTeamPlayers;
 
 
@@ -134,7 +140,48 @@ public class Gamemanager : MonoBehaviour
                 default: return null;
         }
     }
-
+    public List<int> GetWinnerTeamId()
+    {
+        switch (VictoryTeam)
+        {
+            case HitScanner.Team.RedTeam:
+                return RedTeamId;
+            case HitScanner.Team.NotSetting:
+                return null;
+            case HitScanner.Team.BlueTeam:
+                return BlueTeamId;
+            default:
+                return null;
+        }
+    }
+    public List<int> GetLoserTeamId()
+    {
+        switch (VictoryTeam)
+        {
+            case HitScanner.Team.RedTeam:
+                return BlueTeamId;
+            case HitScanner.Team.NotSetting:
+                return null;
+            case HitScanner.Team.BlueTeam:
+                return RedTeamId;
+            default:
+                return null;
+        }
+    }
+    public List<int> GetTeamId(HitScanner.Team team)
+    {
+        switch (team)
+        {
+            case HitScanner.Team.RedTeam:
+                return RedTeamId;
+            case HitScanner.Team.NotSetting:
+                return null;
+            case HitScanner.Team.BlueTeam:
+                return BlueTeamId;
+            default:
+                return null;
+        }
+    }
 
 
 }
