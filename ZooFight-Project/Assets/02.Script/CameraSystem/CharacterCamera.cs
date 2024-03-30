@@ -126,7 +126,7 @@ public class CharacterCamera : BasicCamera
 
         myCam.transform.localPosition = Vector3.back * myZoomData.curDist;
 
-        //temp.y = temp.z = 0;
+        //curResolutionDropDownVal.y = curResolutionDropDownVal.z = 0;
 
 
         //CameraPos.localRotation = Quaternion.Euler(curRot.x,0,0);

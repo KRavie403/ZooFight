@@ -5,7 +5,6 @@ using System.Transactions;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEditor.PlayerSettings;
 
 public class PlayerController : MovementController, IHitBox
 {

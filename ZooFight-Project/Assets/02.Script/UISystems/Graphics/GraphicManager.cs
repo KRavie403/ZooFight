@@ -26,12 +26,17 @@ public class GraphicManager : MonoBehaviour/*Singleton<GraphicManager>*/
         InitDisplayMode();
         InitResolution();
         displayModeDropdown.value = 1;  // 전체화면 default
-        ResolutionDropboxOptionChange(resolutions.Count - 1);
+        resolutionDropdown.value = resolutions.Count - 1;
+        ResolutionDropboxOptionChange();
     }
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+    }
+    private void Update()
+    {
+        ResolutionDropboxOptionChange();
     }
 
     // 그래픽 카드 정보
@@ -64,14 +69,15 @@ public class GraphicManager : MonoBehaviour/*Singleton<GraphicManager>*/
     // 해상도 조절
     private void InitResolution()
     {
-        for(int i = 0; i < Screen.resolutions.Length; i++)
-        {
-            // 60Hz는 왜 안 되지
-            if (Screen.resolutions[i].refreshRateRatio.value == 240)
-            {
-                resolutions.Add(Screen.resolutions[i]);
-            }
-        }
+        resolutions.AddRange(Screen.resolutions);
+        //for (int i = 0; i < Screen.resolutions.Length; i++)
+        //{
+        //    // 60Hz는 왜 안 되지
+        //    if (Screen.resolutions[i].refreshRateRatio.value == 90)
+        //    {
+        //        resolutions.Add(Screen.resolutions[i]);
+        //    }
+        //}
         //resolutions.AddRange(Screen.resolutions);
         resolutionDropdown.options.Clear();
 
@@ -119,17 +125,22 @@ public class GraphicManager : MonoBehaviour/*Singleton<GraphicManager>*/
                      screenMode);
     }
 
-    public void ResolutionDropboxOptionChange(int x)
+    int curResolutionDropDownVal = 0;
+    public void ResolutionDropboxOptionChange()
     {
+        if(curResolutionDropDownVal == resolutionDropdown.value) return;
         if(screenMode == FullScreenMode.FullScreenWindow)
         {
-            resolutionNum = x;
+            resolutionNum = resolutionDropdown.value - 1;
             Screen.SetResolution(resolutions[resolutionNum].width,
                                               resolutions[resolutionNum].height,
                                               screenMode);
         }
     }
-
+    public void ResolutionDropboxOption()
+    {
+        curResolutionDropDownVal = resolutionDropdown.value - 1;
+    }
 
     public void DarkOverlay()
     {

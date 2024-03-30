@@ -84,6 +84,7 @@ public class Gamemanager : MonoBehaviour
         ClientUpdateCoroutine = PollingRateUpdate();
         StartCoroutine(ClientUpdateCoroutine);
 
+        currentPlayer = FindObjectOfType<PlayerController>();
     }
 
     float Times = 0;
