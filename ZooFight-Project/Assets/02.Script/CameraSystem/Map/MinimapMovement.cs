@@ -8,10 +8,10 @@ public class MinimapMovement : MonoBehaviour
     private float moveSpeed = 80f;
     private float boundary = 20f;
 
-    private float boundaryXMin = 75f;
-    private float boundaryXMax = 285f;
-    private float boundaryYMin = 35f;
-    private float boundaryYMax = 205f;
+    private float boundaryXMin = 55f;
+    private float boundaryXMax = 305f;
+    private float boundaryYMin = 15f;
+    private float boundaryYMax = 225f;
 
     private void Start()
     {
