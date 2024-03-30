@@ -288,7 +288,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff0b30bba8536b646baf344473124fd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterId: 0
+  SessionId: 0
+  CharacterID: -1
+  myTeam: -1
   MoveSpeed: 1
   RunSpeedRate: 1
   JumpHeight: 2
@@ -301,8 +303,6 @@ MonoBehaviour:
       m_Calls: []
   MaxSP: 0
   MotionSpeed: 5
-  CharacterID: -1
-  myTeam: -1
   State: 0
   AxisX: 1
   AxisY: 0
@@ -3775,7 +3775,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 5c3b46db1ccdfd143850e675c4b8e34a, type: 2}
     - target: {fileID: 484396277736366321, guid: a6217704231d3514ca41356f6c93b269, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5789596182410082955, guid: a6217704231d3514ca41356f6c93b269, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4468,7 +4468,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1192181612}
-  - component: {fileID: 1192181613}
   - component: {fileID: 1192181614}
   m_Layer: 0
   m_Name: SpringArm
@@ -4493,24 +4492,6 @@ Transform:
   - {fileID: 1905804304}
   m_Father: {fileID: 108698748}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1192181613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1192181611}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd3c3e781862a7b48acff11d0529cf1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetCam: {fileID: 0}
-  CamTranform: {fileID: 0}
-  Vertical: {fileID: 0}
-  Horizontal: {fileID: 0}
-  AxisX: 0
-  AxisY: 0
 --- !u!114 &1192181614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6149,6 +6130,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 5c3b46db1ccdfd143850e675c4b8e34a, type: 2}
+    - target: {fileID: 484396277736366321, guid: a6217704231d3514ca41356f6c93b269, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5789596182410082955, guid: a6217704231d3514ca41356f6c93b269, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -6498,7 +6483,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff0b30bba8536b646baf344473124fd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterId: 1
+  SessionId: 11
+  CharacterID: 1111
+  myTeam: -1
   MoveSpeed: 1
   RunSpeedRate: 2
   JumpHeight: 2
@@ -6511,8 +6498,6 @@ MonoBehaviour:
       m_Calls: []
   MaxSP: 1
   MotionSpeed: 1
-  CharacterID: -1
-  myTeam: -1
   State: 0
   AxisX: 0
   AxisY: 0
@@ -6932,6 +6917,11 @@ MonoBehaviour:
   PollingRate: 30
   currentPlayer: {fileID: 1881647177}
   CharacterID: -1
+  IsGameEnd: 0
+  VictoryTeam: 0
+  MaxTeamMember: 3
+  RedTeamId: 
+  BlueTeamId: 
 --- !u!4 &1944853664
 Transform:
   m_ObjectHideFlags: 0

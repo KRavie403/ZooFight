@@ -109,7 +109,7 @@ public class PlayerController : MovementController, IHitBox
         p_States.Add(pState.ItemReady, new Charcater_SkillReady(this, PlayerSM));
         p_States.Add(pState.ItemUse, new Character_SKillUse(this, PlayerSM));
 
-
+        //CharacterInitalize(myTeam, SessionId, CharacterID);
 
         StateInitiate();
 
@@ -164,6 +164,16 @@ public class PlayerController : MovementController, IHitBox
     public void StatusRenewal()
     {
 
+    }
+
+    // 플레이어 정보주입 - 세션id , 팀 , 플레이어 id 
+    public void CharacterInitalize(HitScanner.Team PlayerTeam,int SessionID,int PlayerID)
+    {
+        myTeam = PlayerTeam;
+        SessionId = SessionID;
+        CharacterID = PlayerID;
+        Gamemanager.Inst.GetTeam(PlayerTeam).Add(CharacterID, this);
+        Gamemanager.Inst.GetTeamId(PlayerTeam).Add(CharacterID);
     }
 
     public void CharacterInitate()
@@ -353,8 +363,8 @@ public class PlayerController : MovementController, IHitBox
             transform.position = DenialPos;
             myAnim.SetBool("IsMoving", false);
             myAnim.SetBool("IsRunning", false);
+            DenialPos = Vector3.zero;
         }
-
     }
 
     public IEnumerator BasicMove(Vector3 pos, Vector3 dir, UnityAction e = null)
@@ -550,12 +560,12 @@ public class PlayerController : MovementController, IHitBox
 
     public void WinAction()
     {
-        myAnim.SetTrigger("");
+        myAnim.SetTrigger("Win");
     }
 
     public void LoseAction()
     {
-
+        myAnim.SetTrigger("Lose");
     }
 
     #endregion
