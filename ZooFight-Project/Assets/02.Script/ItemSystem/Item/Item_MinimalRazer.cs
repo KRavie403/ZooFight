@@ -44,9 +44,9 @@ public class Item_MinimalRazer : Items
         base.Update();
     }
 
-    public override void Standby(ItemSystem.ItemType itemType)
+    public override void Standby(Items item, ItemSystem.ActiveType itemType)
     {
-        base.Standby(itemType);
+        base.Standby(item,itemType);
         
         base.ItemAction = RazerShooting(Dir);
         //Effectmanager.Inst.GetEffectObj(effectPlayer)

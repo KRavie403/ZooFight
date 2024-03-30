@@ -16,12 +16,13 @@ public class Character_Move : BaseState
 
         base.Initate();
         ableFuncs.Add(PlayerController.pFunc.Move, player.CurAxisMove);
+        ableFuncs.Add(PlayerController.pFunc.Jump, player.Jump);
 
     }
 
-    public override void Enter()
+    public override void Enter(BaseState BeforeState)
     {
-        base.Enter();
+        base.Enter(BeforeState);
 
     }
 
@@ -34,6 +35,8 @@ public class Character_Move : BaseState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        player.MoveStateCheck();
+        ableFuncs[PlayerController.pFunc.Move]();
     }
 
     public override void PhysicsUpdate()

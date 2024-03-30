@@ -7,11 +7,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using static UnityEditor.PlayerSettings;
 
-public class PlayerController : MovementController ,IHitBox
+public class PlayerController : MovementController, IHitBox
 {
     public enum pState
     {
-        Create=0,
+        Create = 0,
         Idle,
         Move,
         Jump,
@@ -26,6 +26,9 @@ public class PlayerController : MovementController ,IHitBox
         S_Jump,
         S_ItemReady,
         S_ItemUse,
+
+        GameReady,
+        GameEnd,
         StateCount
     }
 
@@ -43,13 +46,14 @@ public class PlayerController : MovementController ,IHitBox
     protected StateMachine PlayerSM;
 
 
-    public Dictionary<pState,BaseState> p_States = new Dictionary<pState,BaseState>();
+    public Dictionary<pState, BaseState> p_States = new Dictionary<pState, BaseState>();
 
     public bool IsDown => PlayerSM.CurrentState != p_States[pState.Down];
 
 
     [Range(-1.0f, 1.0f)]
-    public float AxisX,AxisY = 0;
+    public float AxisX, AxisY = 0;
+    public Vector3 DenialPos = Vector3.zero;
 
     public CharacterCamera TargetCamera;
     public LayerMask groundMask;
@@ -61,19 +65,22 @@ public class PlayerController : MovementController ,IHitBox
 
     bool isUIOpen = false;
     [SerializeField]
+    bool IsMoving = false;
+    [SerializeField]
     bool IsRunning = false;
+    [SerializeField]
     bool isJump = false;
     public bool isGrab = false;
     // 캐릭터 위치 검증여부
     bool isDenial = false;
     Vector2 acceleration = Vector2.zero;
 
-    Component IHitBox.myHitBox 
+    Component IHitBox.myHitBox
     {
         get => this as Component;
     }
 
-    HitScanner.Team IHitBox.Team 
+    HitScanner.Team IHitBox.Team
     {
         get => myTeam;
     }
@@ -85,7 +92,7 @@ public class PlayerController : MovementController ,IHitBox
         AxisY = 0;
         TargetCamera = GetComponentInChildren<CharacterCamera>();
         grabPoint = GetComponentInChildren<GrabPoint>();
-        
+
     }
 
     // Start is called before the first frame update
@@ -95,26 +102,31 @@ public class PlayerController : MovementController ,IHitBox
         //Gamemanager.OnPollingRate += () => ;
         PlayerSM = new StateMachine();
 
-        p_States.Add(pState.Create,new Character_Create(this,PlayerSM));
+        p_States.Add(pState.Create, new Character_Create(this, PlayerSM));
         p_States.Add(pState.Idle, new Character_Idle(this, PlayerSM));
         p_States.Add(pState.Move, new Character_Move(this, PlayerSM));
         p_States.Add(pState.Jump, new Character_Jump(this, PlayerSM));
+        p_States.Add(pState.ItemReady, new Charcater_SkillReady(this, PlayerSM));
+        p_States.Add(pState.ItemUse, new Character_SKillUse(this, PlayerSM));
+
+
 
         StateInitiate();
 
         PlayerSM.Initalize(p_States[pState.Create]);
 
-
+        CharacterInitate();
     }
 
     // Update is called once per frame
     protected override void Update()
     {
         base.Update();
+        //MoveStateCheck();
         PlayerSM.CurrentState.LogicUpdate();
         //CharacterMove(AxisX, AxisY,isDenial);
 
-        
+
     }
     protected override void LateUpdate()
     {
@@ -142,6 +154,7 @@ public class PlayerController : MovementController ,IHitBox
     }
 
     #region 정보 폴링
+
     // 현재 이 캐릭터의 상태정보 전송
     public void StatusPolling()
     {
@@ -153,28 +166,66 @@ public class PlayerController : MovementController ,IHitBox
 
     }
 
+    public void CharacterInitate()
+    {
+        PlayerSM.ChangeState(p_States[pState.Idle]);
+    }
+    public void StateChanged()
+    {
+        //switch (switch_on)
+        //{
+        //    default:
+        //}
+    }
+
     #endregion
 
     #region 캐릭터 무브먼트
 
     #region 캐릭터 이동
 
+    public void SetIsMoving(bool isMoving)
+    {
+        IsMoving = isMoving;
+    }
+    public bool GetIsmoving()
+    {
+        return IsMoving;
+    }
+
     public void SetRunning(bool isRunning)
     {
         IsRunning = isRunning;
     }
+    public bool GetIsRunning()
+    {
+        return IsRunning;
+    }
 
     public void MoveStateCheck()
     {
-        if (AxisX == 0)
+        if(AxisX == 0 && AxisY == 0)
         {
-            if (AxisY == 0)
+            if (PlayerSM.CurrentState != p_States[pState.Idle])
             {
                 PlayerSM.ChangeState(p_States[pState.Idle]);
-                return;
+                SetIsMoving(false);
             }
         }
-        PlayerSM.ChangeState(p_States[pState.Move]);
+        else
+        {
+            if(PlayerSM.CurrentState != p_States[pState.Move])
+                PlayerSM.ChangeState(p_States[pState.Move]);
+            SetIsMoving(true);
+        }
+
+
+        //if (AxisY != 0)
+        //{
+        //    if (PlayerSM.CurrentState != p_States[pState.Move])
+        //        PlayerSM.ChangeState(p_States[pState.Move]);
+        //}
+
     }
 
     public void CurAxisMove()
@@ -200,7 +251,7 @@ public class PlayerController : MovementController ,IHitBox
         { 
             Vector3 tmp = new(transform.position.x,0,transform.position.z);
             //Vector3 tmp2 = vector3 * transform.forward;
-            Debug.Log(Quaternion.LookRotation(transform.forward, Vector3.up));
+            //Debug.Log(Quaternion.LookRotation(transform.forward, Vector3.up));
             BlockDir = grabPoint.curGrabBlock.DistSelect(vector3,transform.forward);
         }
 
@@ -217,7 +268,8 @@ public class PlayerController : MovementController ,IHitBox
             myAnim.SetFloat("MoveAxisY", Mathf.Clamp(AxisY * MotionSpeed, -1.0f, 1.0f));
 
             // 움직임이 없을때
-            if(myAnim.GetFloat("MoveAxisX") == 0 && myAnim.GetFloat("MoveAxisY") ==0)
+            if(AxisX == 0 && AxisY == 0)
+            //if(myAnim.GetFloat("MoveAxisX") == 0 && myAnim.GetFloat("MoveAxisY") ==0)
             {
                 myAnim.SetBool("IsMoving", false);
                 myAnim.SetBool("IsRunning", false);
@@ -228,15 +280,14 @@ public class PlayerController : MovementController ,IHitBox
             }
             else // 움직임이 있을때
             {
+                myAnim.SetBool("IsMoving", true);
                 // 뛰는중
                 if(IsRunning == false)
                 {
-                    myAnim.SetBool("IsMoving", true);
                     myAnim.SetBool("IsRunning", false);
                 }
                 else // 달리는중
                 {
-                    myAnim.SetBool("IsMoving", false);
                     myAnim.SetBool("IsRunning", true);
                 }
                 if (isGrab)
@@ -253,8 +304,56 @@ public class PlayerController : MovementController ,IHitBox
         }
     }
 
-    public void CharacterMove(Vector3 pos, Vector3 dir, bool denial, UnityAction e = null)
+    public void Move(float AxisX , float AxisY)
     {
+
+        // 입력 이동값이 0일때 아무것도안하기
+        if (AxisX == 0 && AxisY == 0)
+        {
+            myAnim.SetBool("IsMoving", false);
+            myAnim.SetBool("IsRunning", false); 
+            myAnim.SetFloat("MoveAxisX", 0);
+            myAnim.SetFloat("MoveAxisY", 0);
+            return;
+        }
+
+        Vector3 Direction = Vector3.Normalize(new Vector3 (AxisX,0,AxisY));
+
+        Vector2 BlockDir = Vector2.zero;
+
+        transform.Translate(MoveSpeed * Time.deltaTime * Direction, Space.Self);
+        if (isGrab)
+        {
+            BlockDir = grabPoint.curGrabBlock.DistSelect(Direction,transform.forward);
+            grabPoint.curGrabBlock.SetcurDir(BlockDir, transform.forward);
+        }
+
+        myAnim.SetFloat("MoveAxisX", Mathf.Clamp(AxisX * MotionSpeed, -1.0f, 1.0f));
+        myAnim.SetFloat("MoveAxisY", Mathf.Clamp(AxisY * MotionSpeed, -1.0f, 1.0f));
+
+        myAnim.SetBool("IsMoving", true);
+        if(IsRunning)
+        {
+            myAnim.SetBool("IsRunning", true);
+        }
+        else
+        {
+            myAnim.SetBool("IsRunning", false);
+        }
+    }
+
+    public void CharacterMove2(bool denial , float AxisX = 0,float AxisY = 0)
+    {
+        if (!denial)
+        {
+            Move(AxisX, AxisY);
+        }
+        else
+        {
+            transform.position = DenialPos;
+            myAnim.SetBool("IsMoving", false);
+            myAnim.SetBool("IsRunning", false);
+        }
 
     }
 
@@ -273,9 +372,26 @@ public class PlayerController : MovementController ,IHitBox
 
     #region 점프
 
+    public void Jump()
+    {
+        if(PlayerSM.CurrentState != p_States[pState.Jump])
+            PlayerSM.ChangeState(p_States[pState.Jump]);
+    }
+
     public void CharacterJump()
     {
-        GetComponent<Rigidbody>().AddForce(Vector3.up*5, ForceMode.Impulse);
+        if (isJump)
+        {
+            GetComponent<Rigidbody>().AddForce(Vector3.up*JumpHeight, ForceMode.Impulse);
+        }
+    }
+    public void SetisJump(bool IsJump)
+    {
+        isJump = IsJump;
+    }
+    public bool GetisJump()
+    {
+        return isJump;
     }
     #endregion
 
@@ -283,12 +399,18 @@ public class PlayerController : MovementController ,IHitBox
 
     public void Grab()
     {
-        BlockGrab(grabPoint.GrabableBlock.transform);
+        if(grabPoint.GrabableBlock != null)
+        {
+            BlockGrab(grabPoint.GrabableBlock.transform);
+        }
     }
     public void DeGrab()
     {
-        isGrab = false;
-        grabPoint.curGrabBlock.DeGrab(this);
+        if (grabPoint.curGrabBlock != null)
+        {
+            isGrab = false;
+            grabPoint.curGrabBlock.DeGrab(this);
+        }
     }
 
     public void BlockGrab(Transform targat)
@@ -307,7 +429,7 @@ public class PlayerController : MovementController ,IHitBox
 
     #region 아이템
 
-    public void WeaponRelease()
+    public void ItemRelease()
     {
 
         if(PlayerSM.CurrentState == p_States[pState.ItemUse])
@@ -317,15 +439,17 @@ public class PlayerController : MovementController ,IHitBox
         }
         else if (PlayerSM.CurrentState == p_States[pState.ItemReady])
         {
-
+            MoveStateCheck();
         }
 
     }
 
-    public void WeaponSelect()
+    public void ItemSelect()
     {
         PlayerSM.ChangeState(p_States[pState.ItemReady]);
     }
+
+
 
     #endregion
 
@@ -363,21 +487,27 @@ public class PlayerController : MovementController ,IHitBox
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == groundMask)
+        if(PlayerSM.CurrentState == p_States[pState.Jump])
         {
-            MoveStateCheck();
-            isJump = false;
+            if (collision.gameObject.layer == groundMask)
+            {
+                MoveStateCheck();
+                isJump = false;
+            }
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
         //
-        if(collision.gameObject.layer == groundMask)
-        {
-            PlayerSM.ChangeState(p_States[pState.Jump]);
-            isJump = true;
-        }
+        //if (PlayerSM.CurrentState == p_States[pState.Jump])
+        //{
+        //    if (collision.gameObject.layer == groundMask)
+        //    {
+        //        //PlayerSM.ChangeState(p_States[pState.Jump]);
+        //        isJump = true;
+        //    }
+        //}
 
     }
 
@@ -386,6 +516,9 @@ public class PlayerController : MovementController ,IHitBox
         if (collision.gameObject.layer == groundMask)
         {
             isJump = false;
+        }
+        if (PlayerSM.CurrentState == p_States[pState.Jump])
+        {
         }
     }
 
@@ -409,6 +542,20 @@ public class PlayerController : MovementController ,IHitBox
 
 
         CurHP = isSet ? Value : CurHP + Value ;
+    }
+
+    #endregion
+
+    #region 승패동작
+
+    public void WinAction()
+    {
+        myAnim.SetTrigger("");
+    }
+
+    public void LoseAction()
+    {
+
     }
 
     #endregion

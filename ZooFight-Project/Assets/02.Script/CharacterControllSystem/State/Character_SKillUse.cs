@@ -2,17 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character_SKillUse : MonoBehaviour
+public class Character_SKillUse : BaseState
 {
-    // Start is called before the first frame update
-    void Start()
+    public Character_SKillUse(PlayerController player, StateMachine stateMachine) : base(player, stateMachine)
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public override void Initate()
     {
-        
+
+        base.Initate();
+        //ableFuncs.Add(PlayerController.pFunc.Move, player.CurAxisMove);
+
+    }
+
+    public override void Enter(BaseState BeforeState)
+    {
+        base.Enter(BeforeState);
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+
+    }
+
+    public override void LogicUpdate()
+    {
+        base.LogicUpdate();
+    }
+
+    public override void PhysicsUpdate()
+    {
+        base.PhysicsUpdate();
+
     }
 }

@@ -17,13 +17,14 @@ public class Character_Create : BaseState
     public override void Initate()
     {
         base.Initate();
-        ableFuncs.Add(PlayerController.pFunc.Move,player.CurAxisMove); 
+        //ableFuncs.Add(PlayerController.pFunc.Move,player.CurAxisMove); 
 
     }
 
-    public override void Enter()
+    public override void Enter(BaseState BeforeState)
     {
-        base.Enter();
+        base.Enter(BeforeState);
+        //player.
 
     }
 
@@ -31,6 +32,7 @@ public class Character_Create : BaseState
     {
 
         base.Exit();
+        base.act?.Invoke();
     }
 
     public override void LogicUpdate()
@@ -41,9 +43,10 @@ public class Character_Create : BaseState
 
     public override void PhysicsUpdate()
     {
-        base.PhysicsUpdate();
 
+        base.PhysicsUpdate();
     }
+
 
 
 }

@@ -15,13 +15,14 @@ public class Character_Idle : BaseState
     public override void Initate()
     {
         base.Initate();
-        ableFuncs.Add(PlayerController.pFunc.Move, player.CurAxisMove);
+        //ableFuncs.Add(PlayerController.pFunc.Move, player.CurAxisMove);
+        ableFuncs.Add(PlayerController.pFunc.Jump, player.Jump);
 
     }
 
-    public override void Enter()
+    public override void Enter(BaseState BeforeState)
     {
-        base.Enter();
+        base.Enter(BeforeState);
 
     }
 
@@ -29,11 +30,13 @@ public class Character_Idle : BaseState
     {
         base.Exit();
 
+        base.act?.Invoke();
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        player.MoveStateCheck();
     }
 
 

@@ -30,4 +30,5 @@ public class ItemProperty : MonoBehaviour
 
     public List<GameObject> Targets;
 
+
 }

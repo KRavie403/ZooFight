@@ -18,9 +18,9 @@ public class Character_Down : BaseState
 
     }
 
-    public override void Enter()
+    public override void Enter(BaseState BeforeState)
     {
-        base.Enter();
+        base.Enter(BeforeState);
 
     }
 
