@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class VictoryDecision : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class VictoryDecision : MonoBehaviour
 
     BlockObject enterBlock;
 
+    private Coroutine movingNextSceneCoroutine;
 
     private void Update()
     {
@@ -30,7 +32,11 @@ public class VictoryDecision : MonoBehaviour
                 LoseTeamAction(Gamemanager.Inst.VictoryTeam);
 
                 // 씬 전환 실행
-                //???
+                //if (movingNextSceneCoroutine != null)
+                //{
+                //    StopCoroutine(movingNextSceneCoroutine);
+                //}
+                movingNextSceneCoroutine = StartCoroutine(MovingNextScene());
             }
         }
     }
@@ -95,6 +101,15 @@ public class VictoryDecision : MonoBehaviour
         //}
     }
 
+    IEnumerator MovingNextScene()
+    {
+        Debug.Log("MovingNextScene");
 
+        yield return new WaitForSeconds(1.0f);
+        SceneManager.LoadScene(3);
+
+        //  씬 로드 후 코루틴 참조를 초기화
+        movingNextSceneCoroutine = null;
+    }
 
 }
