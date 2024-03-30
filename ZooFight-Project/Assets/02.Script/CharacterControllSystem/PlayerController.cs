@@ -166,6 +166,14 @@ public class PlayerController : MovementController, IHitBox
 
     }
 
+    // 플레이어 정보주입 - 세션id , 팀 , 플레이어 id 
+    public void CharacterInitalize(HitScanner.Team PlayerTeam,int SessionID,int PlayerID)
+    {
+        myTeam = PlayerTeam;
+        SessionId = SessionID;
+        CharacterID = PlayerID; 
+    }
+
     public void CharacterInitate()
     {
         PlayerSM.ChangeState(p_States[pState.Idle]);
@@ -353,8 +361,8 @@ public class PlayerController : MovementController, IHitBox
             transform.position = DenialPos;
             myAnim.SetBool("IsMoving", false);
             myAnim.SetBool("IsRunning", false);
+            DenialPos = Vector3.zero;
         }
-
     }
 
     public IEnumerator BasicMove(Vector3 pos, Vector3 dir, UnityAction e = null)

@@ -9,10 +9,10 @@ public class VictoryDecision : MonoBehaviour
     HitScanner.Team DecisionTeam = HitScanner.Team.NotSetting;
 
     BlockObject enterBlock;
-    bool isVictory = false;
+    bool isGameEnd = false;
     private void Update()
     {
-        if (isVictory) return;
+        if (isGameEnd) return;
         if (DecisionTeam == HitScanner.Team.NotSetting) return;
         if (enterBlock != null)
         {
@@ -21,6 +21,7 @@ public class VictoryDecision : MonoBehaviour
             if(enterBlock.myTeam == DecisionTeam)
             {
                 // 승리 함수 실행
+                
                 enterBlock.VictoryDecide(DecisionTeam);
             }
         }
@@ -54,8 +55,6 @@ public class VictoryDecision : MonoBehaviour
                 enterBlock = other.GetComponent<BlockObject>();
             }
         }
-
-
     }
 
 
