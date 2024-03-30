@@ -35,8 +35,8 @@ public class Character_Move : BaseState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        player.MoveStateCheck();
         ableFuncs[PlayerController.pFunc.Move]();
+        player.MoveStateCheck();
     }
 
     public override void PhysicsUpdate()

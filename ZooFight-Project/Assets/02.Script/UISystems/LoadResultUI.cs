@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using static HitScanner;
 
 public class LoadResultUI : MonoBehaviour
 {
@@ -29,26 +28,29 @@ public class LoadResultUI : MonoBehaviour
 
     void LoadResultImg(/*HitScanner.Team BeaconTeam*/)
     {
-        HitScanner.Team playerTeam = FindPlayerTeam();      // 플레이어의 팀 정보 가져오기
+        HitScanner.Team playerTeam = Gamemanager.Inst.currentPlayer.myTeam;      // 플레이어의 팀 정보 가져오기
         HitScanner.Team winningTeam = Gamemanager.Inst.VictoryTeam; // 승리팀 정보 가져오기
 
+        // 승리
         if (winningTeam == playerTeam)
         {
             _textSprite = Resources.Load<Sprite>("WIN");
             _t1Sprite = Resources.Load<Sprite>("WIN(2)");
             _t2Sprite = Resources.Load<Sprite>("LOSE(2)");
         }
-        else if (winningTeam != HitScanner.Team.NotSetting)
-        {
-            _textSprite = Resources.Load<Sprite>("LOSE");
-            _t1Sprite = Resources.Load<Sprite>("WIN(3)");
-            _t2Sprite = Resources.Load<Sprite>("LOSE(3)");
-        }
-        else  // 비겼을 경우
+        // 무승부
+        else if (winningTeam == HitScanner.Team.NotSetting)
         {
             _textSprite = Resources.Load<Sprite>("DRAW");
             _t1Sprite = Resources.Load<Sprite>("DRAW(2)");
             _t2Sprite = Resources.Load<Sprite>("DRAW(2)");
+        }
+        // 패배
+        else  
+        {
+            _textSprite = Resources.Load<Sprite>("LOSE");
+            _t1Sprite = Resources.Load<Sprite>("WIN(3)");
+            _t2Sprite = Resources.Load<Sprite>("LOSE(3)");
         }
         text.sprite = _textSprite;
         t1.sprite = _t1Sprite;
