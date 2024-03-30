@@ -16,20 +16,24 @@ public abstract class BaseState
 
     }
 
+    public delegate void ableFunc();
+    public Dictionary<PlayerController.pFunc, ableFunc> ableFuncs = new();
+
     public virtual void Initate()
     {
+        act = () => { Debug.Log($"{stateMachine.CurrentState} State Exit End"); };
 
     }
 
-    public virtual void Enter()
+    public virtual void Enter(BaseState BeforeState)
     {
-        //Debug.Log($"현재 상태 : {stateMachine.CurrentState}");
+        Debug.Log($"현재 상태 : {stateMachine.CurrentState}");
     }
 
+    public UnityAction act;
 
     public virtual void Exit()
     {
-        UnityAction act = () => { Debug.Log($"{stateMachine.CurrentState} State Exit End"); };
         //Debug.Log($"{stateMachine.CurrentState} Exit Start");
 
     }

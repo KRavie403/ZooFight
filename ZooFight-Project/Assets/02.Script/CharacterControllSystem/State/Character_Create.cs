@@ -10,26 +10,29 @@ public class Character_Create : BaseState
     {
 
     }
-    public delegate void ableFunc();
-    public Dictionary<PlayerController.pFunc, ableFunc> ableFuncs = new();
 
+
+
+    // 이 상태가 동작하기 위해 필요한 정보 세팅
     public override void Initate()
     {
         base.Initate();
-        ableFuncs.Add(PlayerController.pFunc.Move,player.CurAxisMove); 
+        //ableFuncs.Add(PlayerController.pFunc.Move,player.CurAxisMove); 
 
     }
 
-    public override void Enter()
+    public override void Enter(BaseState BeforeState)
     {
-        base.Enter();
+        base.Enter(BeforeState);
+        //player.
 
     }
 
     public override void Exit()
     {
-        base.Exit();
 
+        base.Exit();
+        base.act?.Invoke();
     }
 
     public override void LogicUpdate()
@@ -40,9 +43,10 @@ public class Character_Create : BaseState
 
     public override void PhysicsUpdate()
     {
-        base.PhysicsUpdate();
 
+        base.PhysicsUpdate();
     }
+
 
 
 }

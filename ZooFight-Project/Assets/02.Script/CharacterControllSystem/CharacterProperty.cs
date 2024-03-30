@@ -6,10 +6,16 @@ using UnityEngine.Events;
 public class CharacterProperty : MonoBehaviour
 {
 
+    public int CharacterId = new();
+
+
     [Range(0f, 3f)]
     public float MoveSpeed;
     [Range(0f,10.0f)]
     public float RunSpeedRate = 1;
+
+    [Range(0f,4.0f)]
+    public float JumpHeight = 2.0f;
     public float MaxHP;
 
 

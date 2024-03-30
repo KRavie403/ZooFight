@@ -8,6 +8,8 @@ public class BlockObject : MonoBehaviour
     bool isGrab = false;
     PlayerController myPlayer=null;
 
+    public HitScanner.Team myTeam = HitScanner.Team.NotSetting;
+
     float BlockMoveSpeed
     {
         get => myPlayer.MoveSpeed;
@@ -31,7 +33,7 @@ public class BlockObject : MonoBehaviour
         
     }
 
-
+    #region 잡기관련
     public void Grab(PlayerController player)
     {
         myPlayer = player;
@@ -56,7 +58,9 @@ public class BlockObject : MonoBehaviour
         isGrab=false;
 
     }
+    #endregion
 
+    #region 블럭이동관련
     IEnumerator BlockMove()
     {
         Vector3 curdir = Vector3.zero;
@@ -65,12 +69,18 @@ public class BlockObject : MonoBehaviour
 
         while (isGrab)
         {
-            curdir.x = curDir.x;
-            curdir.z = curDir.y;
-            transform.position += curdir * Time.deltaTime * BlockMoveSpeed;
+            if (myPlayer.GetIsmoving() == true)
+            {
+                curdir.x = curDir.x;
+                curdir.z = curDir.y;
+                transform.position += curdir * Time.deltaTime * BlockMoveSpeed;
+            }
             yield return null;
         }
-        myPlayer.isGrab = false;
+        if(myPlayer != null)
+        {
+            myPlayer.isGrab = false;
+        }
     }
 
     public void SetcurDir(Vector2 dir,Vector3 curForward)
@@ -82,7 +92,7 @@ public class BlockObject : MonoBehaviour
     // 진행 가능 방향 결정함수
     public Vector2 DistSelect(Vector3 pos,Vector3 curForward)
     {
-
+        if(pos == Vector3.zero) return Vector2.zero;
         Quaternion rot =  Quaternion.FromToRotation(Vector3.forward, curForward);
 
         Vector3 vector3 = rot * pos;
@@ -130,51 +140,28 @@ public class BlockObject : MonoBehaviour
 
     }
 
-    public int DistSelect2(Vector3 pos, Vector3 curForward)
+    #endregion
+
+    #region 승리판정관련
+
+    public void VictoryDecide(HitScanner.Team BeaconTeam)
     {
-        Vector3 vector3 = pos - transform.position;
-        Vector2 dir = new Vector2(pos.x, pos.z);
+        if (BeaconTeam == HitScanner.Team.NotSetting) return;
 
-
-
-        if (Vector2.Dot(JudgeVector[0], dir) > 0)
+        if(myTeam == BeaconTeam)
         {
-            if (Vector2.Dot(JudgeVector[1], dir) > 0)
-            {
-                return 1;
-            }
-            else if (Vector2.Dot(JudgeVector[1], dir) < 0)
-            {
-                return 4;
-            }
-            else
-            {
-                return 0;
-            }
+            // 승리시 동작할것 실행
 
+            Debug.Log($"{myTeam} Victory!!");
         }
-        else if (Vector2.Dot(JudgeVector[0], dir) < 0)
-        {
-            if (Vector2.Dot(JudgeVector[1], dir) > 0)
-            {
-                return 2;
-            }
-            else if (Vector2.Dot(JudgeVector[1], dir) < 0)
-            {
-                return 3;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-        else
-        {
-            return 0;
-        }
-
 
     }
+
+
+
+
+    #endregion
+
 
 
 }

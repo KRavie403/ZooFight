@@ -52,25 +52,23 @@ public class Items : ItemProperty , IItems , IEffect
     }
 
 
-    public virtual void Standby(ItemSystem.ItemType itemType)
+    public virtual void Standby(Items item,ItemSystem.ActiveType itemType)
     {
         switch (itemType)
         {
-            case ItemSystem.ItemType.PointSelect:
+            case ItemSystem.ActiveType.PointSelect:
                 ItemReady = () => ItemUse(myPlayer);
-                CallRangeUI(myItemType);
+                //CallRangeUI(myItemType);
                 break;
-            case ItemSystem.ItemType.Channeling:
+            case ItemSystem.ActiveType.SelfActive:
                 break;
-            case ItemSystem.ItemType.SelfActive:
+            case ItemSystem.ActiveType.EnemyActive:
                 break;
-            case ItemSystem.ItemType.EnemyActive:
-                break;
-            case ItemSystem.ItemType.BlockActive:
+            case ItemSystem.ActiveType.BlockActive:
                 break;
             
             // 미동작 부분
-            case ItemSystem.ItemType.TypeCount:
+            case ItemSystem.ActiveType.TypeCount:
             default:
                 break;
         }
@@ -86,21 +84,19 @@ public class Items : ItemProperty , IItems , IEffect
     }
 
 
-    public virtual void CallRangeUI(ItemSystem.ItemType itemType)
+    public virtual void CallRangeUI(ItemSystem.ActiveType ActiveType)
     {
-        switch (itemType)
+        switch (ActiveType)
         {
-            case ItemSystem.ItemType.PointSelect:
+            case ItemSystem.ActiveType.PointSelect:
                 break;
-            case ItemSystem.ItemType.Channeling:
+            case ItemSystem.ActiveType.SelfActive:
                 break;
-            case ItemSystem.ItemType.SelfActive:
+            case ItemSystem.ActiveType.EnemyActive:
                 break;
-            case ItemSystem.ItemType.EnemyActive:
+            case ItemSystem.ActiveType.BlockActive:
                 break;
-            case ItemSystem.ItemType.BlockActive:
-                break;
-            case ItemSystem.ItemType.TypeCount:
+            case ItemSystem.ActiveType.TypeCount:
                 break;
             default:
                 break;
