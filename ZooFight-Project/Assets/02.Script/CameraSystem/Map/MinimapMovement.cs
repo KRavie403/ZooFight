@@ -8,10 +8,15 @@ public class MinimapMovement : MonoBehaviour
     private float moveSpeed = 80f;
     private float boundary = 20f;
 
-    private float boundaryXMin = 50f;
-    private float boundaryXMax = 155f;
-    private float boundaryYMin = 40f;
-    private float boundaryYMax = 100f;
+    private float boundaryXMin = 55f;
+    private float boundaryXMax = 305f;
+    private float boundaryYMin = 15f;
+    private float boundaryYMax = 225f;
+
+    private void Start()
+    {
+        transform.position = Vector3.zero;
+    }
 
     void Update()
     {
@@ -30,8 +35,8 @@ public class MinimapMovement : MonoBehaviour
             transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
 
         // 경계값을 넘어가지 않도록 제한
-        float clampedX = Mathf.Clamp(transform.position.x, boundaryXMin + 20, boundaryXMax - 20);
-        float clampedY = Mathf.Clamp(transform.position.y, boundaryYMin + 20, boundaryYMax - 20);
+        float clampedX = Mathf.Clamp(transform.position.x, boundaryXMin + boundary, boundaryXMax - boundary);
+        float clampedY = Mathf.Clamp(transform.position.y, boundaryYMin + boundary, boundaryYMax - boundary);
 
         transform.position = new Vector3(clampedX, clampedY, 0);
     }
