@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:ZooFight-Project/Assets/TheBackend/Resources/TheBackendSettings.asset.meta
+<<<<<<< HEAD
+guid: 85e7431f5c4de054ea43f48b31da17c2
+=======
+guid: 6dfad4eed93f5f647a8029d6674a369f
+>>>>>>> develop
+========
 guid: 47bc9a6934f97d94081ebebe6a25dc2b
+>>>>>>>> develop:ZooFight-Project/Assets/InputSystem.inputsettings.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 11400000
