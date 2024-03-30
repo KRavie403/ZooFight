@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 아이템명 : 폭탄
-/// Value 1 사거리
-/// Value 2 폭발범위
-/// Value 3 밀어내는 범위
+/// 아이템명 : 파워 드링크
+/// Value 1 방어량
+/// Value 2 동작 시간
+/// 
 /// </summary>
 
 
-public class Bomb : Items
+public class Item_PowerDrink : Items
 {
-    [SerializeField]
-    EffectPlayer myEffect;
 
+    EffectPlayer myEffect;
 
     protected override void Awake()
     {
@@ -25,27 +24,24 @@ public class Bomb : Items
     protected override void Start()
     {
         base.Start();
-
     }
 
     protected override void Update()
     {
         base.Update();
-
-    }
-    public void BombSetting(Vector3 pos)
-    {
-        ItemAction = BombActive(pos);
-
     }
 
-    public IEnumerator BombActive(Vector3 pos)
+    public IEnumerator DrinkActive()
     {
+        // 회복대상 캐릭터 확정
 
+        // 회복 이펙트 출력준비
+
+        // 회복 사운드 재생준비
+
+        // 회복 동작 작동
         while (true)
         {
-
-
             yield return null;
         }
     }

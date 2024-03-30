@@ -4,14 +4,15 @@ using UnityEngine;
 
 /// <summary>
 /// 아이템명 : 소형화 광선
-/// Value1 레이저길이
-/// Value2 사출속도
-/// Value3 효과지속시간
-/// Value4 사출시간
+/// Value 1 효과 지속 시간
+/// Value 2 사출시간
+/// Value 3 레이저 길이
+/// Value 4 사출속도
+/// Value 5 레이저 사거리
 /// </summary>
 
 
-public class MinimalRazer : Items 
+public class Item_MinimalRazer : Items 
 {
    
 
@@ -33,7 +34,7 @@ public class MinimalRazer : Items
     {
         base.Start();
        
-        //effectPlayer = EffectSetting.keys[EffectCode.MinimalRazer];
+        //effectPlayer = EffectSetting.keys[EffectCode.Item_MinimalRazer];
 
     }
 
@@ -43,9 +44,9 @@ public class MinimalRazer : Items
         base.Update();
     }
 
-    public override void Standby(ItemSystem.ItemType itemType)
+    public override void Standby(Items item, ItemSystem.ActiveType itemType)
     {
-        base.Standby(itemType);
+        base.Standby(item,itemType);
         
         base.ItemAction = RazerShooting(Dir);
         //Effectmanager.Inst.GetEffectObj(effectPlayer)

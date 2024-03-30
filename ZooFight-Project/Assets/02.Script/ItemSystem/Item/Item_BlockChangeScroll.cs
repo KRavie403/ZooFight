@@ -8,7 +8,7 @@ using UnityEngine;
 /// 
 /// </summary>
 
-public class BlockChangeScroll : Items
+public class Item_BlockChangeScroll : Items
 {
     [SerializeField]
     EffectPlayer myEffect;

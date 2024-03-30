@@ -6,11 +6,12 @@ using UnityEngine;
 /// 아이템명 : 방어포션
 /// Value 1 방어막량
 /// Value 2 지속시간
+/// Value 3
 /// 
 /// </summary>
 
 
-public class GuardDrink : Items
+public class Item_GuardDrink : Items
 {
 
     EffectPlayer myEffect;
