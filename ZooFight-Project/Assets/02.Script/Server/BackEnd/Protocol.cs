@@ -13,6 +13,7 @@ namespace Protocol
         PlayerAttack,   // 플레이어 공격
         PlayerDamaged,  // 플레이어 데미지 받음
         PlayerCrowdControl,     // 플레이어 군중제어기 받음
+        PlayerDowned,   // 플레이어가 다운 됨
         PlayerNoMove,   // 플레이어 이동 멈춤
         PlayerNoRotate, // 플레이어 회전 멈춤
         bulletInfo, 
@@ -150,6 +151,22 @@ namespace Protocol
             this.hit_x = x;
             this.hit_y = y;
             this.hit_z = z;
+        }
+    }
+
+    public class PlayerDownedMessage : Message
+    {
+        public SessionId playerSession;
+        public float down_x;
+        public float down_y;
+        public float down_z;
+        //enum 타입 추가
+        public PlayerDownedMessage(SessionId session, float x, float y, float z) : base(Type.PlayerDowned)
+        {
+            this.playerSession = session;
+            this.down_x = x;
+            this.down_y = y;
+            this.down_z = z;
         }
     }
 
