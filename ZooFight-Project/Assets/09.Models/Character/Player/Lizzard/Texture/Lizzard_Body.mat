@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wall_Side Variant
+  m_Name: Lizzard_Body
   m_Shader: {fileID: 4800000, guid: 60e29b7951f20da47b11861d166b7036, type: 3}
-  m_Parent: {fileID: 2100000, guid: 117dfad9d3ed83c41a5110aae33671d8, type: 2}
+  m_Parent: {fileID: 2100000, guid: 0b2da25b543f2c848b81aba9e12c418e, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _OUTLINETYPE_NORMAL
@@ -33,9 +33,13 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 30, y: 1}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 87fc7a5f52a98684c8c9c2ec68c362a7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 877b25a58e0e2fb449da0a1d038123c8, type: 3}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats: []

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7370632160781694953
+--- !u!114 &-8572652542604256373
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wall_Side
+  m_Name: Lizzard_Head
   m_Shader: {fileID: 4800000, guid: 60e29b7951f20da47b11861d166b7036, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -47,11 +47,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: eed8a8191d5a66349b6000668db7aba5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 647336148f3704a47a7e5fb125ea2822, type: 3}
+        m_Texture: {fileID: 2800000, guid: 806d8e566a6458a4b821c4ae20134cf3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -91,7 +91,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 4334cbe3c47049c45acd2863b96b6a8f, type: 3}
+        m_Texture: {fileID: 2800000, guid: e77375c67f45d184caa6b31a11edb5bb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -100,7 +100,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 20, y: 1}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _PaperTexture:
         m_Texture: {fileID: 0}
@@ -161,9 +161,9 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _GlossMapScale: 0
-    - _Glossiness: 0
-    - _GlossyReflections: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
     - _HalftoneEdgeOffset: 0.1
     - _HalftoneSmoothness: 0.3
     - _HalftoneThreshold: 0.1
@@ -177,7 +177,8 @@ Material:
     - _MainLightIntesity: 1
     - _MaxScaleDependingOnCamera: 1
     - _Metallic: 0
-    - _NormalMapStrength: 0.02
+    - _Mode: 0
+    - _NormalMapStrength: 1
     - _OcclusionStrength: 1
     - _OutlineDynamicSpeed: 0
     - _OutlineNoiseIntesity: 1
@@ -189,7 +190,7 @@ Material:
     - _OverlayRotation: 0
     - _OverlayUVTilling: 0
     - _PaperTilling: 1
-    - _Parallax: 0.005
+    - _Parallax: 0.02
     - _QueueControl: -1
     - _QueueOffset: 0
     - _RampDiffuseTextureLoaded: 1
@@ -225,6 +226,7 @@ Material:
     - _UVScrollSpeed: 0
     - _UVScrollSpeedSpec: 0
     - _UVScrollSpeedWarp: 0
+    - _UVSec: 0
     - _UVSrcrollAngle: 0
     - _UVSrcrollAngleSpec: 0
     - _UVSrcrollAngleWarp: 0
