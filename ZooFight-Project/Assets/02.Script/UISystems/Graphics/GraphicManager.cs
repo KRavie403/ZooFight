@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GraphicManager : MonoBehaviour/*Singleton<GraphicManager>*/
@@ -36,7 +38,8 @@ public class GraphicManager : MonoBehaviour/*Singleton<GraphicManager>*/
     }
     private void Update()
     {
-        ResolutionDropboxOptionChange();
+        if( SceneManager.sceneCountInBuildSettings == 0)
+            ResolutionDropboxOptionChange();
     }
 
     // 그래픽 카드 정보

@@ -66,7 +66,10 @@ public class Gamemanager : MonoBehaviour
             inst = FindObjectOfType<Gamemanager>();     // 게임 시작 시 자기 자신을 담음
             Debug.LogError("GameManager 인스턴스가 존재하지 않습니다.");
         }
-
+        if(inst != this)
+        {
+            Destroy(this.gameObject);
+        }
 
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 

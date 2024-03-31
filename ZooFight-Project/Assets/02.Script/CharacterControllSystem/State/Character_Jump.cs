@@ -24,7 +24,7 @@ public class Character_Jump : BaseState
         base.Enter(BeforeState);
         if (!player.GetisJump())
         {
-            player.SetisJump(true);
+            //player.SetisJump(true);
             ableFuncs[PlayerController.pFunc.Jump]();
         }
 
