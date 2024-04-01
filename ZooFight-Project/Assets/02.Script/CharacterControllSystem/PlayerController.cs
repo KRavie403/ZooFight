@@ -239,77 +239,8 @@ public class PlayerController : MovementController, IHitBox
 
     public void CurAxisMove()
     {
-        CharacterMove(AxisX, AxisY, isDenial);
-    }
-
-    // 캐릭터 이동 함수 
-    public void CharacterMove(float AxisX,float AxisY,bool denial)
-    {
-        Vector3 vector3 = new Vector3(AxisX,0,AxisY);
-        vector3 = Vector3.Normalize(vector3);
-        Vector2 BlockDir = Vector2.zero;
-
-        Quaternion rot = Quaternion.FromToRotation(Vector3.forward, transform.forward);
-
-        Vector3 vector32 = rot * vector3;
-
-        Vector2 dir = new Vector2(vector3.x, vector3.z);
-
-        // 물체를 잡고 움직일때
-        if (isGrab)
-        { 
-            Vector3 tmp = new(transform.position.x,0,transform.position.z);
-            //Vector3 tmp2 = vector3 * transform.forward;
-            //Debug.Log(Quaternion.LookRotation(transform.forward, Vector3.up));
-            BlockDir = grabPoint.curGrabBlock.DistSelect(vector3,transform.forward);
-        }
-
-        // 검증된위치일경우
-        if(!denial )
-        {
-            // 월드기준 이동이라 캐릭터 전방기준으로 변경필요 - 해결 완료
-            transform.Translate(vector3 * Time.deltaTime * MoveSpeed, Space.Self);
-
-            //
-            //myAnim.GetFloat("MoveAxisX");
-            myAnim.SetFloat("MoveAxisX", Mathf.Clamp(AxisX * MotionSpeed, -1.0f, 1.0f));
-            myAnim.SetFloat("MoveAxisY", Mathf.Clamp(AxisY * MotionSpeed, -1.0f, 1.0f));
-
-            // 움직임이 없을때
-            if(AxisX == 0 && AxisY == 0)
-            //if(myAnim.GetFloat("MoveAxisX") == 0 && myAnim.GetFloat("MoveAxisY") ==0)
-            {
-                myAnim.SetBool("IsMoving", false);
-                myAnim.SetBool("IsRunning", false);
-                if (isGrab)
-                {
-                    grabPoint.curGrabBlock.SetcurDir(Vector3.zero,transform.forward);
-                }
-            }
-            else // 움직임이 있을때
-            {
-                myAnim.SetBool("IsMoving", true);
-                // 뛰는중
-                if(IsRunning == false)
-                {
-                    myAnim.SetBool("IsRunning", false);
-                }
-                else // 달리는중
-                {
-                    myAnim.SetBool("IsRunning", true);
-                }
-                if (isGrab)
-                {
-                    grabPoint.curGrabBlock.SetcurDir(BlockDir,transform.forward);
-                }
-            }
-        }
-        // 검증되지 않았을때
-        else
-        {
-            myAnim.SetBool("IsMoving", false);
-            myAnim.SetBool("IsRunning", false);
-        }
+        //CharacterMove(AxisX, AxisY, isDenial);
+        CharacterMove(isDenial, AxisX, AxisY);
     }
 
     public void Move(float AxisX , float AxisY)
@@ -327,11 +258,15 @@ public class PlayerController : MovementController, IHitBox
 
         Vector3 Direction = Vector3.Normalize(new Vector3 (AxisX,0,AxisY));
 
-        Vector2 BlockDir = Vector2.zero;
+        float Speed = IsRunning ? MoveSpeed * RunSpeedRate : MoveSpeed;
 
-        transform.Translate(MoveSpeed * Time.deltaTime * Direction, Space.Self);
+        Vector3 Dir = MakeDir(AxisX, AxisY);
+        //transform.Translate(MoveSpeed * Time.deltaTime * Direction, Space.Self);
+        transform.position += MakeDir(AxisX, AxisY) * Speed * Time.deltaTime;
+
         if (isGrab)
         {
+            Vector2 BlockDir = Vector2.zero;
             BlockDir = grabPoint.curGrabBlock.DistSelect(Direction,transform.forward);
             grabPoint.curGrabBlock.SetcurDir(BlockDir, transform.forward);
         }
@@ -349,8 +284,14 @@ public class PlayerController : MovementController, IHitBox
             myAnim.SetBool("IsRunning", false);
         }
     }
+    public Vector3 MakeDir(float AxisX,float AxisY)
+    {
+        Vector3 dir = Vector3.Normalize(new Vector3(AxisX,0,AxisY));
 
-    public void CharacterMove2(bool denial , float AxisX = 0,float AxisY = 0)
+        return transform.rotation * dir;
+    }
+
+    public void CharacterMove(bool denial , float AxisX = 0,float AxisY = 0)
     {
         if (!denial)
         {
@@ -363,6 +304,11 @@ public class PlayerController : MovementController, IHitBox
             myAnim.SetBool("IsRunning", false);
             DenialPos = Vector3.zero;
         }
+    }
+
+    public void MoveToPos(Vector3 pos,Vector3 dir)
+    {
+
     }
 
     public IEnumerator BasicMove(Vector3 pos, Vector3 dir, UnityAction e = null)
@@ -500,9 +446,12 @@ public class PlayerController : MovementController, IHitBox
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(PlayerSM.CurrentState == p_States[pState.Jump])
+        Debug.Log($"{collision.gameObject.layer} , {groundMask.value}");
+        
+        if ( (1 << collision.gameObject.layer) == groundMask)
         {
-            if (collision.gameObject.layer == groundMask)
+            Debug.Log("Ground");
+            if(PlayerSM.CurrentState == p_States[pState.Jump])
             {
                 MoveStateCheck();
                 isJump = false;
@@ -562,11 +511,19 @@ public class PlayerController : MovementController, IHitBox
     public void WinAction()
     {
         myAnim.SetTrigger("Win");
+        myAnim.SetBool("IsGameEnd",true);
     }
 
     public void LoseAction()
     {
         myAnim.SetTrigger("Lose");
+        myAnim.SetBool("IsGameEnd", true);
+    }
+
+    public void ActionAllStop()
+    {
+        grabPoint.curGrabBlock.DeGrab(this);
+        this.enabled = false;
     }
 
     #endregion
