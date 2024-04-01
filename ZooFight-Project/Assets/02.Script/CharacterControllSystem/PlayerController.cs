@@ -268,7 +268,6 @@ public class PlayerController : MovementController, IHitBox
         if(!denial )
         {
             // 월드기준 이동이라 캐릭터 전방기준으로 변경필요 - 해결 완료
-            //transform.position = transform.position + vector3 * Time.deltaTime * MoveSpeed;
             transform.Translate(vector3 * Time.deltaTime * MoveSpeed, Space.Self);
 
             //
@@ -389,9 +388,11 @@ public class PlayerController : MovementController, IHitBox
 
     public void CharacterJump()
     {
-        if (isJump)
+        if (!isJump)
         {
+
             GetComponent<Rigidbody>().AddForce(Vector3.up*JumpHeight, ForceMode.Impulse);
+            isJump = true;
         }
     }
     public void SetisJump(bool IsJump)
@@ -458,7 +459,10 @@ public class PlayerController : MovementController, IHitBox
         PlayerSM.ChangeState(p_States[pState.ItemReady]);
     }
 
+    public void ItemUse()
+    {
 
+    }
 
     #endregion
 
@@ -547,8 +551,6 @@ public class PlayerController : MovementController, IHitBox
             CurHP = MaxHP;
             return;
         }
-
-
 
         CurHP = isSet ? Value : CurHP + Value ;
     }
