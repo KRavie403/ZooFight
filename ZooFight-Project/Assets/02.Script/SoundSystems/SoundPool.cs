@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class SoundPool : MonoBehaviour
 {
+
+    public List<SoundSpeaker> Clones = new List<SoundSpeaker>();
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,4 +19,8 @@ public class SoundPool : MonoBehaviour
     {
         
     }
+
+
+
+
 }

@@ -1,31 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Overlays;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GraphicManager : MonoBehaviour
+public class GraphicManager : MonoBehaviour/*Singleton<GraphicManager>*/
 {
     [SerializeField] private TMP_Text graphicsCardName;
     [SerializeField] private TMP_Dropdown displayModeDropdown;
-    //[SerializeField] private TMP_Dropdown resolutionDropdown;
+    [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private Slider _contrastSlider;
     [SerializeField] private Slider _brightnessSlider;
     [SerializeField] private Image _overLay;
 
-    List<Resolution> displayModes = new List<Resolution>();
-    //List<Resolution> resolutions = new List<Resolution>();
+    //List<Resolution> displayModes = new List<Resolution>();
+    List<Resolution> resolutions = new List<Resolution>();
 
-    FullScreenMode screenMode;
-    private int displayNum;
-    //private int resolutionNum;
+    FullScreenMode screenMode = FullScreenMode.FullScreenWindow;
+    //private int displayNum;
+    private int resolutionNum;
 
     void Start()
     {
         GraphicsCardInfo();
         InitDisplayMode();
-        //InitResolution();
+        InitResolution();
+        displayModeDropdown.value = 1;  // 전체화면 default
+        resolutionDropdown.value = resolutions.Count - 1;
+        ResolutionDropboxOptionChange();
+    }
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+    private void Update()
+    {
+        if( SceneManager.sceneCountInBuildSettings == 0)
+            ResolutionDropboxOptionChange();
     }
 
     // 그래픽 카드 정보
@@ -52,67 +66,83 @@ public class GraphicManager : MonoBehaviour
         displayModeDropdown.options.Add(new TMP_Dropdown.OptionData("전체 화면"));
         displayModeDropdown.options.Add(new TMP_Dropdown.OptionData("테두리 없는 창 모드"));
 
+        displayModeDropdown.RefreshShownValue();
+    }
+
+    // 해상도 조절
+    private void InitResolution()
+    {
+        resolutions.AddRange(Screen.resolutions);
+        //for (int i = 0; i < Screen.resolutions.Length; i++)
+        //{
+        //    // 60Hz는 왜 안 되지
+        //    if (Screen.resolutions[i].refreshRateRatio.value == 90)
+        //    {
+        //        resolutions.Add(Screen.resolutions[i]);
+        //    }
+        //}
+        //resolutions.AddRange(Screen.resolutions);
+        resolutionDropdown.options.Clear();
+
+        int optionNum = 0; //처음에 drop된 값 초기화
+        foreach (Resolution value in resolutions)
+        {
+            Debug.Log(value.width + "x" + value.height + " " + value.refreshRateRatio);
+            TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData();
+            option.text = value.ToString(); //해상도값 넣어줌
+            resolutionDropdown.options.Add(option);//option 추가
+
+            //if (value.width == Screen.width && value.height == Screen.height) //현재 해상도의 너비는 Screen.width 높이는 Screen.height를 사용해서 알 수 있음
+            //{
+            //    resolutionDropdown.value = optionNum;
+            //}
+            if (optionNum == resolutions.Count - 1) // resolutions 리스트의 마지막 값이면
+            {
+                resolutionDropdown.value = optionNum;
+            }
+
+            optionNum++;
+        }
+        resolutionDropdown.RefreshShownValue();
+    }
+
+    public void DisplayDropboxOptionChange()
+    {
         switch (displayModeDropdown.value)
         {
             case 0:     //  창 모드
-                Screen.SetResolution(800, 600, screenMode);
+                screenMode = FullScreenMode.Windowed;
                 break;
             case 1:     // 전체 화면
-                Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, screenMode);
+                screenMode = FullScreenMode.FullScreenWindow;
                 break;
             case 2:     // 테두리 없는 창 모드
+                screenMode = FullScreenMode.Windowed;
                 SetBorderlessWindowedMode();
                 break;
             default:
                 break;
         }
-        displayModeDropdown.RefreshShownValue();
-
-        Debug.Log("DisplayNum:" + displayNum);
-        Screen.SetResolution(displayModes[displayNum].width,
-                                          displayModes[displayNum].height,
-                                          screenMode);
+        Screen.SetResolution(resolutions[resolutionNum].width,
+                     resolutions[resolutionNum].height,
+                     screenMode);
     }
 
-    //// 해상도 조절
-    //private void InitResolution()
-    //{
-    //    resolutions.AddRange(Screen.resolutions);
-    //    resolutionDropdown.options.Clear();
-
-    //    int optionNum = 0; //처음에 drop된 값 초기화
-    //    foreach (Resolution item in resolutions)
-    //    {
-    //        Debug.Log(item.width + "x" + item.height + " " + item.refreshRateRatio);
-    //        TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData();
-    //        option.text = item.ToString(); //해상도값 넣어줌
-    //        resolutionDropdown.options.Add(option);//option 추가
-
-    //        if (item.width == Screen.width && item.height == Screen.height) //현재 해상도의 너비는 Screen.width 높이는 Screen.height를 사용해서 알 수 있음
-    //        {
-    //            resolutionDropdown.value = optionNum;
-    //        }
-    //        optionNum++;
-    //    }
-    //    resolutionDropdown.RefreshShownValue();
-
-    //    Screen.SetResolution(resolutions[resolutionNum].width,
-    //    resolutions[resolutionNum].height,
-    //    screenMode);
-    //}
-
-    public void DisplayDropboxOptionChange(int x)
+    int curResolutionDropDownVal = 0;
+    public void ResolutionDropboxOptionChange()
     {
-        displayNum = x;
+        if(curResolutionDropDownVal == resolutionDropdown.value) return;
+        if(screenMode == FullScreenMode.FullScreenWindow)
+        {
+            resolutionNum = resolutionDropdown.value - 1;
+            Screen.SetResolution(resolutions[resolutionNum].width,
+                                              resolutions[resolutionNum].height,
+                                              screenMode);
+        }
     }
-    //public void ResolutionDropboxOptionChange(int x)
-    //{
-    //    resolutionNum = x;
-    //}
-
-    public void FullScreenBtn(bool isFull)
+    public void ResolutionDropboxOption()
     {
-        screenMode = isFull ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+        curResolutionDropDownVal = resolutionDropdown.value - 1;
     }
 
     public void DarkOverlay()

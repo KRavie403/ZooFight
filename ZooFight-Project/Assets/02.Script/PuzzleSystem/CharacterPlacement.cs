@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class CharacterPlacement : MonoBehaviour
 {
-    public GameObject[] pinkTeam;
+    public GameObject[] redTeam;
     public GameObject[] blueTeam;
 
     private float mapWidth = 60.0f;
@@ -14,7 +13,7 @@ public class CharacterPlacement : MonoBehaviour
     public List<Vector3> spawnUsers = new List<Vector3>();
 
     private int characterNum = 0;
-    private int pinkCharacterNum = 0;
+    private int redCharacterNum = 0;
     private int blueCharacterNum = 0;
 
     private BlockPlacement blockPlacement = null;
@@ -46,7 +45,7 @@ public class CharacterPlacement : MonoBehaviour
             {
                 if (characterNum < 2)
                 {
-                    Instantiate(pinkTeam[pinkCharacterNum++], charcterPosition, Quaternion.identity);
+                    Instantiate(redTeam[redCharacterNum++], charcterPosition, Quaternion.identity);
                     spawnUsers.Add(charcterPosition);
                     characterNum++;
                 }
