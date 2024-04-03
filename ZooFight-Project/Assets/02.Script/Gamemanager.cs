@@ -48,8 +48,14 @@ public class Gamemanager : MonoBehaviour
     public PlayerController currentPlayer;
     public int CharacterID = -1;
 
+    public bool IsGameEnd = false;
+    public HitScanner.Team VictoryTeam = HitScanner.Team.NotSetting;
+
     // 팀멤버 <Id,컴포넌트> 조합 
+    public int MaxTeamMember = 1;
+    public List<int> RedTeamId;
     public Dictionary<int,PlayerController> RedTeamPlayers;
+    public List<int> BlueTeamId;
     public Dictionary<int,PlayerController> BlueTeamPlayers;
 
 
@@ -60,7 +66,10 @@ public class Gamemanager : MonoBehaviour
             inst = FindObjectOfType<Gamemanager>();     // 게임 시작 시 자기 자신을 담음
             Debug.LogError("GameManager 인스턴스가 존재하지 않습니다.");
         }
-
+        if(inst != this)
+        {
+            Destroy(this.gameObject);
+        }
 
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
@@ -78,6 +87,7 @@ public class Gamemanager : MonoBehaviour
         ClientUpdateCoroutine = PollingRateUpdate();
         StartCoroutine(ClientUpdateCoroutine);
 
+        currentPlayer = FindObjectOfType<PlayerController>();
     }
 
     float Times = 0;
@@ -134,7 +144,48 @@ public class Gamemanager : MonoBehaviour
                 default: return null;
         }
     }
-
+    public List<int> GetWinnerTeamId()
+    {
+        switch (VictoryTeam)
+        {
+            case HitScanner.Team.RedTeam:
+                return RedTeamId;
+            case HitScanner.Team.NotSetting:
+                return null;
+            case HitScanner.Team.BlueTeam:
+                return BlueTeamId;
+            default:
+                return null;
+        }
+    }
+    public List<int> GetLoserTeamId()
+    {
+        switch (VictoryTeam)
+        {
+            case HitScanner.Team.RedTeam:
+                return BlueTeamId;
+            case HitScanner.Team.NotSetting:
+                return null;
+            case HitScanner.Team.BlueTeam:
+                return RedTeamId;
+            default:
+                return null;
+        }
+    }
+    public List<int> GetTeamId(HitScanner.Team team)
+    {
+        switch (team)
+        {
+            case HitScanner.Team.RedTeam:
+                return RedTeamId;
+            case HitScanner.Team.NotSetting:
+                return null;
+            case HitScanner.Team.BlueTeam:
+                return BlueTeamId;
+            default:
+                return null;
+        }
+    }
 
 
 }

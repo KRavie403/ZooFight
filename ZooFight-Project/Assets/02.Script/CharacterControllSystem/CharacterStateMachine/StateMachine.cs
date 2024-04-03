@@ -8,24 +8,26 @@ public class StateMachine
 {
     
     public BaseState CurrentState { get; protected set; }
+    public BaseState BeforeState { get; protected set; }
 
     public void Initalize(BaseState startState)
     {
         CurrentState = startState;
-        startState.Enter();
+        BeforeState = startState;
+        startState.Enter(startState);
     }
 
     public void ChangeState(BaseState newState)
     {
         Debug.Log($"{CurrentState} Exit Start");
+        BeforeState = CurrentState;
         CurrentState.Exit();
 
         CurrentState = newState;
-        newState.Enter();
-
+        newState.Enter(BeforeState);
 
     }
-
+    
 
 
 

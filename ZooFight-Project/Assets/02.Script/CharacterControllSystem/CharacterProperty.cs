@@ -6,10 +6,18 @@ using UnityEngine.Events;
 public class CharacterProperty : MonoBehaviour
 {
 
+    public int SessionId = new();
+    public int CharacterID = -1;
+    public HitScanner.Team myTeam = HitScanner.Team.NotSetting;
+
+
     [Range(0f, 3f)]
     public float MoveSpeed;
     [Range(0f,10.0f)]
     public float RunSpeedRate = 1;
+
+    [Range(0f,10.0f)]
+    public float JumpHeight = 2.0f;
     public float MaxHP;
 
 
@@ -65,8 +73,6 @@ public class CharacterProperty : MonoBehaviour
     }
 
 
-    public int CharacterID = -1;
-    public HitScanner.Team myTeam = HitScanner.Team.NotSetting;
 
 
     private void Awake()

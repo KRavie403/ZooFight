@@ -108,7 +108,7 @@ public class CharacterCamera : BasicCamera
             Quaternion.Euler(transform.localRotation.eulerAngles.x, 0, 0),
             Time.deltaTime * 10.0f);
 
-        myZoomData.desireDist = Mathf.Clamp(myZoomData.desireDist +
+        myZoomData.desireDist = Mathf.Clamp(myZoomData.desireDist -
             Input.GetAxis("Mouse ScrollWheel") * myZoomData.ZoomSpeed, 
             myZoomData.ZoomRange.x, myZoomData.ZoomRange.y);
 
@@ -126,7 +126,7 @@ public class CharacterCamera : BasicCamera
 
         myCam.transform.localPosition = Vector3.back * myZoomData.curDist;
 
-        //temp.y = temp.z = 0;
+        //curResolutionDropDownVal.y = curResolutionDropDownVal.z = 0;
 
 
         //CameraPos.localRotation = Quaternion.Euler(curRot.x,0,0);
