@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Transactions;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -306,21 +307,43 @@ public class PlayerController : MovementController, IHitBox
         }
     }
 
-    public void MoveToPos(Vector3 pos,Vector3 dir)
+    // 패킷 데이터용 이동 함수
+    public void MoveToPos(Vector3 dir)
     {
+        if (dir == Vector3.zero) return;
 
-    }
+        Vector3 Axis =  Quaternion.Euler(-transform.rotation.eulerAngles) * dir;
 
-    public IEnumerator BasicMove(Vector3 pos, Vector3 dir, UnityAction e = null)
-    {
+        float Speed = IsRunning ? MoveSpeed * RunSpeedRate : MoveSpeed;
 
-        while (true)
+        float curSpeed = Mathf.Sqrt(Axis.x * Axis.x + Axis.z * Axis.z);
+
+        if (curSpeed > 10 * Speed / Time.deltaTime) return;
+        transform.position = dir;
+
+        myAnim.SetFloat("MoveAxisX", Mathf.Clamp(Axis.x * MotionSpeed, -1.0f, 1.0f));
+        myAnim.SetFloat("MoveAxisY", Mathf.Clamp(Axis.y * MotionSpeed, -1.0f, 1.0f));
+        myAnim.SetBool("IsMoving", true);
+        if (IsRunning)
         {
-            yield return null;
+            myAnim.SetBool("IsRunning", true);
         }
-
-        e?.Invoke();
+        else
+        {
+            myAnim.SetBool("IsRunning", false);
+        }
     }
+
+
+    public void SetPosition(Vector3 pos)
+    {
+        transform.position = pos;
+    }
+    public Vector3 GetPosition()
+    {
+        return transform.position;
+    }
+ 
 
     #endregion
 
@@ -349,6 +372,8 @@ public class PlayerController : MovementController, IHitBox
     {
         return isJump;
     }
+
+
     #endregion
 
     #region 블럭잡기
