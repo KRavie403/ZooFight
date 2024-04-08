@@ -40,4 +40,16 @@ public class Character_Down : BaseState
         base.PhysicsUpdate();
 
     }
+
+    IEnumerator DownStateAction()
+    {
+        float time = 0;
+        while (true)
+        {
+            time += Time.deltaTime;
+
+            yield return null;
+        }
+    }
+
 }
