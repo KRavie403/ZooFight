@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character_SKillUse : BaseState
+public class Character_ItemUse : BaseState
 {
-    public Character_SKillUse(PlayerController player, StateMachine stateMachine) : base(player, stateMachine)
+    public Character_ItemUse(PlayerController player, StateMachine stateMachine) : base(player, stateMachine)
     {
 
     }
@@ -21,6 +21,8 @@ public class Character_SKillUse : BaseState
     public override void Enter(BaseState BeforeState)
     {
         base.Enter(BeforeState);
+        player.SetState(PlayerController.pState.ItemUse);
+
     }
 
     public override void Exit()

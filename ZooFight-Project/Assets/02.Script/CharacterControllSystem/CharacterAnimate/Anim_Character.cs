@@ -6,25 +6,25 @@ using UnityEngine;
 
 public class Anim_Character : MonoBehaviour
 {
-    CharacterController myPlayer = null;
+    PlayerController myPlayer = null;
     private void Start()
     {
-        myPlayer = transform.parent.GetComponent<CharacterController>();
+        myPlayer = transform.parent.GetComponent<PlayerController>();
     }
 
     #region 이동 모션 함수
 
     public void MoveAction()
     {
-
+        // ???
     }
     public void MoveStartAction()
     {
-
+        // 서버로 이동 시작 전송
     }
     public void MoveEndAction()
     {
-
+        // 서버로 이동 종료 전송
     }
 
 
@@ -34,7 +34,8 @@ public class Anim_Character : MonoBehaviour
     #region 공격모션 함수
     public void AttackAction()
     {
-
+        // 공격 액션 동작
+        myPlayer.PlayerAttack();
     }
 
     public void AttackStartAction()
@@ -61,6 +62,9 @@ public class Anim_Character : MonoBehaviour
     {
 
     }
+
+    
+
     #endregion
 
     #region 점프모션 함수
@@ -93,16 +97,17 @@ public class Anim_Character : MonoBehaviour
     public void ItemUseEndAction()
     {
 
+        myPlayer.curItems.ItemEnd();
     }
 
     public void ItemUseCancelAction()
     {
-
+        myPlayer.myAnim.SetTrigger("ItemUseCancel");
     }
 
     public void ItemReadyAction()
     {
-
+        myPlayer.myAnim.SetTrigger("ItemReady");
     }
 
     public void ItemReadyStartAction()

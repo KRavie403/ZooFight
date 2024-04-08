@@ -55,8 +55,9 @@ public class Item_MinimalRazer : Items
     
     public IEnumerator RazerShooting(Vector3 pos)
     {
+        Vector3 temp = pos - myPlayer.transform.position;
         // 사출방향 설정
-        Vector3 dir = Vector3.Normalize(pos - myPlayer.transform.position) * Value1;
+        Vector3 dir = Vector3.Normalize(pos - myPlayer.transform.position) * Value3;
 
 
 
@@ -87,6 +88,7 @@ public class Item_MinimalRazer : Items
 
     public void RazerSoundSetting()
     {
+        //Soundmanager.Inst.SoundPool.
         // 사출 사운드 재생
     }
 

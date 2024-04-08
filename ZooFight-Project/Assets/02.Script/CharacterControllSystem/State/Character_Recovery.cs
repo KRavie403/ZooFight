@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static BaseState;
+
 
 public class Character_Recovery : BaseState
 {
@@ -16,12 +16,14 @@ public class Character_Recovery : BaseState
 
         base.Initate();
         //ableFuncs.Add(PlayerController.pFunc.Move, player.CurAxisMove);
+        player.SetState(PlayerController.pState.Recovery);
 
     }
 
     public override void Enter(BaseState BeforeState)
     {
         base.Enter(BeforeState);
+        player.SetState(PlayerController.pState.Recovery);
 
     }
 

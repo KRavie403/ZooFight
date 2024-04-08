@@ -22,6 +22,7 @@ public class Item_ToyHammer : Items
     {
         Smash = 0, hit , disappear
     }
+    
 
     protected override void Awake()
     {
@@ -40,6 +41,18 @@ public class Item_ToyHammer : Items
         base.Update();
 
     }
+    public override void ItemUse(PlayerController player)
+    {
+        base.ItemUse(player);
+    }
+    public override void Initate(List<float> Values, PlayerController player)
+    {
+        base.Initate(Values, player);
+    }
+    public override void Standby(Items item, ItemSystem.ActiveType itemType)
+    {
+        base.Standby(item, itemType);
+    }
 
     public void HammerSetting(Vector3 pos)
     {
@@ -52,17 +65,17 @@ public class Item_ToyHammer : Items
         Vector3 dir = Vector3.Normalize(pos - myPlayer.transform.position);
 
         // 해머 이펙트 출력대기
-
+        HammerEffectSetting();
         // 해머 사운드 재생대기
-
+        HammerSoundSetting();
 
         // 해머 휘두르기
-        while (true)
+        while (!isItemUseEnd)
         {
 
             // 타격 감지시 이펙트 사운드 출력 & 타격대상 스턴
 
-
+            
             yield return null;
         }
     }
@@ -108,4 +121,9 @@ public class Item_ToyHammer : Items
         }
     }
 
+    public override void UseItems()
+    {
+        base.UseItems();
+    }
+    
 }

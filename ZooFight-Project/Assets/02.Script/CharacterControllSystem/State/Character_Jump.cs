@@ -22,6 +22,8 @@ public class Character_Jump : BaseState
     public override void Enter(BaseState BeforeState)
     {
         base.Enter(BeforeState);
+        player.SetState(PlayerController.pState.Jump);
+
         if (!player.GetisJump())
         {
             //player.SetisJump(true);

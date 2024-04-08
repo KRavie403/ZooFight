@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character_Down : BaseState
+public class Charcater_ItemReady : BaseState
 {
-    public Character_Down(PlayerController player, StateMachine stateMachine) : base(player, stateMachine)
+    public Charcater_ItemReady(PlayerController player, StateMachine stateMachine) : base(player, stateMachine)
     {
 
     }
@@ -14,14 +14,16 @@ public class Character_Down : BaseState
     {
 
         base.Initate();
-        //ableFuncs.Add(PlayerController.pFunc.Move, player.CurAxisMove);
+        ableFuncs.Add(PlayerController.pFunc.Move, player.CurAxisMove);
+        ableFuncs.Add(PlayerController.pFunc.ItemUse, player.ItemUse);
 
     }
 
     public override void Enter(BaseState BeforeState)
     {
         base.Enter(BeforeState);
-        player.SetState(PlayerController.pState.Down);
+        player.SetState(PlayerController.pState.ItemReady);
+
 
     }
 
@@ -41,16 +43,4 @@ public class Character_Down : BaseState
         base.PhysicsUpdate();
 
     }
-
-    IEnumerator DownStateAction()
-    {
-        float time = 0;
-        while (true)
-        {
-            time += Time.deltaTime;
-
-            yield return null;
-        }
-    }
-
 }

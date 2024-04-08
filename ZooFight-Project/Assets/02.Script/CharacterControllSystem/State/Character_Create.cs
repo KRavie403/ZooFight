@@ -24,6 +24,7 @@ public class Character_Create : BaseState
     public override void Enter(BaseState BeforeState)
     {
         base.Enter(BeforeState);
+        player.SetState(PlayerController.pState.Create);
         //player.
 
     }

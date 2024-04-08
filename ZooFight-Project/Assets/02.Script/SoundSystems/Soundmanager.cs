@@ -37,15 +37,16 @@ public class Soundmanager : Singleton<Soundmanager>
 
     public List<SoundSpeaker> SoundSpeakers;
 
+
     public SoundPool SoundPool;
 
     private void Awake()
     {
-        for (int i = 0; i < (int)SoundCode.CodeCount; i++)
+        for (int i = 0; i < SoundSpeakers.Count; i++)
         {
             if (SoundSpeakers[i] != null)
             {
-                SoundSettings.keys.Add((SoundCode)i, SoundSpeakers[i]);
+                SoundSettings.keys.Add(SoundSpeakers[i].mySoundCode, SoundSpeakers[i]);
             }
         }
     }

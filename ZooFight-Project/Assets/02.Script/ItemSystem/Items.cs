@@ -17,7 +17,7 @@ public class Items : ItemProperty , IItems , IEffect
     public IEnumerator ItemAction;
 
     public int InputCount = 0;
-
+    protected bool isItemUseEnd = false;
     public event Action ItemReady = delegate { };
 
     protected Vector3 dir = Vector3.zero;
@@ -33,7 +33,7 @@ public class Items : ItemProperty , IItems , IEffect
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        myPlayer = Gamemanager.Inst.currentPlayer;
+        //myPlayer = Gamemanager.Inst.currentPlayer;
         
     }
 
@@ -46,7 +46,14 @@ public class Items : ItemProperty , IItems , IEffect
     public virtual void Initate(List<float> Values,PlayerController player)
     {
         if (Values == null) return;
-        if (Values.Count < 5) return;
+        if (Values.Count > 5) return;
+
+        Value1 = Values[0];
+        Value2 = Values[1];
+        Value3 = Values[2];
+        Value4 = Values[3];
+        Value5 = Values[4];
+
         myPlayer = player;
 
     }
@@ -58,7 +65,6 @@ public class Items : ItemProperty , IItems , IEffect
         {
             case ItemSystem.ActiveType.PointSelect:
                 ItemReady = () => ItemUse(myPlayer);
-                //CallRangeUI(myItemType);
                 break;
             case ItemSystem.ActiveType.SelfActive:
                 break;
@@ -83,38 +89,25 @@ public class Items : ItemProperty , IItems , IEffect
 
     }
 
-
-    public virtual void CallRangeUI(ItemSystem.ActiveType ActiveType)
+    public virtual void ItemEnd()
     {
-        switch (ActiveType)
-        {
-            case ItemSystem.ActiveType.PointSelect:
-                break;
-            case ItemSystem.ActiveType.SelfActive:
-                break;
-            case ItemSystem.ActiveType.EnemyActive:
-                break;
-            case ItemSystem.ActiveType.BlockActive:
-                break;
-            case ItemSystem.ActiveType.TypeCount:
-                break;
-            default:
-                break;
-        }
+        isItemUseEnd = true;
     }
 
 
-    private void OnDestroy()
+
+    protected void OnDestroy()
     {
         if (myPlayer.IsDestroyed())
         {
             return;
         }
-        if(myPlayer != null)
+        if (myPlayer != null) 
         {
             myPlayer.curItems = null;
         }
     }
+
 
     public PlayerController GetPlayer()
     {
@@ -128,7 +121,7 @@ public class Items : ItemProperty , IItems , IEffect
 
     public virtual void UseItems()
     {
-        throw new NotImplementedException();
+        ItemUse(myPlayer);
     }
 }
 

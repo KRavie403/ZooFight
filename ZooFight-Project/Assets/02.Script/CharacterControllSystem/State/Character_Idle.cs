@@ -17,12 +17,14 @@ public class Character_Idle : BaseState
         base.Initate();
         //ableFuncs.Add(PlayerController.pFunc.Move, player.CurAxisMove);
         ableFuncs.Add(PlayerController.pFunc.Jump, player.Jump);
+        ableFuncs.Add(PlayerController.pFunc.ItemReady, player.ItemReady);
 
     }
 
     public override void Enter(BaseState BeforeState)
     {
         base.Enter(BeforeState);
+        player.SetState(PlayerController.pState.Idle);
 
     }
 

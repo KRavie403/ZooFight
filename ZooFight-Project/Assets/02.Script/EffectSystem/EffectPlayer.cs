@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,11 +13,14 @@ public class EffectPlayer : MonoBehaviour , IEffect
     [SerializeField]
     EffectCode myEffectCode;
 
+
     public GameObject myObj;
 
     public List<ParticleSystem> myEffect;
 
     public List<Transform> triggerTarget;
+
+    public event Action EffectAction = delegate { };
 
     EffectCode IEffect.EffectCode => myEffectCode;
 
@@ -29,11 +33,8 @@ public class EffectPlayer : MonoBehaviour , IEffect
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            EffectPlay(0);
-            EffectPlay(1);
-        }
+
+
     }
 
     #region 이펙트 실행
@@ -42,22 +43,18 @@ public class EffectPlayer : MonoBehaviour , IEffect
     {
         myEffect[index].Play();
     }
-    // 인덱스 실행 + 시작지점 지정
-    public void EffectPlay(int index,float playTime)
-    {
-        myEffect[index].time = playTime;
-        myEffect[index].Play();
-    }
+    // 실행 + 시작 지점
     public void EffectPlay(int index, Transform StartPoint)
     {
         myEffect[index].transform.position = StartPoint.position;
         myEffect[index].Play();
     }
     // 인덱스 실행 , 반복출력
-    public void EffectPlay(int index,float playTime,bool isLoop)
+    public void EffectPlay(int index,float playTime,Transform StartPoint, bool isLoop= false)
     {
         var main = myEffect[index].main;
         main.loop = isLoop;
+        myEffect[index].transform.position = StartPoint.position;
         myEffect[index].time = playTime; 
         myEffect[index].Play();
     }
@@ -78,13 +75,17 @@ public class EffectPlayer : MonoBehaviour , IEffect
         myEffect[index].transform.rotation = rot;
         myEffect[index].Play();
     }
-
+    public void EffectPlay(int index, float playTime, Transform StartPoint, Quaternion rot,Vector3 size)
+    {
+        myEffect[index].time = playTime;
+        
+        myEffect[index].transform.position = StartPoint.position;
+        myEffect[index].transform.rotation = rot;
+        myEffect[index].Play();
+    }
     #endregion
 
-    public void Test1(int index)
-    {
-        
-    }
+ 
 
     private void OnParticleTrigger()
     {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 //using UnityEditor.Searcher;
 using UnityEngine;
 
@@ -92,7 +93,11 @@ public class ClientInputManager : Singleton<ClientInputManager>
         }
         if (Input.GetKeyDown(KeySetting.keys[KeyAction.Selectskill]))
         {
-            ItemSystem.Inst.RangeViewer.gameObject.SetActive(!(ItemSystem.Inst.RangeViewer.gameObject.activeSelf));
+            PlayerController curPlayer = Gamemanager.Inst.currentPlayer;
+            if (curPlayer == null) return;
+            curPlayer.ItemReady();
+
+            //ItemSystem.Inst.RangeViewer.gameObject.SetActive(!(ItemSystem.Inst.RangeViewer.gameObject.activeSelf));
         }
         if (Input.GetKeyDown(KeySetting.keys[KeyAction.Usingskill]))
         {

@@ -38,6 +38,11 @@ public class PlayerController : MovementController, IHitBox
         Move,
         Jump,
         ItemReady,
+        ItemUse,
+        BasicAttack,
+        EnterSuperArmor,
+
+        AllStop,
         FuncCount
     }
 
@@ -60,12 +65,14 @@ public class PlayerController : MovementController, IHitBox
     Vector2 SetNetPos = Vector2.zero;
 
     public GrabPoint grabPoint;
+    public Transform AttackPoint;
 
     public Items curItems;
 
     bool isUIOpen = false;
     [SerializeField]
     bool IsMoving = false;
+    
     [SerializeField]
     bool IsRunning = false;
     [SerializeField]
@@ -106,8 +113,8 @@ public class PlayerController : MovementController, IHitBox
         p_States.Add(pState.Idle, new Character_Idle(this, PlayerSM));
         p_States.Add(pState.Move, new Character_Move(this, PlayerSM));
         p_States.Add(pState.Jump, new Character_Jump(this, PlayerSM));
-        p_States.Add(pState.ItemReady, new Charcater_SkillReady(this, PlayerSM));
-        p_States.Add(pState.ItemUse, new Character_SKillUse(this, PlayerSM));
+        p_States.Add(pState.ItemReady, new Charcater_ItemReady(this, PlayerSM));
+        p_States.Add(pState.ItemUse, new Character_ItemUse(this, PlayerSM));
 
         //CharacterInitalize(myTeam, SessionId, CharacterID);
 
@@ -214,6 +221,7 @@ public class PlayerController : MovementController, IHitBox
 
     public void MoveStateCheck()
     {
+        
         if(AxisX == 0 && AxisY == 0)
         {
             if (PlayerSM.CurrentState != p_States[pState.Idle])
@@ -261,6 +269,7 @@ public class PlayerController : MovementController, IHitBox
 
         float Speed = IsRunning ? MoveSpeed * RunSpeedRate : MoveSpeed;
 
+        // 프로토콜 전송용 벡터
         Vector3 Dir = MakeDir(AxisX, AxisY);
         //transform.Translate(MoveSpeed * Time.deltaTime * Direction, Space.Self);
         transform.position += MakeDir(AxisX, AxisY) * Speed * Time.deltaTime;
@@ -284,6 +293,7 @@ public class PlayerController : MovementController, IHitBox
         {
             myAnim.SetBool("IsRunning", false);
         }
+
     }
     public Vector3 MakeDir(float AxisX,float AxisY)
     {
@@ -307,10 +317,11 @@ public class PlayerController : MovementController, IHitBox
         }
     }
 
-    // 패킷 데이터용 이동 함수
+    // 패킷 데이터용 이동 함수 -- 목표 좌표를 인자로받음
     public void MoveToPos(Vector3 dir)
     {
-        if (dir == Vector3.zero) return;
+        // 현재 위치 그대로 이동하면 미동작
+        if (dir == transform.position) return;
 
         Vector3 Axis =  Quaternion.Euler(-transform.rotation.eulerAngles) * dir;
 
@@ -318,8 +329,9 @@ public class PlayerController : MovementController, IHitBox
 
         float curSpeed = Mathf.Sqrt(Axis.x * Axis.x + Axis.z * Axis.z);
 
-        if (curSpeed > 10 * Speed / Time.deltaTime) return;
         transform.position = dir;
+        // 10프레임 이상의격차가 나면 이동모션없이 이동시키기
+        if (curSpeed > 10 * Speed / Time.deltaTime) return;
 
         myAnim.SetFloat("MoveAxisX", Mathf.Clamp(Axis.x * MotionSpeed, -1.0f, 1.0f));
         myAnim.SetFloat("MoveAxisY", Mathf.Clamp(Axis.y * MotionSpeed, -1.0f, 1.0f));
@@ -425,14 +437,28 @@ public class PlayerController : MovementController, IHitBox
 
     }
 
-    public void ItemSelect()
+    // 동작 불가능상태 = 아이템 사용중 , 상태이상, 기상, 점프
+    public void ItemReady()
     {
-        PlayerSM.ChangeState(p_States[pState.ItemReady]);
+        if (PlayerSM.CurrentState == p_States[pState.ItemUse]) return;
+        if (PlayerSM.CurrentState == p_States[pState.Down]) return;
+        if (PlayerSM.CurrentState == p_States[pState.Recovery]) return;
+        if (PlayerSM.CurrentState == p_States[pState.Jump]) return;
+        if (PlayerSM.CurrentState == p_States[pState.S_Jump]) return;
+
+        if (PlayerSM.CurrentState == p_States[pState.ItemReady])
+        {
+            ItemRelease();
+        }
+        else
+        {
+            PlayerSM.ChangeState(p_States[pState.ItemReady]);
+        }
     }
 
     public void ItemUse()
     {
-
+        curItems.UseItems();
     }
 
     #endregion
@@ -448,7 +474,7 @@ public class PlayerController : MovementController, IHitBox
     }
 
 
-    void DownAction()
+    public void DownAction()
     {
         PlayerSM.ChangeState(p_States[pState.Down]);
     }
@@ -467,6 +493,12 @@ public class PlayerController : MovementController, IHitBox
             yield return null;
         }
         PlayerSM.ChangeState(p_States[pState.Idle]);
+    }
+
+    // 공격 판정 함수
+    public void PlayerAttack()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.3f, groundMask);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -527,6 +559,12 @@ public class PlayerController : MovementController, IHitBox
         }
 
         CurHP = isSet ? Value : CurHP + Value ;
+        
+    }
+
+    public void SetState(pState state)
+    {
+        State = state;
     }
 
     #endregion
@@ -548,6 +586,7 @@ public class PlayerController : MovementController, IHitBox
     public void ActionAllStop()
     {
         grabPoint.curGrabBlock.DeGrab(this);
+        myAnim.enabled = false;
         this.enabled = false;
     }
 

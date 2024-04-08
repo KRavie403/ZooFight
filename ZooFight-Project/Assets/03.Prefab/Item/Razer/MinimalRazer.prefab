@@ -55,6 +55,7 @@ MonoBehaviour:
   soundCode: 0
   Targets: []
   InputCount: 0
+  ItemEffect: 0
   effectPlayer: {fileID: 0}
   Test1: {fileID: 0}
 --- !u!1001 &6559034275391306425
@@ -118,6 +119,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5457690421519941618, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: InitialModule.startSizeY.scalar
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457690421519941618, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
       propertyPath: TriggerModule.colliderQueryMode
       value: 2
       objectReference: {fileID: 0}
@@ -125,15 +130,89 @@ PrefabInstance:
       propertyPath: CollisionModule.collisionMessages
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5457690421519941618, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457690421519941618, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: InitialModule.startSizeY.minScalar
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457690421519941618, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: InitialModule.startSize.minMaxState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457690421519941618, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: InitialModule.startSizeY.minMaxState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457690421519941618, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: InitialModule.startSizeZ.minMaxState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457690421519941618, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: InitialModule.startSizeY.minCurve.m_Curve.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457690421519941618, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: InitialModule.startSizeY.minCurve.m_Curve.Array.data[1].time
+      value: 0.5038461
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457690421519941618, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: InitialModule.startSizeY.minCurve.m_Curve.Array.data[2].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457690421519941618, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: InitialModule.startSizeY.minCurve.m_Curve.Array.data[1].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457690421519941618, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: InitialModule.startSizeY.minCurve.m_Curve.Array.data[2].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457690421519941618, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: InitialModule.startSizeY.minCurve.m_Curve.Array.data[2].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457690421519941618, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: InitialModule.startSizeY.minCurve.m_Curve.Array.data[2].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
     - target: {fileID: 7055220179825546305, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
       propertyPath: m_Name
       value: RazerBase
       objectReference: {fileID: 0}
+    - target: {fileID: 7691490671846576739, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: myEffectCode
+      value: 109
+      objectReference: {fileID: 0}
+    - target: {fileID: 7691490671846576739, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: triggerTarget.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7691490671846576739, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: triggerTarget.Array.data[0]
+      value: 
+      objectReference: {fileID: 3734916253919007694}
+    - target: {fileID: 7691490671846576739, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+      propertyPath: triggerTarget.Array.data[1]
+      value: 
+      objectReference: {fileID: 2309195588592657391}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+--- !u!4 &2309195588592657391 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8866945324417653078, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+  m_PrefabInstance: {fileID: 6559034275391306425}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3734916253919007694 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7553460609176807799, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+  m_PrefabInstance: {fileID: 6559034275391306425}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7394795770401250421 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4438800455033464524, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
