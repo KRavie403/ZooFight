@@ -8,6 +8,11 @@ using UnityEngine;
 public class Route : MonoBehaviour
 {
     
+    public Route()
+    {
+
+    }
+
 
 
     protected virtual void Awake()
@@ -31,19 +36,22 @@ public class Route : MonoBehaviour
 
     }
 
-    protected virtual void RouteSetUp(Vector3 pos, Vector4 RouteInfo,Transform target,PlayerController player)
-    {
-        Debug.Log("BB");
-    }
-    protected virtual void RouteSetUp(RouteInfo rInfo)
+    //
+    protected virtual void RouteSetUp(Transform target,PlayerController player,Vector3 angle)
     {
         Debug.Log("BB");
     }
 
-    public void SetUp(Vector3 pos,Vector4 RouteInfo,Transform target,PlayerController player)
+    protected virtual void RouteStart()
     {
-        RouteSetUp(pos,RouteInfo,target,player);
+
     }
 
+    public void SetUp(Transform target, PlayerController player, Vector3 angle)
+    {
+        RouteSetUp(target,player,angle);
+    }
+
+    
 
 }

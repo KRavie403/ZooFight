@@ -61,14 +61,22 @@ public struct RouteInfo
 public class RouteMaker : MonoBehaviour
 {
 
+    public Dictionary<RouteTypes,Route> RouteKeys = new Dictionary<RouteTypes,Route>();
     public List<Route> routes ;
 
-    
+
+    private void Awake()
+    {
+        
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
+        RouteKeys.Add(RouteTypes.Arc, new RouteArc());
+
+
     }
 
 
@@ -80,15 +88,8 @@ public class RouteMaker : MonoBehaviour
     }
 
 
-    public void RouteSetup(Vector3 pos , Route route , Vector4 RouteInfo , Transform target , PlayerController player)
-    {
-        //route.GetComponent<IRoute>().RouteSetUp(pos);
-        route.SetUp(pos, RouteInfo, target, player);
-    }
-    public void RouteSetup(Route route,RouteInfo rInfo)
-    {
-        //route.GetComponent<IRoute>().RouteSetUp(pos);
-        route.SetUp(rInfo.Pos,rInfo.RouteBase ,rInfo.Target,rInfo.myPlayer);
-    }
+
+
+
 
 }

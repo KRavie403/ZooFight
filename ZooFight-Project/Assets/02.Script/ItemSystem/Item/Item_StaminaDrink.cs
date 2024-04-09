@@ -12,6 +12,10 @@ using UnityEngine;
 public class Item_StaminaDrink : Items
 {
 
+    public Item_StaminaDrink(PlayerController player) : base(player)
+    {
+
+    }
 
     protected override void Awake()
     {

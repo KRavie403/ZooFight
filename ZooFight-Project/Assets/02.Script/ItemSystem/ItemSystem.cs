@@ -3,8 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+public enum ItemCode
+{
+    // 0   ~  99 전방발사형
+    Bomb = 0,
+    BananaTrap,
+
+    // 100 ~ 199 자체버프형
+    GuardDrink = 100,
+    PowerDrink,
 
 
+    // 200 ~ 299 적대작용형
+    BlockChangeScroll = 200,
+    SpiderBomb,
+    InkBomb,
+
+
+    // 300 ~ 399 착용장비형
+    ToyHammer = 300,
+
+
+}
+
+// 상태이상 강도가 높을수록 & 등급이 높을수록 높은숫자
+public enum StatusCode
+{
+    // 0 = 기본상태
+    Normal = 0,
+    // 10 ~ 19 하
+    Blind,
+    Bind,
+
+    // 20 ~ 29 중
+
+    Stun
+
+    // 30 ~ 39 상
+}
 public class ItemSystem : Singleton<ItemSystem> 
 {
 

@@ -14,6 +14,11 @@ using UnityEngine;
 
 public class Item_Bomb : Items
 {
+    public Item_Bomb(PlayerController player) : base(player)
+    {
+
+    }
+
     [SerializeField]
     EffectPlayer myEffect;
 

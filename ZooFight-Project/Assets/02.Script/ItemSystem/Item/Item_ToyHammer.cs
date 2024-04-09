@@ -13,6 +13,12 @@ using UnityEngine;
 
 public class Item_ToyHammer : Items
 {
+    public Item_ToyHammer(PlayerController player) : base(player)
+    {
+
+    }
+
+
     [SerializeField]
     EffectPlayer myEffect;
     [SerializeField]

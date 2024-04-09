@@ -22,6 +22,7 @@ public class ItemProperty : MonoBehaviour
     public float Value4; // 투사체속도    
     public float Value5; // 사거리
 
+    public ItemCode myCode;
     public ItemSystem.ItemType myItemType;
 
     public EffectCode effectCode;

@@ -12,6 +12,11 @@ using UnityEngine;
 
 public class Item_CurseScroll : Items
 {
+    public Item_CurseScroll(PlayerController player) : base(player)
+    {
+
+    }
+
 
     public EffectPlayer effectPlayer;
 

@@ -12,6 +12,10 @@ using UnityEngine;
 
 public class Item_PowerDrink : Items
 {
+    public Item_PowerDrink(PlayerController player) : base(player)
+    {
+
+    }
 
     EffectPlayer myEffect;
 

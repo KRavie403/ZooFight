@@ -10,8 +10,15 @@ interface IItems
     public void UseItems();
 }
 
+
 public class Items : ItemProperty , IItems , IEffect
 {
+    public Items(PlayerController curPlayer)
+    {
+        this.myPlayer = curPlayer;
+    }
+
+
     protected PlayerController myPlayer = null;
 
     public IEnumerator ItemAction;
@@ -33,7 +40,7 @@ public class Items : ItemProperty , IItems , IEffect
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        //myPlayer = Gamemanager.Inst.currentPlayer;
+        //curPlayer = Gamemanager.Inst.currentPlayer;
         
     }
 

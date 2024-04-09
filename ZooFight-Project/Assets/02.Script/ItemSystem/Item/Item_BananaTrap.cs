@@ -12,12 +12,20 @@ using UnityEngine;
 
 public class Item_BananaTrap : Items
 {
+    public Item_BananaTrap(PlayerController player) : base(player) 
+    {
+        
+    }
+
+
     [SerializeField]
     EffectPlayer myEffect;
     [SerializeField]
     GameObject NonActiveObj;
     [SerializeField]
     GameObject ActivedObj;
+
+
 
     protected override void Awake()
     {

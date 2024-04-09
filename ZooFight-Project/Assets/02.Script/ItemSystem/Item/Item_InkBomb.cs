@@ -13,6 +13,10 @@ using UnityEngine;
 
 public class Item_InkBomb : Items
 {
+    public Item_InkBomb(PlayerController player) : base(player)
+    {
+
+    }
 
     bool isItemActive = false;
 

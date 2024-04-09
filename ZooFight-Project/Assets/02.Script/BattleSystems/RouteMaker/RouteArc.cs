@@ -11,6 +11,11 @@ using UnityEngine;
 
 public class RouteArc : Route , IRoute  
 {
+    public RouteArc() : base()
+    {
+
+    }
+
     RouteTypes curType = RouteTypes.Arc;
     RouteTypes IRoute.Type { get => curType; }
 
@@ -40,42 +45,24 @@ public class RouteArc : Route , IRoute
         base.FixedUpdate();
     }
 
-    void IRoute.RouteStart(Vector3 pos)
+    void IRoute.RouteStart(Vector3 Angle)
     {
         throw new System.NotImplementedException();
     }
 
-    float startHeight = 1.5f;
-    float ShootAngle = 45.0f;
-    float DropSpeed = 2.0f;
-    float endHeight = 0.5f;
 
-    [SerializeField]
-    float4 RouteInfo;
-    // <StartHeight,EndHeight,DropSpeed,ShootAngle>
+    protected override void RouteSetUp(Transform target, PlayerController player, Vector3 angle)
+    {
+        base.RouteSetUp(target, player, angle);
 
-    protected override void RouteSetUp(Vector3 pos, Vector4 routeInfo,Transform target,PlayerController player)
-    {
-        base.RouteSetUp(pos, RouteInfo, target, player);
-        RouteInfo = routeInfo;
-        SetupCoroutine = RouteMaker(pos, target, player, RouteInfo);
-        Debug.Log("aa");
-    }
-    protected override void RouteSetUp(RouteInfo rInfo)
-    {
-        base.RouteSetUp(rInfo);
-        RouteInfo = rInfo.RouteBase;
-        SetupCoroutine = RouteMaker(rInfo.Pos, rInfo.Target, rInfo.myPlayer, rInfo.RouteBase);
         Debug.Log("aa");
     }
 
-    Transform myTargetObj = null;
-    PlayerController myPlayer = null;
+
     IEnumerator SetupCoroutine = null;
 
     void IRoute.RouteSetUp(Vector3 pos,Transform target, PlayerController player)
     {
-        SetupCoroutine = RouteMaker(pos, target, player,RouteInfo);
 
     }
 
@@ -124,5 +111,27 @@ public class RouteArc : Route , IRoute
             yield return null;
         }
     }
+
+    public IEnumerator RouteMaker2(Transform Target,PlayerController player,Vector3 angle,float Speed)
+    {
+        float duringTime = 0;
+
+        // 플레이어의 전방벡터를 가져옴
+        Vector3 dir = player.transform.forward;
+
+
+        while (true)
+        {
+            duringTime += Time.deltaTime;
+
+            // 플레이어의 전방벡터를 발사속도에 맞춰
+
+
+            yield return null;  
+        }
+
+
+    }
+
 
 }

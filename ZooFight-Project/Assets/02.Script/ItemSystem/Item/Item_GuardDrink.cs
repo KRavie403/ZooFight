@@ -13,6 +13,11 @@ using UnityEngine;
 
 public class Item_GuardDrink : Items
 {
+    public Item_GuardDrink(PlayerController player) : base(player)
+    {
+
+    }
+
 
     EffectPlayer myEffect;
 

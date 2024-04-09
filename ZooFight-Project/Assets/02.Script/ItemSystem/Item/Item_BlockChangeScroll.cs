@@ -10,6 +10,11 @@ using UnityEngine;
 
 public class Item_BlockChangeScroll : Items
 {
+    public Item_BlockChangeScroll(PlayerController player) : base(player)
+    {
+
+    }
+
     [SerializeField]
     EffectPlayer myEffect;
 

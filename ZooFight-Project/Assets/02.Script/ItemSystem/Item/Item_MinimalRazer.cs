@@ -14,7 +14,10 @@ using UnityEngine;
 
 public class Item_MinimalRazer : Items 
 {
-   
+    public Item_MinimalRazer(PlayerController player) : base(player)
+    {
+
+    }
 
     public EffectPlayer effectPlayer;
     // 방향테스트용

@@ -12,6 +12,13 @@ using UnityEngine;
 
 public class Item_WhippingMachine : Items
 {
+    public Item_WhippingMachine(PlayerController player) : base(player)
+    {
+
+    }
+
+
+
     EffectPlayer myEffect;
 
     protected override void Awake()

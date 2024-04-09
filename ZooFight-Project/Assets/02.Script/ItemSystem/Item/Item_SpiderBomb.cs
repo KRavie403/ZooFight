@@ -13,6 +13,10 @@ using UnityEngine;
 
 public class Item_SpiderBomb : Items
 {
+    public Item_SpiderBomb(PlayerController player) : base(player)
+    {
+
+    }
 
     EffectPlayer myEffect;
 
