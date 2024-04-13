@@ -16,72 +16,32 @@ public class LobbyUI : MonoBehaviour
 
 
     // 준비 버튼
-    [SerializeField] public GameObject _readyBtn;
+    public GameObject readyBtn;
     // 준비 완료되면 체크 
-    [SerializeField] private GameObject _checkBox;
-    [SerializeField] private GameObject _check2Box;
-    [SerializeField] private GameObject _check3Box;
+    public GameObject checkBox;
+    public GameObject check2Box;
+    public GameObject check3Box;
 
     // 카운트다운
-    [SerializeField] private bool[] _isPlayerReady; // 플레이어 준비 상태 배열
+    [SerializeField] private bool[] _isPlayerReady = new bool[3]; // 플레이어 준비 상태 배열
     [SerializeField] private bool _allPlayersReady = false; // 모든 플레이어가 준비 상태인지
     [SerializeField] private TextMeshProUGUI timerText;
-    [SerializeField] private float remainingTime = 30f;
+    [SerializeField] private float remainingTime = 20f;
     [SerializeField] private float readyTime = 10f;
-    [SerializeField] private WaitForSeconds waitsec = new WaitForSeconds(0.5f);
 
 
     private void Start()
     {
         LoadUserName();
-        //_checkBox.SetActive(false);
-        //_check2Box.SetActive(false);
-        //_check3Box.SetActive(false);
-        for(int i = 0; i < _isPlayerReady.Length; i++)
-        {
-            _isPlayerReady[i] = false;
-        }
+        Debug.Log("Test: Start Initialize Ready State");
+        InitializeReadyState();
     }
 
-    void Update()
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.KeypadEnter))
-        {
-            ClickReady();
-        }
-        // 모든 플레이어가 준비 상태인지 확인
-        if (!_allPlayersReady && CheckIfAllPlayersReady())
-        {
-            // 모든 플레이어가 준비 상태일 때
-            _allPlayersReady = true;
-            // 카운트다운 10초로 설정
-            remainingTime = readyTime;
-        }
-
-        // 카운트다운 진행
-        if (remainingTime > 0)
-        {
-            if (remainingTime > 10) { timerText.color = Color.white; }
-            remainingTime -= Time.deltaTime;
-        }
-
-        // 카운트다운이 0에 도달했을 때
-        else if (remainingTime <= 0)
-        {
-            remainingTime = 0;
-            if (!_allPlayersReady)
-            {
-                _allPlayersReady = true;
-                for(int i = 0; i < _isPlayerReady.Length; i++)
-                {
-                    _isPlayerReady[i] = true;
-                }
-                remainingTime = readyTime;
-            }
-            OnLoadScene().Forget();
-        }
-
-        timerText.text = string.Format("{0:00}", remainingTime);
+        // 유저가 엔터(준비)를 눌렀을 경우 //나중에 없앨 예정
+        HandleInput();
+        HandleCountdown();
     }
 
     // 유저 닉네임 불러오기
@@ -95,17 +55,74 @@ public class LobbyUI : MonoBehaviour
         //_user3text.text = ;
     }
 
+    // 초기 준비 상태 전부 비활성화
+    private void InitializeReadyState()
+    {
+        checkBox.SetActive(false);
+        check2Box.SetActive(false);
+        check3Box.SetActive(false);
+    }
+
+    private void HandleInput()
+    {
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            Debug.Log("Test: Enter눌렀음");
+            ClickReady();
+        }
+    }
+
+    private void HandleCountdown()
+    {
+        // 모든 플레이어가 준비되면 10초 카운트다운 시작
+        if (CheckIfAllPlayersReady() && !_allPlayersReady)
+        {
+            StartCountdown();
+        }
+        // 카운트다운 진행
+        if (remainingTime > 0)
+        {
+            timerText.color = !_allPlayersReady ? Color.white 
+                : timerText.color = new Color(233 / 255f, 190 / 255f, 85 / 255f, 1);
+
+            remainingTime -= Time.deltaTime;
+        }
+        else if (!_allPlayersReady)
+        {
+            Debug.Log("Test: 카운트다운 끝 StartCountdown() 실행 ");
+            remainingTime = 0;
+            StartCountdown();
+        }
+        else
+        {
+            OnLoadScene().Forget();
+        }
+        timerText.text = $"{Mathf.CeilToInt(remainingTime):00}";
+    }
+
+    private void StartCountdown()
+    {
+        // 모든 플레이어가 준비 상태일 때
+        _allPlayersReady = true;
+        // 카운트다운 10초로 설정
+        remainingTime = readyTime;
+        checkBox.SetActive(true);
+        check2Box.SetActive(true);
+        check3Box.SetActive(true);
+    }
+
     public void ClickReady()
     {
-        Debug.Log("ClickReady");
+        Debug.Log("Test: ClickReady");
         //int n = 0; //임시
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < _isPlayerReady.Length; i++)
         {
             _isPlayerReady[i] = true;
         }
-        _checkBox.SetActive(true);
-        _check2Box.SetActive(true);
-        _check3Box.SetActive(true);
+        // 클릭 누른 해당 유저의 이미지만 활성화할 것
+        checkBox.SetActive(true);
+        check2Box.SetActive(true);
+        check3Box.SetActive(true);
     }
 
     // 플레이어 준비 상태 체크

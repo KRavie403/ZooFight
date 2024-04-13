@@ -226,6 +226,8 @@ MonoBehaviour:
   text: {fileID: 1616520785}
   t1: {fileID: 969130867}
   t2: {fileID: 1374011050}
+  BGImage1: {fileID: 286067279}
+  BGImage2: {fileID: 1910235958}
   _textSprite: {fileID: 0}
   _t1Sprite: {fileID: 0}
   _t2Sprite: {fileID: 0}
