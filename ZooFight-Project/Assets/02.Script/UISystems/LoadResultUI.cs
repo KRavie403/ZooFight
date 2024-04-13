@@ -13,6 +13,8 @@ public class LoadResultUI : MonoBehaviour
     public Image text;
     public Image t1;
     public Image t2;
+    public Image BGImage1;
+    public Image BGImage2;
 
     [SerializeField] private Sprite _textSprite;
     [SerializeField] private Sprite _t1Sprite;
@@ -38,6 +40,8 @@ public class LoadResultUI : MonoBehaviour
             _textSprite = Resources.Load<Sprite>("WIN");
             _t1Sprite = Resources.Load<Sprite>("WIN(2)");
             _t2Sprite = Resources.Load<Sprite>("LOSE(2)");
+            BGImage1.color = new Color(51 / 255f, 63 / 255f, 94 / 255f, 1);
+            BGImage2.color = new Color(41 / 255f, 44 / 255f, 60 / 255f, 1);
         }
         // ¹«½ÂºÎ
         else if (winningTeam == HitScanner.Team.NotSetting)
@@ -45,6 +49,8 @@ public class LoadResultUI : MonoBehaviour
             _textSprite = Resources.Load<Sprite>("DRAW");
             _t1Sprite = Resources.Load<Sprite>("DRAW(2)");
             _t2Sprite = Resources.Load<Sprite>("DRAW(2)");
+            BGImage1.color = new Color(51 / 255f, 63 / 255f, 94 / 255f, 1);
+            BGImage2.color = new Color(41 / 255f, 44 / 255f, 60 / 255f, 1);
         }
         // ÆÐ¹è
         else  
@@ -52,6 +58,8 @@ public class LoadResultUI : MonoBehaviour
             _textSprite = Resources.Load<Sprite>("LOSE");
             _t1Sprite = Resources.Load<Sprite>("WIN(3)");
             _t2Sprite = Resources.Load<Sprite>("LOSE(3)");
+            BGImage1.color = new Color(94 / 255f, 51 / 255f, 52 / 255f, 1);
+            BGImage2.color = new Color(60 / 255f, 41 / 255f, 42 / 255f, 1);
         }
         text.sprite = _textSprite;
         t1.sprite = _t1Sprite;
