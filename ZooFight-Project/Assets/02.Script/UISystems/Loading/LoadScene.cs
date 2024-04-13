@@ -3,12 +3,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using EasyUI.Progress;
+using Cysharp.Threading.Tasks;
+using System;
 
 public class LoadScene : MonoBehaviour
 {
-    WaitForSeconds waitsec = new WaitForSeconds(2.0f);
-    private Coroutine movingNextSceneCoroutine;
-
     public Animator anim;
 
     [SerializeField]
@@ -18,34 +17,27 @@ public class LoadScene : MonoBehaviour
     {
         LoadLoadingImg();
 
-        // 이전에 실행 중인 코루틴이 있으면 중단
-        if (movingNextSceneCoroutine != null)
-        {
-            StopCoroutine(movingNextSceneCoroutine);
-        }
-       
-        movingNextSceneCoroutine = StartCoroutine(MovingNextScene());
+        OnLoadGameScene().Forget();
     }
 
-    IEnumerator MovingNextScene()
+    private async UniTaskVoid OnLoadGameScene()
     {
-        yield return null;
-        AsyncOperation op = SceneManager.LoadSceneAsync("GameScene");
-        op.allowSceneActivation = false;
+        await UniTask.Yield();
 
-        while (!op.isDone)
+        AsyncOperation loadSceneAsync = SceneManager.LoadSceneAsync("GameScene");
+        loadSceneAsync.allowSceneActivation = false;
+
+        while(!loadSceneAsync.isDone)
         {
-            yield return null;
+            await UniTask.Yield();
 
-            if(op.progress >= 0.9f)
+            if(loadSceneAsync.progress >= 0.9f)
             {
-                yield return waitsec;
-                op.allowSceneActivation = true;
-                yield break;
+                await UniTask.Delay(TimeSpan.FromSeconds(2));
+
+                loadSceneAsync.allowSceneActivation=true;
             }
         }
-        //  씬 로드 후 코루틴 참조를 초기화
-        movingNextSceneCoroutine = null;
     }
 
     public void LoadLoadingImg()
