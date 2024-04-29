@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Charcater_ItemReady : BaseState
+public class Character_SJump : BaseState
 {
-    public Charcater_ItemReady(PlayerController player, StateMachine stateMachine) : base(player, stateMachine)
+    public Character_SJump(PlayerController player, StateMachine stateMachine) : base(player, stateMachine)
     {
 
     }
@@ -14,15 +14,12 @@ public class Charcater_ItemReady : BaseState
     {
 
         base.Initate();
-        ableFuncs.Add(PlayerController.pFunc.Move, player.CurAxisMove);
-        ableFuncs.Add(PlayerController.pFunc.ItemUse, player.ItemUse);
 
     }
 
     public override void Enter(BaseState BeforeState)
     {
         base.Enter(BeforeState);
-        player.SetState(PlayerController.pState.ItemReady);
 
 
     }

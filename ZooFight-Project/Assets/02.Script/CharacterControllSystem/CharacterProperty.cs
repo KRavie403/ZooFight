@@ -54,6 +54,26 @@ public class CharacterProperty : MonoBehaviour
         }
     }
 
+    public bool isShield = false;
+    public UnityEvent<float> UpdateShield;
+    public float MaxShield;
+    private float _curShield = 0.0f;
+    public float CurShield
+    {
+        get
+        {
+            if(isShield) return 0;
+            if (_curShield < 0.0f) _curShield = 0;
+            return _curShield;
+        }
+        set
+        {
+            _curShield = Mathf.Clamp(value, 0.0f, MaxShield);
+            UpdateShield?.Invoke(Mathf.Approximately(MaxShield, 0.0f) ? 0.0f : _curShield);
+        }
+    }
+
+
     public float MotionSpeed;
     Animator _anim = null;
     public Animator myAnim

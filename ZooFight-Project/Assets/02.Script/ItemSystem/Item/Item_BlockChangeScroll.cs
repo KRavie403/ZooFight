@@ -5,7 +5,8 @@ using UnityEngine;
 /// <summary>
 /// 아이템명 : 블럭교환스크롤
 /// Value 1 지속시간
-/// 
+/// Value 2 이펙트 지속시간
+/// Value 3 ???
 /// </summary>
 
 public class Item_BlockChangeScroll : Items
@@ -18,8 +19,10 @@ public class Item_BlockChangeScroll : Items
     [SerializeField]
     EffectPlayer myEffect;
 
-    public GameObject myBlock;
-    public GameObject enemyBlock;
+    public GameObject myBlockObj;
+    public BlockObject myBlock;
+    public GameObject enemyBlockObj;
+    public BlockObject enemyBlock;
 
     protected override void Awake()
     {
@@ -39,11 +42,71 @@ public class Item_BlockChangeScroll : Items
 
     }
 
+    public override void ItemUse()
+    {
+        base.ItemUse();
+
+    }
+    protected override IEnumerator ItemActions()
+    {
+        yield return base.ItemActions();
+
+        float duringTime = 0;
+        // 아군 , 상대편 블럭정보 가져오기
+        if (myPlayer.myTeam == HitScanner.Team.RedTeam)
+        {
+            myBlock = Gamemanager.Inst.RedTeamBlock;
+            enemyBlock = Gamemanager.Inst.BlueTeamBlock;
+        }
+        else if (myPlayer.myTeam == HitScanner.Team.BlueTeam)
+        {
+            myBlock = Gamemanager.Inst.BlueTeamBlock;
+            enemyBlock = Gamemanager.Inst.RedTeamBlock;
+        }
+
+        // 잡혀있는 상태 해제
+        myBlock.isChangeActive = true;
+        enemyBlock.isChangeActive = true;
+        myBlock.ForceDeGrab();
+        enemyBlock.ForceDeGrab();
+        // 블럭 교환
+        myBlock.ChangeBlockTeam();
+        enemyBlock.ChangeBlockTeam();
+
+
+        // 블럭교환 이펙트 출력준비
+
+        // 블럭교환 사운드 출력준비
+
+
+        myBlock.isChangeActive = false;
+        enemyBlock.isChangeActive = false;
+        // 블럭교환 실행
+        while (duringTime < Value2)
+        {
+            duringTime += Time.deltaTime;
+
+
+            yield return null;
+        }
+
+    }
+
     public IEnumerator ScrollActive()
     {
+        float duringTime = 0;
         // 아군 , 상대편 블럭정보 가져오기
-        //myBlock = Gamemanager.Inst.???
-        //enemyBlock = Gamemanager.Inst.???
+        if(myPlayer.myTeam == HitScanner.Team.RedTeam)
+        {
+            myBlock = Gamemanager.Inst.RedTeamBlock;
+            enemyBlock = Gamemanager.Inst.BlueTeamBlock;
+        }
+        else if (myPlayer.myTeam == HitScanner.Team.BlueTeam)
+        {
+            myBlock = Gamemanager.Inst.BlueTeamBlock;
+            enemyBlock = Gamemanager.Inst.RedTeamBlock;
+        }
+
 
         // 블럭교환 이펙트 출력준비
 
@@ -51,10 +114,16 @@ public class Item_BlockChangeScroll : Items
 
 
         // 블럭교환 실행
-        while (true)
+        while (duringTime < Value2)
         {
+            duringTime += Time.deltaTime;   
 
+            yield return null;
         }
+
+
+
+
     }
 
 

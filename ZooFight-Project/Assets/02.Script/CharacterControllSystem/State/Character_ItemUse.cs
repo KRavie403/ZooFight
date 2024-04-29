@@ -15,6 +15,7 @@ public class Character_ItemUse : BaseState
 
         base.Initate();
         //ableFuncs.Add(PlayerController.pFunc.Move, player.CurAxisMove);
+        ableFuncs.Add(PlayerController.pFunc.ItemUse, player.ItemUse);
 
     }
 
@@ -22,18 +23,33 @@ public class Character_ItemUse : BaseState
     {
         base.Enter(BeforeState);
         player.SetState(PlayerController.pState.ItemUse);
+        //ableFuncs[PlayerController.pFunc.ItemUse]();
 
+        // 아이템 사용상태 진입시 캐릭터 이동모션 취소
+        player.AxisX = 0;
+        player.AxisY = 0;
+        player.myAnim.SetBool("IsMoving", false);
+        player.myAnim.SetBool("IsRunning", false);
+
+        // 아이템 사용 모션 출력
+        player.myAnim.SetBool("ItemUse",true);
+
+        player.curItems.ItemUse();
     }
 
     public override void Exit()
     {
         base.Exit();
 
+        player.myAnim.SetBool("ItemUse", false);
+
+        player.curItems = null;
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+
     }
 
     public override void PhysicsUpdate()

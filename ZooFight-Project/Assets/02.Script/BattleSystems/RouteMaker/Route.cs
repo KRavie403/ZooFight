@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
-
+using UnityEngine.Events;
 
 public class Route : MonoBehaviour
 {
-    
+    public RouteTypes myRouteType;
+
+    public bool isEnd = false;
+
     public Route()
     {
 
@@ -36,21 +37,14 @@ public class Route : MonoBehaviour
 
     }
 
-    //
-    protected virtual void RouteSetUp(Transform target,PlayerController player,Vector3 angle)
-    {
-        Debug.Log("BB");
-    }
 
-    protected virtual void RouteStart()
+
+    protected virtual void RouteStart(Transform Target, Vector3 Dir, float Speed, float Dist, UnityAction e = null)
     {
 
     }
 
-    public void SetUp(Transform target, PlayerController player, Vector3 angle)
-    {
-        RouteSetUp(target,player,angle);
-    }
+
 
     
 

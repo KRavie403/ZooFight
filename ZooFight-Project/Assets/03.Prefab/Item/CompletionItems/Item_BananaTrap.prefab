@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2564735256729784727}
   - component: {fileID: 7710901862858997161}
   m_Layer: 0
-  m_Name: BananaTrap
+  m_Name: Item_BananaTrap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,15 +51,18 @@ MonoBehaviour:
   Value3: 0
   Value4: 0
   Value5: 0
-  myItemType: 0
-  effectCode: 6
+  myCode: 1
+  effectCode: 100
   soundCode: 0
+  myPrefab: {fileID: 9091358806984954437}
   Targets: []
+  myPlayer: {fileID: 0}
   InputCount: 0
   ItemEffect: 0
   myEffect: {fileID: 0}
   NonActiveObj: {fileID: 6738735083283184989}
   ActivedObj: {fileID: 1119810086636074631}
+  HitScanner: {fileID: 0}
 --- !u!1001 &1679845051062798430
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -70,7 +73,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1790848784920248025, guid: 9fe76d64bde84b641b9361e6088a8150, type: 3}
       propertyPath: m_Name
-      value: Banana02
+      value: ActivedObj
       objectReference: {fileID: 0}
     - target: {fileID: 1790848784920248025, guid: 9fe76d64bde84b641b9361e6088a8150, type: 3}
       propertyPath: m_IsActive
@@ -141,7 +144,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1282646014272397250, guid: 39557b52dddfb714bb3b5d100d13e6f6, type: 3}
       propertyPath: m_Name
-      value: Banana01
+      value: NonActiveOb
       objectReference: {fileID: 0}
     - target: {fileID: 7952633071355094747, guid: 39557b52dddfb714bb3b5d100d13e6f6, type: 3}
       propertyPath: m_LocalPosition.x

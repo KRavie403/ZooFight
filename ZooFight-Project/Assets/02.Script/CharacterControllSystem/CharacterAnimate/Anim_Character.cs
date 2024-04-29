@@ -115,6 +115,12 @@ public class Anim_Character : MonoBehaviour
 
     }
 
+    // 타격대상 추출
+    public void ItemHitAction()
+    {
+        //myPlayer.AttackPoint
+    }
+
     #endregion
 
     #region 승패모션함수

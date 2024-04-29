@@ -7,7 +7,7 @@ using UnityEngine;
 
 interface IItems
 {
-    public void UseItems();
+    public void ItemUse();
 }
 
 
@@ -16,17 +16,20 @@ public class Items : ItemProperty , IItems , IEffect
     public Items(PlayerController curPlayer)
     {
         this.myPlayer = curPlayer;
+        Debug.Log($"{this} Load");
     }
 
-
+    [SerializeField]
     protected PlayerController myPlayer = null;
 
     public IEnumerator ItemAction;
 
     public int InputCount = 0;
+    protected bool isItemUse = false;
     protected bool isItemUseEnd = false;
     public event Action ItemReady = delegate { };
 
+    [SerializeField]
     protected Vector3 dir = Vector3.zero;
 
     [SerializeField]
@@ -35,13 +38,17 @@ public class Items : ItemProperty , IItems , IEffect
 
     protected virtual void Awake()
     {
+        //if(transform.parent == ObjectPoolingManager.instance.gameObject)
+        //{
+
+        //}
+        
     }
 
     // Start is called before the first frame update
     protected virtual void Start()
     {
         //curPlayer = Gamemanager.Inst.currentPlayer;
-        
     }
 
     // Update is called once per frame
@@ -49,7 +56,32 @@ public class Items : ItemProperty , IItems , IEffect
     {
         
     }
+
+    protected virtual void OnEnable()
+    {
+        StopAllCoroutines();
+        if (myPlayer != null)
+        {
+            ItemAction = ItemActions();
+            if(ItemAction != null)
+            {
+                StartCoroutine(ItemActions());
+            }
+
+        }
+    }
+
+    protected virtual void OnDisable()
+    {
+        if(ItemAction != null)
+        {
+            StopAllCoroutines();
+        }
+    }
+
     
+
+    // 정보주입이 필요할때
     public virtual void Initate(List<float> Values,PlayerController player)
     {
         if (Values == null) return;
@@ -60,55 +92,96 @@ public class Items : ItemProperty , IItems , IEffect
         Value3 = Values[2];
         Value4 = Values[3];
         Value5 = Values[4];
-
+        
         myPlayer = player;
-
-    }
-
-
-    public virtual void Standby(Items item,ItemSystem.ActiveType itemType)
-    {
-        switch (itemType)
+        foreach(var value in Values)
         {
-            case ItemSystem.ActiveType.PointSelect:
-                ItemReady = () => ItemUse(myPlayer);
-                break;
-            case ItemSystem.ActiveType.SelfActive:
-                break;
-            case ItemSystem.ActiveType.EnemyActive:
-                break;
-            case ItemSystem.ActiveType.BlockActive:
-                break;
-            
-            // 미동작 부분
-            case ItemSystem.ActiveType.TypeCount:
-            default:
-                break;
+            Debug.Log(value);
         }
+        transform.localPosition = Vector3.zero;
+        //Debug.Log(Values);
     }
 
-    public virtual void ItemUse(PlayerController player)
+
+    // 사용자 전달
+    public virtual void ItemUse()
     {
-        if(ItemAction != null)
+        // 오브젝트가 꺼져잇다면
+        if (!gameObject.activeSelf)
         {
-            StartCoroutine(ItemAction);
+
         }
 
+        // 잔여 작업이 있는지 확인 후 종료
+        if (ItemAction != null)
+        {
+            StopCoroutine(ItemAction);
+            ItemAction = ItemActions();
+        }
+
+
+
     }
 
+    public virtual void ItemHitAction()
+    {
+
+    }
+
+    // 아이템을 오브젝트 풀에 반납할때
+    public void ReturnItem()
+    {
+        //myPlayer = null;
+        //GetComponent<HitScanner>()?.SetMyTeam(HitScanner.Team.NotSetting);
+        ItemEnd();
+        ObjectPoolingManager.instance.ReturnObject(gameObject);
+    }
+
+    // 아이템의 동작이 종료될때
     public virtual void ItemEnd()
     {
         isItemUseEnd = true;
+        StopCoroutine(ItemAction);
+        myPlayer.ItemUseEnd();
+        myPlayer.curItems = null;
+        myPlayer = null;
+        ItemAction = null;
+        StopAllCoroutines();
+        dir = Vector3.zero;
+        GetComponent<HitScanner>()?.Reset();
     }
 
+    protected virtual IEnumerator ItemActions()
+    {
 
+        // 사용 시작전 정보갱신
+        while (!isItemUse)
+        {
+            // 어떤 아이템이든 사용방향은 캐릭터의 전방
+            SetDir(myPlayer.transform.forward);
+
+
+            yield return null;
+        }
+        // 상속받는 아이템이 사용중 동작 작성
+        // 
+    }
+
+    public List<float> GetValues()
+    {
+        List<float> Values = new List<float>
+        {
+            Value1,
+            Value2,
+            Value3,
+            Value4,
+            Value5
+        };
+        return Values;
+    }
 
     protected void OnDestroy()
     {
-        if (myPlayer.IsDestroyed())
-        {
-            return;
-        }
         if (myPlayer != null) 
         {
             myPlayer.curItems = null;
@@ -121,14 +194,11 @@ public class Items : ItemProperty , IItems , IEffect
         return myPlayer;
     }
 
-    EffectCode IEffect.GetEffectCode()
+    public void SetDir(Vector3 Dir)
     {
-        return ItemEffect;
+        dir = Dir;
     }
 
-    public virtual void UseItems()
-    {
-        ItemUse(myPlayer);
-    }
+
 }
 

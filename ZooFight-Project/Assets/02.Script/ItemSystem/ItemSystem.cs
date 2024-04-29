@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 public enum ItemCode
 {
@@ -16,6 +16,7 @@ public enum ItemCode
 
     // 200 ~ 299 적대작용형
     BlockChangeScroll = 200,
+    CurseScroll,
     SpiderBomb,
     InkBomb,
 
@@ -29,18 +30,24 @@ public enum ItemCode
 // 상태이상 강도가 높을수록 & 등급이 높을수록 높은숫자
 public enum StatusCode
 {
-    // 0 = 기본상태
+    // 0 = 기본상태 1 ~ 9 이동방해계열
     Normal = 0,
-    // 10 ~ 19 하
-    Blind,
-    Bind,
+    Slow,       // 이동속도 감소
+    //Minimal,    // 사이즈 감소 (이속,공속,점프력 감소)
+    //Cripple,    // 공격속도 감소
+    // 10 ~ 19  하급 상태 이상
+    Blind = 10, // 시야 감소
+    Bind,       // 속박
+    //Weak,       // 블럭 잡기 불가
+    //Silence,    // 아이템 사용 불가
+    // 20 ~ 29  중급 상태 이상
+    Stun,       // 기절 
 
-    // 20 ~ 29 중
 
-    Stun
-
-    // 30 ~ 39 상
+    // 30 ~ 39  상급 상태 이상
+    AirBone
 }
+
 public class ItemSystem : Singleton<ItemSystem> 
 {
 
@@ -49,28 +56,16 @@ public class ItemSystem : Singleton<ItemSystem>
     public GameObject ViewerObj;
 
 
-    public enum ItemType
-    {
-        Immediate = 0,      // 즉시 발동형 아이템
-        Projectile,         // 지점 지정형 아이템
-        Delayed,            // 지연 시간형 아이템
+    public Dictionary<ItemCode, Items> ItemKeys = new Dictionary<ItemCode, Items>();
+    // 정리예정
+    public List<GameObject> ItemList = new List<GameObject>();
 
 
-        TypeCount           // 아이템 종류의 갯수
-    }
-
-    public enum ActiveType
-    {
-
-        PointSelect = 0, // 사용 지점을 클릭으로 설정하는 아이템
-        SelfActive,      // 자신에게 즉시 적용되는 아이템
-        EnemyActive,     // 상대방에게 즉시 작용되는 아이템
-        BlockActive,     // 메인블럭에 적용되는 아이템
-
-        TypeCount        // 동작 종류의 갯수
-    }
+    // 아이템 내부정보 원형
+    public List<Items> ItemBase = new List<Items>();
 
 
+    public UnityEvent<Items> ItemOrignin;
 
     Vector3 tmpPos = Vector3.zero;
 
@@ -79,6 +74,17 @@ public class ItemSystem : Singleton<ItemSystem>
     void Start()
     {
         
+        //for(int i = 0; i < ItemList.Count; i++)
+        //{
+        //    GameObject obj = Instantiate(ItemList[i],transform);
+        //    Items item = obj.GetComponent<Items>();
+        //    ItemKeys.Add(item.myCode, item);
+        //}
+        for (int i = 0; i < ItemBase.Count; i++)
+        {
+            ItemKeys.Add(ItemBase[i].myCode,ItemBase[i]);
+        }
+        ItemKeys[ItemCode.BananaTrap].Value1 = 3;
     }
 
     // Update is called once per frame
@@ -89,9 +95,45 @@ public class ItemSystem : Singleton<ItemSystem>
 
     public void UseItem(Items item,PlayerController players)
     {
-        item.ItemUse(players);
+        //item.ItemUse(players);
+        players.curItems.ItemUse();
     }
 
+    public void AddRequest(PlayerController player)
+    {
+    }
+    public void ResetRequest()
+    {
+        ItemOrignin.RemoveAllListeners();
+    }
+
+    public void CallItem()
+    {
+        ItemOrignin.Invoke(ItemBase[Random.Range(0, ItemList.Count)]);
+    }
+
+    public Items RandomItemSelect()
+    {
+        // 테스트용 고정출력
+        return ItemBase[0];// 삭제예정
+        return ItemBase[Random.Range(0, ItemList.Count)];
+
+    }
+
+    // 랜덤 아이템을 오브젝트 풀에서 가져와서 입력받은 캐릭터에게 넣어주기
+    public Items GiveItem(PlayerController player,Items item)
+    {
+        if (player.curItems != null) return null;
+        //Items item = RandomItemSelect();
+
+        return ObjectPoolingManager.instance.GetObject<Items>(item.name, Vector3.zero, Quaternion.identity, player.ItemPoint,false);
+    }
+
+    public Items GetItemOrigin(Items item)
+    {
+
+        return null;
+    }
 
 }
 

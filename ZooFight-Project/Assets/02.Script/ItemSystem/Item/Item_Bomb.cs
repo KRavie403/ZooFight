@@ -19,8 +19,15 @@ public class Item_Bomb : Items
 
     }
 
+
     [SerializeField]
     EffectPlayer myEffect;
+    [SerializeField]
+    GameObject NonActiveObj;
+    [SerializeField]
+    GameObject ActivedObj;
+   
+
 
 
     protected override void Awake()
@@ -44,6 +51,16 @@ public class Item_Bomb : Items
     {
         ItemAction = BombActive(pos);
 
+    }
+
+    protected override IEnumerator ItemActions()
+    {
+        yield return base.ItemActions();
+
+        while (true)
+        {
+
+        }
     }
 
     public IEnumerator BombActive(Vector3 pos)

@@ -47,18 +47,16 @@ public class Item_ToyHammer : Items
         base.Update();
 
     }
-    public override void ItemUse(PlayerController player)
+    public override void ItemUse()
     {
-        base.ItemUse(player);
+        base.ItemUse();
     }
     public override void Initate(List<float> Values, PlayerController player)
     {
         base.Initate(Values, player);
     }
-    public override void Standby(Items item, ItemSystem.ActiveType itemType)
-    {
-        base.Standby(item, itemType);
-    }
+
+
 
     public void HammerSetting(Vector3 pos)
     {
@@ -127,9 +125,13 @@ public class Item_ToyHammer : Items
         }
     }
 
-    public override void UseItems()
-    {
-        base.UseItems();
-    }
-    
+
+
+
+
+
+
+
+
+
 }

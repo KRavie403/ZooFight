@@ -47,13 +47,6 @@ public class Item_MinimalRazer : Items
         base.Update();
     }
 
-    public override void Standby(Items item, ItemSystem.ActiveType itemType)
-    {
-        base.Standby(item,itemType);
-        
-        base.ItemAction = RazerShooting(Dir);
-        //Effectmanager.Inst.GetEffectObj(effectPlayer)
-    }
 
     
     public IEnumerator RazerShooting(Vector3 pos)
@@ -100,9 +93,9 @@ public class Item_MinimalRazer : Items
 
     }
 
-    public override void ItemUse(PlayerController player)
+    public override void ItemUse()
     {
-        base.ItemUse(player);
+        base.ItemUse();
         //effectPlayer.
     }
 

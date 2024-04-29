@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// 포물선 경로 설정하는 클래스
@@ -9,15 +10,15 @@ using UnityEngine;
 /// </summary>
 
 
-public class RouteArc : Route , IRoute  
+public class Route_Arc : Route , IRoute  
 {
-    public RouteArc() : base()
+    public Route_Arc() : base()
     {
 
     }
 
-    RouteTypes curType = RouteTypes.Arc;
-    RouteTypes IRoute.Type { get => curType; }
+    
+    RouteTypes IRoute.Type { get => myRouteType; }
 
     Component IRoute.Comp => this as Component;
 
@@ -45,33 +46,28 @@ public class RouteArc : Route , IRoute
         base.FixedUpdate();
     }
 
-    void IRoute.RouteStart(Vector3 Angle)
+    IEnumerator RouteCoroutine = null;
+
+    protected override void RouteStart(Transform Target, Vector3 Dir, float Speed,float Dist, UnityAction e = null)
     {
-        throw new System.NotImplementedException();
+        base.RouteStart(Target, Dir,Dist ,Speed);
+
+        RouteCoroutine = RouteMaker2(Target, Dir, Speed,Dist,e);
+        if (RouteCoroutine != null)
+        {
+            StartCoroutine(RouteCoroutine);
+        }
+        //e?.Invoke();
     }
 
 
-    protected override void RouteSetUp(Transform target, PlayerController player, Vector3 angle)
-    {
-        base.RouteSetUp(target, player, angle);
-
-        Debug.Log("aa");
-    }
-
-
-    IEnumerator SetupCoroutine = null;
-
-    void IRoute.RouteSetUp(Vector3 pos,Transform target, PlayerController player)
+    void IRoute.RouteStart(Transform Target, Vector3 Dir, float Speed,float Dist, UnityAction e = null)
     {
 
+        RouteStart(Target, Dir, Speed, Dist, e);
     }
 
-    public void MoveStart()
-    {
-        StartCoroutine(SetupCoroutine);
-    }
-
-    public IEnumerator RouteMaker(Vector3 Value, Transform Target, PlayerController player,float4 Rinfo)
+    public IEnumerator RouteMaker(Vector3 Value, Transform Target, PlayerController player, float4 Rinfo, UnityAction e = null)
     {
         // 변수 초기화
         float duringTime = 0;
@@ -112,25 +108,40 @@ public class RouteArc : Route , IRoute
         }
     }
 
-    public IEnumerator RouteMaker2(Transform Target,PlayerController player,Vector3 angle,float Speed)
+    public IEnumerator RouteMaker2(Transform Target,Vector3 Dir,float Speed,float Dist, UnityAction e = null)
     {
         float duringTime = 0;
 
+        Debug.Log($"{Target.name} move {Dir} ,Speed {Speed}");
         // 플레이어의 전방벡터를 가져옴
-        Vector3 dir = player.transform.forward;
+        Vector3 dir = Vector3.Normalize(Dir);
+        Vector3 StartPos = Target.position;
+        Vector3 pos = Vector3.zero;
 
-
-        while (true)
+        float WholeTime = Dist / Speed;
+        float StartHeight = Target.position.y;
+        
+        while (!isEnd)
         {
             duringTime += Time.deltaTime;
 
-            // 플레이어의 전방벡터를 발사속도에 맞춰
+            pos = StartPos + dir * (Dist * duringTime / WholeTime);
+            pos.y = StartHeight + Dist * Mathf.Sin(duringTime / WholeTime);
 
+            Target.position = pos;
+
+
+
+            // 지면보다 낮아지면 멈추게하기
+            if(Target.position.y < StartHeight)
+            {
+                isEnd = true;
+            }
 
             yield return null;  
         }
 
-
+        e?.Invoke();
     }
 
 

@@ -23,13 +23,16 @@ public class ItemProperty : MonoBehaviour
     public float Value5; // »ç°Å¸®
 
     public ItemCode myCode;
-    public ItemSystem.ItemType myItemType;
+
 
     public EffectCode effectCode;
 
     public SoundCode soundCode;
 
+    public GameObject myPrefab;
     public List<GameObject> Targets;
+
+
 
 
 }

@@ -27,6 +27,7 @@ public class Item_CurseScroll : Items
     protected override void Awake()
     {
         base.Awake();
+        myCode = ItemCode.CurseScroll;
     }
 
     // Start is called before the first frame update
@@ -41,6 +42,33 @@ public class Item_CurseScroll : Items
         base.Update();
     }
 
+    public override void ItemHitAction()
+    {
+        base.ItemHitAction();
+
+    }
+
+    public override void Initate(List<float> Values, PlayerController player)
+    {
+        base.Initate(Values, player);
+    }
+
+    protected override IEnumerator ItemActions()
+    {
+        yield return base.ItemActions();
+
+        float duringTime = 0.0f;
+
+        while (duringTime < Value1)
+        {
+            duringTime += Time.deltaTime;
+
+            Gamemanager.Inst.GetEnemyTeam(myPlayer.myTeam);
+
+
+        }
+
+    }
 
     public IEnumerator CuresActive()
     {

@@ -43,7 +43,7 @@ public class Gamemanager : MonoBehaviour
     private GameState gameState;
     #endregion
 
-
+    #region 월드매니저로 이관할 정보
     // 현재 플레이중인 캐릭터의 정보
     public PlayerController currentPlayer;
     public int CharacterID = -1;
@@ -58,6 +58,11 @@ public class Gamemanager : MonoBehaviour
     public List<int> BlueTeamId;
     public Dictionary<int,PlayerController> BlueTeamPlayers;
 
+    public BlockObject RedTeamBlock;
+    public BlockObject BlueTeamBlock;
+
+    #endregion
+    //public WaitForSeconds BasicPollingRate
 
     public void Awake()
     {
@@ -106,10 +111,11 @@ public class Gamemanager : MonoBehaviour
 
     public IEnumerator PollingRateUpdate()
     {
+        float duringTime = 0;
         WaitForSeconds ws = new WaitForSeconds(1 / PollingRate);
         while (true)
         {
-
+            //duringTime += Time.
             //Debug.Log(Times);
             OnPollingRate();
             yield return ws;
@@ -117,6 +123,9 @@ public class Gamemanager : MonoBehaviour
     }
 
 
+    #region  정보인출
+
+    // 각 팀원 목록
     public Dictionary<int,PlayerController> GetTeam(HitScanner.Team team)
     {
         switch (team)
@@ -144,6 +153,8 @@ public class Gamemanager : MonoBehaviour
                 default: return null;
         }
     }
+
+    // 승패팀 팀원 id값
     public List<int> GetWinnerTeamId()
     {
         switch (VictoryTeam)
@@ -172,6 +183,7 @@ public class Gamemanager : MonoBehaviour
                 return null;
         }
     }
+    // 지정팀 팀원 id값
     public List<int> GetTeamId(HitScanner.Team team)
     {
         switch (team)
@@ -186,6 +198,63 @@ public class Gamemanager : MonoBehaviour
                 return null;
         }
     }
-
+    // 지정 팀 블럭
+    public BlockObject GetTeamBlock(HitScanner.Team team)
+    {
+        switch (team)
+        {
+            case HitScanner.Team.RedTeam:
+                return RedTeamBlock;
+            case HitScanner.Team.NotSetting:
+                return null;
+            case HitScanner.Team.BlueTeam:
+                return BlueTeamBlock;
+            case HitScanner.Team.AllTarget:
+                return null;
+            default:
+                return null;
+        }
+    }
+    public BlockObject GetEnemyBlock(HitScanner.Team team)
+    {
+        switch (team)
+        {
+            case HitScanner.Team.RedTeam:
+                return BlueTeamBlock;
+            case HitScanner.Team.NotSetting:
+                return null;
+            case HitScanner.Team.BlueTeam:
+                return RedTeamBlock;
+            case HitScanner.Team.AllTarget:
+                return null;
+            default:
+                return null;
+        }
+    }
+    public void AddBlockObj(BlockObject obj)
+    {
+        switch (obj.myTeam)
+        {
+            case HitScanner.Team.RedTeam:
+                if(RedTeamBlock != null)
+                {
+                    RedTeamBlock = obj;
+                }
+                return;
+            case HitScanner.Team.NotSetting:
+                return;
+            case HitScanner.Team.BlueTeam:
+                if(BlueTeamBlock != null)
+                {
+                    BlueTeamBlock = obj;
+                }
+                return;
+            case HitScanner.Team.AllTarget:
+                return;
+            default:
+                return;
+        }
+    }
+    #endregion
 
 }

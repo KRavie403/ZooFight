@@ -25,7 +25,7 @@ public class StateMachine
 
         CurrentState = newState;
         newState.Enter(BeforeState);
-
+        Debug.Log($"{BeforeState} Exit , {CurrentState} Enter");
     }
     
 

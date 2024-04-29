@@ -35,9 +35,9 @@ public class Item_StaminaDrink : Items
         
     }
 
-    public override void ItemUse(PlayerController player)
+    public override void ItemUse()
     {
-        base.ItemUse(player);
+        base.ItemUse();
         base.ItemAction = DrinkAction();
     }
 

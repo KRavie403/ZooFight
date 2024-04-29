@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BlockObject : MonoBehaviour
@@ -18,13 +19,36 @@ public class BlockObject : MonoBehaviour
 
     public Vector2 curDir = Vector2.zero;
 
+
+    [SerializeField]GameObject RedBlock;
+    [SerializeField] GameObject BlueBlock;
+    [SerializeField] GameObject[] DefaultBlock;
+
     Vector2[] JudgeVector = new Vector2[2] {new(1,1),new(-1,1) };
     Vector3[] myDirs = new Vector3[5] {Vector3.zero , Vector3.forward, Vector3.left, Vector3.back, Vector3.right };
+
+    public bool isChangeActive = false;
+
+    private void Awake()
+    {
+        // 오브젝트가 생성될때 이미 존재하는 블럭이 있으면 삭제
+        if(Gamemanager.Inst.GetTeamBlock(myTeam) != null)
+        {
+            if(Gamemanager.Inst.GetTeamBlock(myTeam) != this)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                Gamemanager.Inst.AddBlockObj(this);
+            }
+        }
+        
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -33,9 +57,22 @@ public class BlockObject : MonoBehaviour
         
     }
 
+    public void Initate(HitScanner.Team myteam)
+    {
+        myTeam = myteam;
+        if (myTeam == HitScanner.Team.BlueTeam) Gamemanager.Inst.BlueTeamBlock = this;
+        if (myTeam == HitScanner.Team.RedTeam) Gamemanager.Inst.RedTeamBlock = this;
+    }
+
     #region 잡기관련
     public void Grab(PlayerController player)
     {
+        // 블럭교환 동작 중 잡기 불가능
+        if(isChangeActive)
+        {
+            DeGrab(player);
+            return;
+        }
         myPlayer = player;
 
 
@@ -58,6 +95,43 @@ public class BlockObject : MonoBehaviour
         isGrab=false;
 
     }
+    #endregion
+
+    #region 블럭 교환 관련
+    public void ChangeBlockTeam()
+    {
+        // 블럭의 팀을 변경
+        switch (myTeam) 
+        {
+            case HitScanner.Team.RedTeam:
+                myTeam = HitScanner.Team.BlueTeam;
+                break;
+            case HitScanner.Team.NotSetting:
+                return;
+            case HitScanner.Team.BlueTeam:
+                myTeam= HitScanner.Team.RedTeam;
+                break;
+            case HitScanner.Team.AllTarget:
+                return;
+            default:
+                break;
+        }
+        
+    }
+
+    public void ForceDeGrab()
+    {
+        myPlayer.isGrab = false;
+        myPlayer.grabPoint.curGrabBlock = null;
+
+        StopCoroutine (BlockMove());
+
+        myPlayer = null;
+        isGrab = false;
+
+
+    }
+
     #endregion
 
     #region 블럭이동관련

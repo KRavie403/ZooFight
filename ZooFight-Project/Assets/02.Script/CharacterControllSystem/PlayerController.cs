@@ -1,14 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Transactions;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class PlayerController : MovementController, IHitBox
 {
+
+    #region 참조 변수 목록
     public enum pState
     {
         Create = 0,
@@ -39,6 +38,7 @@ public class PlayerController : MovementController, IHitBox
         Jump,
         ItemReady,
         ItemUse,
+        ItemRelease,
         BasicAttack,
         EnterSuperArmor,
 
@@ -53,6 +53,8 @@ public class PlayerController : MovementController, IHitBox
 
     public Dictionary<pState, BaseState> p_States = new Dictionary<pState, BaseState>();
 
+    public Dictionary<pState, BaseState> S_States = new Dictionary<pState, BaseState>();
+
     public bool IsDown => PlayerSM.CurrentState != p_States[pState.Down];
 
 
@@ -66,13 +68,15 @@ public class PlayerController : MovementController, IHitBox
 
     public GrabPoint grabPoint;
     public Transform AttackPoint;
+    public Transform ItemPoint;
 
     public Items curItems;
 
-    bool isUIOpen = false;
+    
     [SerializeField]
     bool IsMoving = false;
-    
+    bool isSuperArmor = false;
+    bool isUIOpen = false;
     [SerializeField]
     bool IsRunning = false;
     [SerializeField]
@@ -92,6 +96,8 @@ public class PlayerController : MovementController, IHitBox
         get => myTeam;
     }
 
+    #endregion
+
     protected override void Awake()
     {
         base.Awake();
@@ -110,11 +116,33 @@ public class PlayerController : MovementController, IHitBox
         PlayerSM = new StateMachine();
 
         p_States.Add(pState.Create, new Character_Create(this, PlayerSM));
+
         p_States.Add(pState.Idle, new Character_Idle(this, PlayerSM));
         p_States.Add(pState.Move, new Character_Move(this, PlayerSM));
         p_States.Add(pState.Jump, new Character_Jump(this, PlayerSM));
-        p_States.Add(pState.ItemReady, new Charcater_ItemReady(this, PlayerSM));
+
+        p_States.Add(pState.ItemReady, new Characater_ItemReady(this, PlayerSM));
         p_States.Add(pState.ItemUse, new Character_ItemUse(this, PlayerSM));
+
+        p_States.Add(pState.Down, new Character_Down(this, PlayerSM));
+        p_States.Add(pState.Recovery, new Character_Recovery(this, PlayerSM));
+
+
+        p_States.Add(pState.S_Idle,new Character_SIdle(this, PlayerSM));
+        p_States.Add(pState.S_Move,new Character_SMove(this, PlayerSM));
+        p_States.Add(pState.S_Jump,new Character_Jump(this, PlayerSM));
+
+        p_States.Add(pState.S_ItemReady, new Character_SItemReady(this, PlayerSM));
+        p_States.Add(pState.S_ItemUse,new Character_SItemUse(this, PlayerSM));
+
+        // 테스트
+        S_States.Add(pState.S_Idle, new Character_SIdle(this, PlayerSM));
+        S_States.Add(pState.S_Move, new Character_SMove(this, PlayerSM));
+        S_States.Add(pState.S_Jump, new Character_Jump(this, PlayerSM));
+
+        S_States.Add(pState.S_ItemReady, new Character_SItemReady(this, PlayerSM));
+        S_States.Add(pState.S_ItemUse, new Character_SItemUse(this, PlayerSM));
+
 
         //CharacterInitalize(myTeam, SessionId, CharacterID);
 
@@ -132,7 +160,6 @@ public class PlayerController : MovementController, IHitBox
         //MoveStateCheck();
         PlayerSM.CurrentState.LogicUpdate();
         //CharacterMove(AxisX, AxisY,isDenial);
-
 
     }
     protected override void LateUpdate()
@@ -161,6 +188,7 @@ public class PlayerController : MovementController, IHitBox
     }
 
     #region 정보 폴링
+
 
     // 현재 이 캐릭터의 상태정보 전송
     public void StatusPolling()
@@ -224,17 +252,38 @@ public class PlayerController : MovementController, IHitBox
         
         if(AxisX == 0 && AxisY == 0)
         {
-            if (PlayerSM.CurrentState != p_States[pState.Idle])
+            if (isShield)
             {
-                PlayerSM.ChangeState(p_States[pState.Idle]);
-                SetIsMoving(false);
+                //if(PlayerSM.CurrentState == p_States[p])
+                if(PlayerSM.CurrentState != p_States[pState.S_Idle])
+                {
+                    PlayerSM.ChangeState(p_States[pState.S_Idle]);
+                    SetIsMoving(false);
+                }
+            }
+            else
+            {
+                if (PlayerSM.CurrentState != p_States[pState.Idle])
+                {
+                    PlayerSM.ChangeState(p_States[pState.Idle]);
+                    SetIsMoving(false);
+                }
             }
         }
         else
         {
-            if(PlayerSM.CurrentState != p_States[pState.Move])
-                PlayerSM.ChangeState(p_States[pState.Move]);
-            SetIsMoving(true);
+            if (isShield)
+            {
+                if (PlayerSM.CurrentState != p_States[pState.S_Move])
+                    PlayerSM.ChangeState(p_States[pState.S_Move]);
+                SetIsMoving(true);
+            }
+            else
+            {
+                if(PlayerSM.CurrentState != p_States[pState.Move])
+                    PlayerSM.ChangeState(p_States[pState.Move]);
+                SetIsMoving(true);
+            }
         }
 
 
@@ -330,8 +379,8 @@ public class PlayerController : MovementController, IHitBox
         float curSpeed = Mathf.Sqrt(Axis.x * Axis.x + Axis.z * Axis.z);
 
         transform.position = dir;
-        // 10프레임 이상의격차가 나면 이동모션없이 이동시키기
-        if (curSpeed > 10 * Speed / Time.deltaTime) return;
+        // 30 틱 이상의격차가 나면 이동모션없이 이동시키기
+        if (curSpeed > 30 * Speed / Gamemanager.Inst.PollingRate) return;
 
         myAnim.SetFloat("MoveAxisX", Mathf.Clamp(Axis.x * MotionSpeed, -1.0f, 1.0f));
         myAnim.SetFloat("MoveAxisY", Mathf.Clamp(Axis.y * MotionSpeed, -1.0f, 1.0f));
@@ -422,6 +471,7 @@ public class PlayerController : MovementController, IHitBox
 
     #region 아이템
 
+    // 아이템 꺼내기 or 집어넣기
     public void ItemRelease()
     {
 
@@ -440,6 +490,7 @@ public class PlayerController : MovementController, IHitBox
     // 동작 불가능상태 = 아이템 사용중 , 상태이상, 기상, 점프
     public void ItemReady()
     {
+        if (curItems == null) return;
         if (PlayerSM.CurrentState == p_States[pState.ItemUse]) return;
         if (PlayerSM.CurrentState == p_States[pState.Down]) return;
         if (PlayerSM.CurrentState == p_States[pState.Recovery]) return;
@@ -456,9 +507,42 @@ public class PlayerController : MovementController, IHitBox
         }
     }
 
+    // 현재 보유중인 아이템 사용
     public void ItemUse()
     {
-        curItems.UseItems();
+        if(curItems != null)
+        {
+            if(PlayerSM.CurrentState == p_States[pState.ItemReady])
+            {
+                PlayerSM.ChangeState(p_States[pState.ItemUse]);
+
+                //curItems.ItemUse();
+            }
+        }
+    }
+    public void ItemUseEnd()
+    {
+        if(PlayerSM.CurrentState == p_States[pState.ItemUse])
+        {
+            PlayerSM.ChangeState(p_States[pState.Idle]);
+            MoveStateCheck();
+        }
+    }
+
+    // 아이템 지급받기
+    public void GetItem()
+    {
+
+        Items items = ItemSystem.Inst.GiveItem(this, ItemSystem.Inst.RandomItemSelect());
+        if( items == null) return;  
+        if(curItems == null)
+        {
+            curItems = items;
+        }
+        else
+        {
+            items.ReturnItem();
+        }
     }
 
     #endregion
@@ -466,13 +550,49 @@ public class PlayerController : MovementController, IHitBox
     #region 판정관련
     [SerializeField] float RecoveryTime = 2.0f;
 
+    // 타격 판정 발생
     void IHitBox.HitAction(Component comp)
     {
-        Debug.Log("Damaged");
         //comp.GetComponent<HitScanner>().MyDamage
-        //throw new System.NotImplementedException();
+
+        GetDamaged(comp.GetComponent<HitScanner>().MyDamage);
     }
 
+    // 단타 데미지를 받는 함수
+    public void GetDamaged(float Damage)
+    {
+        Debug.Log("Damaged");
+
+    }
+
+    public void GetDotDamaged(float Damage,float time)
+    {
+        StartCoroutine(DotDamaged(Damage,time));
+
+    }
+
+    // 상태이상을 받는 함수
+    public void GetCrowdControl(StatusCode code, float Time, float Power)
+    {
+
+        switch (code)
+        {
+            case StatusCode.Normal:
+                break;
+            case StatusCode.Slow:
+                break;
+            case StatusCode.Blind:
+                break;
+            case StatusCode.Bind:
+                break;
+            case StatusCode.Stun:
+                break;
+            case StatusCode.AirBone:
+                break;
+            default:
+                break;
+        }
+    }
 
     public void DownAction()
     {
@@ -483,9 +603,23 @@ public class PlayerController : MovementController, IHitBox
     {
         StartCoroutine(HpRecovery());
     }
+
+    IEnumerator DotDamaged(float Damage,float time,UnityAction e = null)
+    {
+        float duringTime = 0;
+        while (duringTime < time)
+        {
+            duringTime += Time.deltaTime;
+            GetDamaged(Damage / (time * Time.deltaTime));
+            yield return null;
+        }
+        e?.Invoke();
+    }
+
     IEnumerator HpRecovery()
     {
         float Times = 0.0f;
+        myAnim.SetTrigger("Recovery");
         while (Times < RecoveryTime)
         {
             Times += Time.deltaTime;
@@ -499,11 +633,20 @@ public class PlayerController : MovementController, IHitBox
     public void PlayerAttack()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, 0.3f, groundMask);
+
+        foreach (Collider collider in colliders)
+        {
+            PlayerController player = collider.GetComponent<PlayerController>();
+            if (player != null) 
+            {
+                //if(player.myTeam == )
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log($"{collision.gameObject.layer} , {groundMask.value}");
+        //Debug.Log($"{collision.gameObject.layer} , {groundMask.value}");
         
         if ( (1 << collision.gameObject.layer) == groundMask)
         {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// 이동 경로를 만들어주는 클래스
@@ -18,9 +19,8 @@ interface IRoute
 {
     public RouteTypes Type { get;  }
     Component Comp { get; }
-    public void RouteStart(Vector3 pos);
+    public void RouteStart(Transform Target, Vector3 Dir, float Speed, float Dist, UnityAction e = null);
 
-    public void RouteSetUp(Vector3 pos, Transform target, PlayerController curPlayer);
 
 }
 
@@ -48,6 +48,7 @@ public struct RouteInfo
         RouteBase.z = DownForce;
         RouteBase.w = EndHeight;
     }
+
     public void InfoSetup(Vector3 pos,Transform target, PlayerController curPlayer)
     {
         Pos = pos;
@@ -74,7 +75,7 @@ public class RouteMaker : MonoBehaviour
     void Start()
     {
 
-        RouteKeys.Add(RouteTypes.Arc, new RouteArc());
+        RouteKeys.Add(RouteTypes.Arc, routes[0]);
 
 
     }

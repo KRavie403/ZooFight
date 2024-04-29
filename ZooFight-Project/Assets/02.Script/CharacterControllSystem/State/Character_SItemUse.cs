@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class Character_Recovery : BaseState
+public class Character_SItemUse : BaseState
 {
-    public Character_Recovery(PlayerController player, StateMachine stateMachine) : base(player, stateMachine)
+    public Character_SItemUse(PlayerController player, StateMachine stateMachine) : base(player, stateMachine)
     {
 
     }
@@ -15,19 +14,13 @@ public class Character_Recovery : BaseState
     {
 
         base.Initate();
-        //ableFuncs.Add(PlayerController.pFunc.Move, player.CurAxisMove);
-        player.SetState(PlayerController.pState.Recovery);
 
     }
 
     public override void Enter(BaseState BeforeState)
     {
         base.Enter(BeforeState);
-        if(BeforeState == player.p_States[PlayerController.pState.Down])
-        {
 
-        }
-        player.SetState(PlayerController.pState.Recovery);
 
     }
 

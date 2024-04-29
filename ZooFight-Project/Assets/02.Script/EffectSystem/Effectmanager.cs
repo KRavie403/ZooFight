@@ -33,7 +33,7 @@ public static class EffectSetting
 interface IEffect
 {
     public EffectCode EffectCode { get; }
-    public EffectCode GetEffectCode();
+    // EffectCode GetEffectCode();
 }
 
 public class Effectmanager : Singleton<Effectmanager>
@@ -50,8 +50,8 @@ public class Effectmanager : Singleton<Effectmanager>
             if (effectObj[i] != null)
             {
                 effectPlayers.Add(effectObj[i].GetComponent<EffectPlayer>());
-                EffectSetting.keys.Add(effectPlayers[i].GetComponent<IEffect>().GetEffectCode(), effectPlayers[i]);
-                Debug.Log(effectPlayers[i].GetComponent<IEffect>().GetEffectCode());
+                EffectSetting.keys.Add(effectPlayers[i].GetComponent<IEffect>().EffectCode, effectPlayers[i]);
+                Debug.Log(effectPlayers[i].GetComponent<IEffect>().EffectCode);
             }
         }
 

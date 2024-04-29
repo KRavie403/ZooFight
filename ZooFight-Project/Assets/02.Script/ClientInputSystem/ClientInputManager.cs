@@ -93,15 +93,16 @@ public class ClientInputManager : Singleton<ClientInputManager>
         }
         if (Input.GetKeyDown(KeySetting.keys[KeyAction.Selectskill]))
         {
-            PlayerController curPlayer = Gamemanager.Inst.currentPlayer;
-            if (curPlayer == null) return;
-            curPlayer.ItemReady();
+
+            if (Gamemanager.Inst.currentPlayer == null) return;
+            Gamemanager.Inst.currentPlayer.ItemReady();
 
             //ItemSystem.Inst.RangeViewer.gameObject.SetActive(!(ItemSystem.Inst.RangeViewer.gameObject.activeSelf));
         }
         if (Input.GetKeyDown(KeySetting.keys[KeyAction.Usingskill]))
         {
-
+            if (Gamemanager.Inst.currentPlayer == null) return;
+            Gamemanager.Inst.currentPlayer.ItemUse();
         }
         if (Input.GetKeyDown(KeySetting.keys[KeyAction.Grab]))
         {
@@ -114,6 +115,11 @@ public class ClientInputManager : Singleton<ClientInputManager>
         if (Input.GetKeyDown(KeySetting.keys[KeyAction.Run]))
         {
             Gamemanager.Inst.currentPlayer.SetRunning(true);
+        }
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.ItemCreate]))
+        {
+            Gamemanager.Inst.currentPlayer.GetItem();
+            //ItemSystem.Inst.GiveItem(Gamemanager.Inst.currentPlayer,ItemSystem.Inst.RandomItemSelect());
         }
 
     }

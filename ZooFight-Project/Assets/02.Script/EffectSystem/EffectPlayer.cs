@@ -108,12 +108,11 @@ public class EffectPlayer : MonoBehaviour , IEffect
         {
             e?.Invoke();
         }
+
+        
     }
 
-    EffectCode IEffect.GetEffectCode()
-    {
-        return myEffectCode;
-    }
+ 
 
 
 }

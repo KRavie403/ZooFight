@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 /// <summary>
 /// 아이템명 : 바나나
@@ -8,6 +10,7 @@ using UnityEngine;
 /// Value 2 함정 유지시간
 /// Value 3 밀려나는 거리
 /// Value 4 투사체 속도 
+/// Value 5 투척 사거리
 /// </summary>
 
 public class Item_BananaTrap : Items
@@ -25,18 +28,50 @@ public class Item_BananaTrap : Items
     [SerializeField]
     GameObject ActivedObj;
 
+    public HitScanner HitScanner;
 
 
     protected override void Awake()
     {
         base.Awake();
 
+        // 히트스캐너 생성
+        if(GetComponent<HitScanner>() != null )
+        {
+            HitScanner = GetComponent<HitScanner>();
+            HitScanner.enabled = false;
+        }
+        else
+        {
+            // 미실행 상태로 생성
+            HitScanner = transform.AddComponent<HitScanner>();
+            HitScanner.enabled = false;
+        }
+
+        myCode = ItemCode.BananaTrap;
+
+        
     }
 
     protected override void Start()
     {
         base.Start();
+        
+        Transform[] objs = GetComponentsInChildren<Transform>();
+        foreach( Transform obj in objs )
+        {
+            if( obj.gameObject.name == "NonActiveObj")
+            {
+                NonActiveObj = obj.gameObject;
+            }
+            if( obj.gameObject.name == "ActivedObj")
+            {
+                ActivedObj = obj.gameObject;
+            }
+        }
 
+        HitScanner.SetMyTeam(myPlayer.myTeam);
+        
     }
 
     protected override void Update()
@@ -45,33 +80,86 @@ public class Item_BananaTrap : Items
 
     }
 
-    public void BananaSetting(Vector3 pos)
+    protected override void OnEnable()
     {
-        ItemAction = TrapActive(pos);
+        base.OnEnable();
+        
     }
 
-    public IEnumerator TrapActive(Vector3 pos)
+
+    public override void Initate(List<float> Values, PlayerController player)
     {
-        // 사출지점 확정
+        base.Initate(Values, player);
 
-        // 사출경로 준비
-
-        // 바나나 이펙트 출력준비
-
-        // 바나나 사운드 출력준비
+        HitScanner.Initiate(this, myPlayer.GetEnemyTeam());
+    }
 
 
+
+    public override void ItemUse()
+    {
+        base.ItemUse();
+
+        // 아이템 발동시작시 필요한 동작
+
+        // 코루틴의 동작을 본체로 가져오기
+        isItemUse = true;
+    }
+
+    protected override IEnumerator ItemActions()
+    {
+        // 정보갱신 돌리기
+        yield return base.ItemActions();
+        transform.SetParent(null);
+
+        bool isMoveEnd = false;
+
+        //transform.localPosition = Vector3.zero;
+        // 특정 경로로 이동 시작
+        BattleSystems.Inst.routeMaker.RouteKeys[RouteTypes.Arc].
+            GetComponent<IRoute>().RouteStart(transform, dir, Value5, Value4, () =>
+            {
+                NonActiveObj.SetActive(false);
+                ActivedObj.SetActive(true);
+                HitScanner.Initiate(this, myPlayer.GetEnemyTeam());
+                isMoveEnd = true;
+            });
+        //myPlayer.SetState()
+        float duringTime = 0;
         // 바나나 지속시간동안 동작
-        while (true)
+        while (duringTime < Value2)
         {
+            // 던지는동안 지속시간 감소 X
+
+            if (!isMoveEnd) yield return null;
+            duringTime += Time.deltaTime;
             // 유지시간 체크
 
             // 동작감지시 효과적용 및 이펙트 , 사운드 출력
+            if(Targets != null)
+            {
+                // 타겟이 잡히면 동작시키고 터트림
+                //duringTime = Value2;
+            }
 
             // 발동시 오브젝트 작동 불능처리
 
+            if (isItemUse)
+            {
+                yield return null;
+
+            }
+            else
+            {
+                yield return base.ItemActions();
+            }
             yield return null;
         }
+
+        // 사용이 끝나면 오브젝트 반환
+        ReturnItem();
+
+
     }
 
 

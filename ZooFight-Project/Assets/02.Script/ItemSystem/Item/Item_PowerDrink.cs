@@ -35,6 +35,8 @@ public class Item_PowerDrink : Items
         base.Update();
     }
 
+    
+
     public IEnumerator DrinkActive()
     {
         // 회복대상 캐릭터 확정
@@ -44,8 +46,11 @@ public class Item_PowerDrink : Items
         // 회복 사운드 재생준비
 
         // 회복 동작 작동
-        while (true)
+        myPlayer.isShield = true;
+        while (myPlayer.isShield)
         {
+
+
             yield return null;
         }
     }

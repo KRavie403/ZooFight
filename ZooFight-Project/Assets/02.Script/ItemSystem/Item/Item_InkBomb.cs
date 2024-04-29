@@ -18,6 +18,9 @@ public class Item_InkBomb : Items
 
     }
 
+    public HitScanner HitScanner;
+
+
     bool isItemActive = false;
 
     protected override void Awake()
@@ -58,12 +61,6 @@ public class Item_InkBomb : Items
         {
             yield return null;
         }
-    }
-
-    public override void UseItems()
-    {
-        base.UseItems();
-
     }
 
     void BombEffectSetting()
