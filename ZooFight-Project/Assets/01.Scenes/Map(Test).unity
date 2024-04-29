@@ -7206,6 +7206,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Terrain
       objectReference: {fileID: 0}
+    - target: {fileID: 743737436896568852, guid: 7a1953bcfb51a7a47b96a1801ec9ee88, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8150138293963460044, guid: 7a1953bcfb51a7a47b96a1801ec9ee88, type: 3}
       propertyPath: m_LocalPosition.x
       value: -50
@@ -7766,7 +7770,7 @@ Transform:
 --- !u!1 &1142728645
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 7270525989994939931, guid: b86422027e92d364d900c8feea2d7bb8, type: 3}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
