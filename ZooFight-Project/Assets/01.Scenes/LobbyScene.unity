@@ -31742,7 +31742,7 @@ Animator:
   m_GameObject: {fileID: 6562615062600056643}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 8d372d6464c19564f878415495dcc79f, type: 3}
-  m_Controller: {fileID: 9100000, guid: e22237c397b931941a11f0f3b493327e, type: 2}
+  m_Controller: {fileID: 9100000, guid: 9dd1dc17f2172714094bd5ddbb39bbac, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -33303,7 +33303,7 @@ Animator:
   m_GameObject: {fileID: 8824108822490889466}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 8d372d6464c19564f878415495dcc79f, type: 3}
-  m_Controller: {fileID: 9100000, guid: e22237c397b931941a11f0f3b493327e, type: 2}
+  m_Controller: {fileID: 9100000, guid: a5a4957394c96d542a808dd5cc5460b0, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -35909,7 +35909,7 @@ Transform:
   m_GameObject: {fileID: 6562615062600056643}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -5.5245996, y: 0, z: -5.6190453}
+  m_LocalPosition: {x: -5.5245996, y: -0.7, z: -5.6190453}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -36537,6 +36537,7 @@ GameObject:
   - component: {fileID: 484396277386903427}
   - component: {fileID: 6562615062600056645}
   - component: {fileID: 6562615062600056644}
+  - component: {fileID: 6562615062600056646}
   m_Layer: 3
   m_Name: cat_V2
   m_TagString: Player
@@ -36609,6 +36610,33 @@ MonoBehaviour:
   isJump: 0
   isGrab: 0
   RecoveryTime: 2
+--- !u!54 &6562615062600056646
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6562615062600056643}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 4
+  m_CollisionDetection: 0
 --- !u!1 &6563315721274402327
 GameObject:
   m_ObjectHideFlags: 0
@@ -38029,7 +38057,7 @@ Animator:
   m_GameObject: {fileID: 3258094174951958647}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 8d372d6464c19564f878415495dcc79f, type: 3}
-  m_Controller: {fileID: 9100000, guid: e22237c397b931941a11f0f3b493327e, type: 2}
+  m_Controller: {fileID: 9100000, guid: b5ab359da930dea4db12a41c2792fa6e, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -38062,7 +38090,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &8114623531230849209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38114,7 +38142,7 @@ Transform:
   m_GameObject: {fileID: 8824108822490889466}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -5, y: 0, z: -5.6190453}
+  m_LocalPosition: {x: -5, y: -0.7, z: -5.6190453}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -38603,7 +38631,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &8824108822490889468
 MonoBehaviour:
   m_ObjectHideFlags: 0
