@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class LoadingManager : MonoBehaviour
 {
+    public GameObject loginBtn;
+
     [SerializeField]
     Image loadingImg;
 
@@ -22,5 +24,10 @@ public class LoadingManager : MonoBehaviour
     public static void LoadScene()
     {
         SceneManager.LoadScene("LoadingScene");
+    }
+
+    public void Login()
+    {
+        SceneManager.LoadScene("LobbyScene");
     }
 }

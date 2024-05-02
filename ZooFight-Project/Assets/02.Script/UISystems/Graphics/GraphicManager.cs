@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -140,10 +138,10 @@ public class GraphicManager : MonoBehaviour/*Singleton<GraphicManager>*/
                                               screenMode);
         }
     }
-    public void ResolutionDropboxOption()
-    {
-        curResolutionDropDownVal = resolutionDropdown.value - 1;
-    }
+    //public void ResolutionDropboxOption()
+    //{
+    //    curResolutionDropDownVal = resolutionDropdown.value - 1;
+    //}
 
     public void DarkOverlay()
     {

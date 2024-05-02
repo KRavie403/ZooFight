@@ -5,7 +5,7 @@ public class LoadResultUI : MonoBehaviour
 {
 
     // Eff-카메라 조정
-    public Camera UICamera;
+    [SerializeField] private Camera EFFCamera;
     [SerializeField] private float _winFOV = 50f;
     [SerializeField] private float _loseFOV = 111f;
 
@@ -13,20 +13,23 @@ public class LoadResultUI : MonoBehaviour
     public Image text;
     public Image t1;
     public Image t2;
+    public Image BGImage1;
+    public Image BGImage2;
 
     [SerializeField] private Sprite _textSprite;
     [SerializeField] private Sprite _t1Sprite;
     [SerializeField] private Sprite _t2Sprite;
 
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start()
     {
+        // 승/패/무승부
         LoadResultImg();
         //LoadUserName();
-        //LoadEff();
+        LoadEff();
     }
 
-    void LoadResultImg(/*HitScanner.Team BeaconTeam*/)
+    private void LoadResultImg(/*HitScanner.Team BeaconTeam*/)
     {
         HitScanner.Team playerTeam = Gamemanager.Inst.currentPlayer.myTeam;      // 플레이어의 팀 정보 가져오기
         HitScanner.Team winningTeam = Gamemanager.Inst.VictoryTeam; // 승리팀 정보 가져오기
@@ -37,6 +40,8 @@ public class LoadResultUI : MonoBehaviour
             _textSprite = Resources.Load<Sprite>("WIN");
             _t1Sprite = Resources.Load<Sprite>("WIN(2)");
             _t2Sprite = Resources.Load<Sprite>("LOSE(2)");
+            BGImage1.color = new Color(51 / 255f, 63 / 255f, 94 / 255f, 1);
+            BGImage2.color = new Color(41 / 255f, 44 / 255f, 60 / 255f, 1);
         }
         // 무승부
         else if (winningTeam == HitScanner.Team.NotSetting)
@@ -44,6 +49,8 @@ public class LoadResultUI : MonoBehaviour
             _textSprite = Resources.Load<Sprite>("DRAW");
             _t1Sprite = Resources.Load<Sprite>("DRAW(2)");
             _t2Sprite = Resources.Load<Sprite>("DRAW(2)");
+            BGImage1.color = new Color(51 / 255f, 63 / 255f, 94 / 255f, 1);
+            BGImage2.color = new Color(41 / 255f, 44 / 255f, 60 / 255f, 1);
         }
         // 패배
         else  
@@ -51,45 +58,69 @@ public class LoadResultUI : MonoBehaviour
             _textSprite = Resources.Load<Sprite>("LOSE");
             _t1Sprite = Resources.Load<Sprite>("WIN(3)");
             _t2Sprite = Resources.Load<Sprite>("LOSE(3)");
+            BGImage1.color = new Color(94 / 255f, 51 / 255f, 52 / 255f, 1);
+            BGImage2.color = new Color(60 / 255f, 41 / 255f, 42 / 255f, 1);
         }
         text.sprite = _textSprite;
         t1.sprite = _t1Sprite;
         t2.sprite = _t2Sprite;
     }
 
-    void LoadUserName()
+    private void LoadUserName()
     {
 
     }
 
-    void LoadEff()
+    private void LoadEff()
     {
-        //if (UICamera == null)
-        //{
-        //    UICamera = GetComponent<Camera>();
-        //}
-
-        //// Field of View 값을 변경
-        //if() // Win/Draw
-        //{
-        //    UICamera.fieldOfView = _winFOV;
-        //}
-        //else
-        //{
-        //    UICamera.fieldOfView = _loseFOV;
-        //}
-    }
-
-    HitScanner.Team FindPlayerTeam()
-    {
-        // 플레이어의 팀 정보 가져오기
-        foreach (var player in Gamemanager.Inst.GetTeam(HitScanner.Team.RedTeam).Values)
+        // EFF 카메라
+        //EFFCamera = GetComponent<Camera>();   // 다른 씬에서 실행하면 null
+        // 차안
+        if (EFFCamera == null)
         {
-            if (player.gameObject == Gamemanager.Inst.currentPlayer.gameObject)
+            // "MyCamera"라는 태그를 가진 GameObject에서 Camera 컴포넌트를 찾음
+            GameObject cameraGameObject = GameObject.FindGameObjectWithTag("EffCamera");
+            if (cameraGameObject != null)
             {
-                return HitScanner.Team.RedTeam;
+                EFFCamera = GetComponent<Camera>();
+            }
+            else
+            {
+                Debug.LogError("카메라를 찾을 수 없습니다.");
             }
         }
-        return HitScanner.Team.BlueTeam;
+
+        // Field of View 값을 변경
+        HitScanner.Team playerTeam = Gamemanager.Inst.currentPlayer.myTeam;      // 플레이어의 팀 정보 가져오기
+        HitScanner.Team winningTeam = Gamemanager.Inst.VictoryTeam;                  // 승리팀 정보 가져오기
+
+        // 승리
+        if (winningTeam == playerTeam)
+        {
+            EFFCamera.fieldOfView = _winFOV;
+        }
+        // 무승부
+        else if (winningTeam == HitScanner.Team.NotSetting)
+        {
+            EFFCamera.fieldOfView = _winFOV;
+        }
+        // 패배
+        else
+        {
+            EFFCamera.fieldOfView = _loseFOV;
+        }
     }
+
+    //HitScanner.Team FindPlayerTeam()
+    //{
+    //    // 플레이어의 팀 정보 가져오기
+    //    foreach (var player in Gamemanager.Inst.GetTeam(HitScanner.Team.RedTeam).Values)
+    //    {
+    //        if (player.gameObject == Gamemanager.Inst.currentPlayer.gameObject)
+    //        {
+    //            return HitScanner.Team.RedTeam;
+    //        }
+    //    }
+    //    return HitScanner.Team.BlueTeam;
+    //}
 }
