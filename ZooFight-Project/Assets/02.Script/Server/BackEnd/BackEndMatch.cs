@@ -91,7 +91,7 @@ public partial class BackEndMatchManager : MonoBehaviour
     // 매칭 신청하기
     // MatchType (1:1 / 개인전 / 팀전)
     // MatchModeType (랜덤 / 포인트 / MMR)
-    public void RequestMatchMaking(int index)
+    public void RequestMatchMaking()
     {
         // 매청 서버에 연결되어 있지 않으면 매칭 서버 접속
         if (!isConnectMatchServer)
@@ -104,7 +104,10 @@ public partial class BackEndMatchManager : MonoBehaviour
         // 변수 초기화
         isConnectInGameServer = false;
 
-        Backend.Match.RequestMatchMaking(matchInfos[index].matchType, matchInfos[index].matchModeType, matchInfos[index].inDate);
+        //matchInfos.matchType = MatchType.Random;
+        //matchInfos.matchModeType = MatchModeType.OneOnOne;
+        //matchInfos.inDate = "2024-04-18T15:02:57.046Z";
+        Backend.Match.RequestMatchMaking(MatchType.Random, MatchModeType.OneOnOne, "2024-04-18T15:02:57.046Z");
         if (isConnectInGameServer)
         {
             Backend.Match.LeaveGameServer(); //인게임 서버 접속되어 있을 경우를 대비해 인게임 서버 리브 호출
@@ -224,6 +227,7 @@ public partial class BackEndMatchManager : MonoBehaviour
     // 인게임 서버로 접속해야 한다.
     private void ProcessMatchSuccess(MatchMakingResponseEventArgs args)
     {
+        Debug.Log("매칭성공");
         ErrorInfo errorInfo;
         if (sessionIdList != null)
         {
@@ -254,6 +258,7 @@ public partial class BackEndMatchManager : MonoBehaviour
         nowMatchType = info.matchType;
         nowModeType = info.matchModeType;
         numOfClient = int.Parse(info.headCount);
+        MatchingTest.GetInstance().RequestInfo();
     }
 
     public void ProcessReconnect()

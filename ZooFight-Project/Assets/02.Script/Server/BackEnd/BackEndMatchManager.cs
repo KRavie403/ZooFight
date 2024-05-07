@@ -33,7 +33,8 @@ public partial class BackEndMatchManager : MonoBehaviour
 
     private static BackEndMatchManager instance = null; // 인스턴스
 
-    public List<MatchInfo> matchInfos { get; private set; } = new List<MatchInfo>();  // 콘솔에서 생성한 매칭 카드들의 리스트
+    //public List<MatchInfo> matchInfos { get; private set; } = new List<MatchInfo>();  // 콘솔에서 생성한 매칭 카드들의 리스트
+    public MatchInfo matchInfos { get; private set; }
 
     public List<SessionId> sessionIdList { get; private set; }  // 매치에 참가중인 유저들의 세션 목록
     public Dictionary<SessionId, int> teamInfo { get; private set; }    // 매치에 참가중인 유저들의 팀 정보 (MatchModeType이 team인 경우에만 사용)
@@ -237,7 +238,7 @@ public partial class BackEndMatchManager : MonoBehaviour
         Backend.Match.OnMatchMakingRoomCreate += (args) =>
         {
             Debug.Log("OnMatchMakingRoomCreate : " + args.ErrInfo + " : " + args.Reason);
-
+            MatchingTest.GetInstance().CreateRoomResult(args.ErrInfo.Equals(ErrorCode.Success) == true);
             //LobbyUI.GetInstance().CreateRoomResult(args.ErrInfo.Equals(ErrorCode.Success) == true);
         };
 
@@ -263,6 +264,7 @@ public partial class BackEndMatchManager : MonoBehaviour
                 Debug.Log("ready room user count : " + userList.Count);
             }
             //LobbyUI.GetInstance().CreateRoomResult(args.ErrInfo.Equals(ErrorCode.Success) == true, userList);
+            MatchingTest.GetInstance().CreateRoomResult(args.ErrInfo.Equals(ErrorCode.Success) == true, userList);
         };
 
         // 대기방에 유저 퇴장 메시지
@@ -529,12 +531,12 @@ public partial class BackEndMatchManager : MonoBehaviour
     {
         var inDate = BackEndServerManager.GetInstance().myIndate;
 
-        SendQueue.Enqueue(Backend.Match.GetMatchRecord, inDate, matchInfos[index].matchType, matchInfos[index].matchModeType, matchInfos[index].inDate, callback =>
+        SendQueue.Enqueue(Backend.Match.GetMatchRecord, inDate, matchInfos.matchType, matchInfos.matchModeType, matchInfos.inDate, callback =>
         {
             MatchRecord record = new MatchRecord();
-            record.matchTitle = matchInfos[index].title;
-            record.matchType = matchInfos[index].matchType;
-            record.modeType = matchInfos[index].matchModeType;
+            record.matchTitle = matchInfos.title;
+            record.matchType = matchInfos.matchType;
+            record.modeType = matchInfos.matchModeType;
 
             if (!callback.IsSuccess())
             {
@@ -555,11 +557,11 @@ public partial class BackEndMatchManager : MonoBehaviour
             var defeat = Convert.ToInt32(data["defeat"]["N"].ToString());
             var numOfMatch = win + draw + defeat;
             string point = string.Empty;
-            if (matchInfos[index].matchType == MatchType.MMR)
+            if (matchInfos.matchType == MatchType.MMR)
             {
                 point = data["mmr"]["N"].ToString();
             }
-            else if (matchInfos[index].matchType == MatchType.Point)
+            else if (matchInfos.matchType == MatchType.Point)
             {
                 point = data["point"]["N"].ToString() + " P";
             }
@@ -588,7 +590,7 @@ public partial class BackEndMatchManager : MonoBehaviour
     public void GetMatchList(Action<bool, string> func)
     {
         // 매칭 카드 정보 초기화
-        matchInfos.Clear();
+        //matchInfos.Clear();
 
         Backend.Match.GetMatchList(callback =>
         {
@@ -627,9 +629,9 @@ public partial class BackEndMatchManager : MonoBehaviour
                     }
                 }
 
-                matchInfos.Add(matchInfo);
+                //matchInfos.Add(matchInfo);
             }
-            Debug.Log("매칭카드 리스트 불러오기 성공 : " + matchInfos.Count);
+            Debug.Log("매칭카드 리스트 불러오기 성공 : " + matchInfos.title);
             func(true, string.Empty);
         });
     }
@@ -657,7 +659,12 @@ public partial class BackEndMatchManager : MonoBehaviour
 
     public MatchInfo GetMatchInfo(string indate)
     {
-        var result = matchInfos.FirstOrDefault(x => x.inDate == indate);
+        //var result = matchInfos.FirstOrDefault(x => x.inDate == indate);
+        var result=new MatchInfo();
+        if (matchInfos.inDate == indate)
+        {
+            result = matchInfos;
+        }
         if (result.Equals(default(MatchInfo)) == true)
         {
             return null;

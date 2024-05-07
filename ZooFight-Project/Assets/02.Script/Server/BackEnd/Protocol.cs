@@ -16,6 +16,8 @@ namespace Protocol
         PlayerDowned,   // 플레이어가 다운 됨
         PlayerNoMove,   // 플레이어 이동 멈춤
         PlayerNoRotate, // 플레이어 회전 멈춤
+        PlayerHoldItem, // 플레이어가 아이템을 들고있는 상태.
+
         bulletInfo, 
         //ItemInfo,       //플레이어가 가지고 있는 아이템 정보
 

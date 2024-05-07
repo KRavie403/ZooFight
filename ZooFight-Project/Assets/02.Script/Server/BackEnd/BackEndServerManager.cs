@@ -58,10 +58,11 @@ public class BackEndServerManager : MonoBehaviour
 
     private void Update()
     {
-        if (Backend.IsInitialized)
-        {
-            Backend.AsyncPoll();
-        }
+        //if (Backend.IsInitialized)
+        //{
+        //    Backend.AsyncPoll();
+        //}
+        Backend.AsyncPoll();
     }
 
     private void BackendSetup()
@@ -79,82 +80,6 @@ public class BackEndServerManager : MonoBehaviour
 
     }
 
-    // 뒤끝 토큰으로 로그인
-    public void BackendTokenLogin(Action<bool, string> func)
-    {
-        Enqueue(Backend.BMember.LoginWithTheBackendToken, callback =>
-        {
-            if (callback.IsSuccess())
-            {
-                Debug.Log("토큰 로그인 성공");
-                loginSuccessFunc = func;
-
-                OnPrevBackendAuthorized();
-                return;
-            }
-
-            Debug.Log("토큰 로그인 실패\n" + callback.ToString());
-            func(false, string.Empty);
-        });
-    }
-
-    // 커스텀 로그인
-    public void CustomLogin(string id, string pw, Action<bool, string> func)
-    {
-        Enqueue(Backend.BMember.CustomLogin, id, pw, callback =>
-        {
-            if (callback.IsSuccess())
-            {
-                Debug.Log("커스텀 로그인 성공");
-                loginSuccessFunc = func;
-
-                OnPrevBackendAuthorized();
-                return;
-            }
-
-            Debug.Log("커스텀 로그인 실패\n" + callback);
-            func(false, string.Format(BackendError,
-                callback.GetStatusCode(), callback.GetErrorCode(), callback.GetMessage()));
-        });
-    }
-
-    // 커스텀 회원가입
-    public void CustomSignIn(string id, string pw, Action<bool, string> func)
-    {
-        tempNickName = id;
-        Enqueue(Backend.BMember.CustomSignUp, id, pw, callback =>
-        {
-            if (callback.IsSuccess())
-            {
-                Debug.Log("커스텀 회원가입 성공");
-                loginSuccessFunc = func;
-
-                OnPrevBackendAuthorized();
-                return;
-            }
-
-            Debug.LogError("커스텀 회원가입 실패\n" + callback.ToString());
-            func(false, string.Format(BackendError,
-                callback.GetStatusCode(), callback.GetErrorCode(), callback.GetMessage()));
-        });
-    }
-
-    public void UpdateNickname(string nickname, Action<bool, string> func)
-    {
-        Enqueue(Backend.BMember.UpdateNickname, nickname, bro =>
-        {
-            // 닉네임이 없으면 매치서버 접속이 안됨
-            if (!bro.IsSuccess())
-            {
-                Debug.LogError("닉네임 생성 실패\n" + bro.ToString());
-                func(false, string.Format(BackendError,
-                    bro.GetStatusCode(), bro.GetErrorCode(), bro.GetMessage()));
-                return;
-            }
-            loginSuccessFunc = func;
-            OnBackendAuthorized();
-        });
-    }
 
     // 유저 정보 불러오기 사전작업
     private void OnPrevBackendAuthorized()
