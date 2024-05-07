@@ -3,11 +3,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using EasyUI.Progress;
+using Cysharp.Threading.Tasks;
+using System;
 
 public class LoadScene : MonoBehaviour
 {
-    private Coroutine movingNextSceneCoroutine;
-
     public Animator anim;
 
     [SerializeField]
@@ -15,38 +15,33 @@ public class LoadScene : MonoBehaviour
 
     private void Start()
     {
-        //anim = GetComponent<Animator>();
         LoadLoadingImg();
 
-        // 이전에 실행 중인 코루틴이 있으면 중단
-        if (movingNextSceneCoroutine != null)
-        {
-            Debug.Log("실행 중인 코루틴 있음");
-            StopCoroutine(movingNextSceneCoroutine);
-        }
-
-        Debug.Log("코루틴 실행");
-       
-        movingNextSceneCoroutine = StartCoroutine(MovingNextScene());
+        OnLoadGameScene().Forget();
     }
 
-    IEnumerator MovingNextScene()
+    private async UniTaskVoid OnLoadGameScene()
     {
-        Debug.Log("MovingNextScene");
+        await UniTask.Yield();
 
-        yield return new WaitForSeconds(5.0f);
-        Debug.Log("5초지남");
-        SceneManager.LoadScene(2);
-        Debug.Log("로드2씬");
+        AsyncOperation loadSceneAsync = SceneManager.LoadSceneAsync("GameScene");
+        loadSceneAsync.allowSceneActivation = false;
 
-        Debug.Log("코루틴 초기화");
-        //  씬 로드 후 코루틴 참조를 초기화
-        movingNextSceneCoroutine = null;
+        while(!loadSceneAsync.isDone)
+        {
+            await UniTask.Yield();
+
+            if(loadSceneAsync.progress >= 0.9f)
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(2));
+
+                loadSceneAsync.allowSceneActivation=true;
+            }
+        }
     }
 
     public void LoadLoadingImg()
     {
-        Debug.Log("Loading Started");
         anim.SetBool("IsRotating", true);
         //Progress.Show("Loading image. . .", ProgressColor.Orange);
         //StartCoroutine("LoadImg");
