@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wall_Side
+  m_Name: Wall_Side 1
   m_Shader: {fileID: 4800000, guid: 60e29b7951f20da47b11861d166b7036, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -100,7 +100,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 15, y: 1}
         m_Offset: {x: 0, y: 0}
     - _PaperTexture:
         m_Texture: {fileID: 0}
