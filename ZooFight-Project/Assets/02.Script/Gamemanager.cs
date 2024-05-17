@@ -204,11 +204,13 @@ public class Gamemanager : MonoBehaviour
         switch (team)
         {
             case HitScanner.Team.RedTeam:
-                return RedTeamBlock;
+                if(RedTeamBlock != null) return RedTeamBlock;
+                else return null;
             case HitScanner.Team.NotSetting:
                 return null;
             case HitScanner.Team.BlueTeam:
-                return BlueTeamBlock;
+                if (BlueTeamBlock != null) return BlueTeamBlock;
+                else return null;
             case HitScanner.Team.AllTarget:
                 return null;
             default:

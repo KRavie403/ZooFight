@@ -59,6 +59,26 @@ public class Item_CurseScroll : Items
 
         float duringTime = 0.0f;
 
+        // 대상 캐릭터 확정
+        //myPlayer.myTeam
+        PlayerController[] TargetCharcaters = new PlayerController[] { };
+
+
+        // 대상 캐릭터 키 반전
+        foreach (PlayerController c in TargetCharcaters)
+        {
+            c.isKeyReverse = true;
+        }
+
+        // 
+
+        // 저주 이펙트 출력 대기
+        CuresEffectSetting();
+        // 저주 사운드 재생 대기
+        CurseSoundSetting();
+
+
+
         while (duringTime < Value1)
         {
             duringTime += Time.deltaTime;
@@ -66,25 +86,20 @@ public class Item_CurseScroll : Items
             Gamemanager.Inst.GetEnemyTeam(myPlayer.myTeam);
 
 
-        }
-
-    }
-
-    public IEnumerator CuresActive()
-    {
-        // 저주 대상 타겟 확보
-
-        // 저주 이펙트 출력 대기
-        CuresEffectSetting();
-        // 저주 사운드 재생 대기
-        CurseSoundSetting();
-
-        // 효과 이펙트 사운드 실행
-        while (true)
-        {
             yield return null;
+
         }
+
+        // 대상 캐릭터 키 반전 해제
+        foreach (PlayerController c in TargetCharcaters)
+        {
+            c.isKeyReverse = false;
+        }
+
+        // 아이템 반환
+        ReturnItem();
     }
+
     public void CuresTargetSetting()
     {
         if(myPlayer.myTeam != HitScanner.Team.NotSetting)

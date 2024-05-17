@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -50,9 +51,9 @@ public class PlayerController : MovementController, IHitBox
     private pState State;
     protected StateMachine PlayerSM;
 
-
+    // 기본 모든 상태목록
     public Dictionary<pState, BaseState> p_States = new Dictionary<pState, BaseState>();
-
+    // 슈퍼아머 상태 목록
     public Dictionary<pState, BaseState> S_States = new Dictionary<pState, BaseState>();
 
     public bool IsDown => PlayerSM.CurrentState != p_States[pState.Down];
@@ -81,6 +82,7 @@ public class PlayerController : MovementController, IHitBox
     bool IsRunning = false;
     [SerializeField]
     bool isJump = false;
+    public bool isKeyReverse = false;
     public bool isGrab = false;
     // 캐릭터 위치 검증여부
     bool isDenial = false;
@@ -396,6 +398,7 @@ public class PlayerController : MovementController, IHitBox
     }
 
 
+
     public void SetPosition(Vector3 pos)
     {
         transform.position = pos;
@@ -553,7 +556,7 @@ public class PlayerController : MovementController, IHitBox
     // 타격 판정 발생
     void IHitBox.HitAction(Component comp)
     {
-        //comp.GetComponent<HitScanner>().MyDamage
+        //comp.GetComponent<myHitScanner>().MyDamage
 
         GetDamaged(comp.GetComponent<HitScanner>().MyDamage);
     }
@@ -562,8 +565,17 @@ public class PlayerController : MovementController, IHitBox
     public void GetDamaged(float Damage)
     {
         Debug.Log("Damaged");
+        if(isShield)
+        {
+            CurShield -= Damage;
+        }
+        else
+        {
+            CurHP -= Damage;
+        }
 
     }
+    
 
     public void GetDotDamaged(float Damage,float time)
     {
@@ -571,8 +583,44 @@ public class PlayerController : MovementController, IHitBox
 
     }
 
+    // 실드가 없을때 실드획득
+    public void GetShield(float ShieldValue)
+    {
+        if (ShieldValue < 0) return;
+        if( ShieldValue > MaxShield) 
+        { 
+
+        }
+        else
+        {
+            isShield = true;
+            CurShield = ShieldValue;
+        }
+
+    }
+
+    public IEnumerator StaminaWork()
+    {
+
+        // 항상 동작하게 하기
+        while(true)
+        {
+            // 스테 감소
+            if (IsRunning)
+            {
+                CurSP -= Time.deltaTime * SPRecovery;
+            }
+            // 스테 증가
+            else
+            {
+                CurSP += Time.deltaTime * SPRecovery;
+            }
+            yield return null;
+        }
+    }
+
     // 상태이상을 받는 함수
-    public void GetCrowdControl(StatusCode code, float Time, float Power)
+    public void GetCrowdControl(StatusCode code, float Time, float Power=0)
     {
 
         switch (code)
@@ -644,6 +692,49 @@ public class PlayerController : MovementController, IHitBox
         }
     }
 
+    // 플레이어의 크기를 입력받은 사이즈로 변경, 변경완료후 입력 받은 명령이 있다면 처리
+    public void PlayerSizeChange(float ChangeRate, UnityAction e = null)
+    {
+        // 
+        gameObject.transform.localScale = Vector3.one * ChangeRate * 0.8f;
+
+        e?.Invoke();
+    }
+
+
+    // 해머 공격시 발동
+    public void HammerSmash(float Time)
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.3f, groundMask);
+
+        foreach (Collider collider in colliders)
+        {
+            PlayerController player = collider.GetComponent<PlayerController>();
+            if (player != null)
+            {
+                player.GetCrowdControl(StatusCode.Stun, Time);
+            }
+        }
+        myAnim.SetTrigger("HammerSmash");
+
+
+    }
+
+    // 실드가 파괴 될 경우 발동하는 함수 = 기본값 true
+    public void ShieldCrashed(bool isCrash = true)
+    {
+        // 실드 종료 & 스턴
+        isShield = false;
+
+        // 지속시간 종료로 인한 소멸시
+        if (!isCrash)
+        {
+            CurShield = 0.0f;
+        }
+
+        DownAction();
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         //Debug.Log($"{collision.gameObject.layer} , {groundMask.value}");
@@ -658,6 +749,8 @@ public class PlayerController : MovementController, IHitBox
             }
         }
     }
+
+
 
     private void OnCollisionExit(Collision collision)
     {

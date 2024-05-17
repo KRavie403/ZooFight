@@ -28,8 +28,9 @@ public class Item_BananaTrap : Items
     [SerializeField]
     GameObject ActivedObj;
 
-    public HitScanner HitScanner;
-
+    public HitScanner myHitScanner;
+    
+    
 
     protected override void Awake()
     {
@@ -38,14 +39,14 @@ public class Item_BananaTrap : Items
         // 히트스캐너 생성
         if(GetComponent<HitScanner>() != null )
         {
-            HitScanner = GetComponent<HitScanner>();
-            HitScanner.enabled = false;
+            myHitScanner = GetComponent<HitScanner>();
+            myHitScanner.enabled = false;
         }
         else
         {
             // 미실행 상태로 생성
-            HitScanner = transform.AddComponent<HitScanner>();
-            HitScanner.enabled = false;
+            myHitScanner = transform.AddComponent<HitScanner>();
+            myHitScanner.enabled = false;
         }
 
         myCode = ItemCode.BananaTrap;
@@ -70,7 +71,7 @@ public class Item_BananaTrap : Items
             }
         }
 
-        HitScanner.SetMyTeam(myPlayer.myTeam);
+        myHitScanner.SetMyTeam(myPlayer.myTeam);
         
     }
 
@@ -91,7 +92,7 @@ public class Item_BananaTrap : Items
     {
         base.Initate(Values, player);
 
-        HitScanner.Initiate(this, myPlayer.GetEnemyTeam());
+        myHitScanner.Initiate(this, myPlayer.GetEnemyTeam());
     }
 
 
@@ -105,6 +106,13 @@ public class Item_BananaTrap : Items
         // 코루틴의 동작을 본체로 가져오기
         isItemUse = true;
     }
+
+    public override void ItemHitAction()
+    {
+        base.ItemHitAction();
+
+    }
+
 
     protected override IEnumerator ItemActions()
     {
@@ -121,25 +129,40 @@ public class Item_BananaTrap : Items
             {
                 NonActiveObj.SetActive(false);
                 ActivedObj.SetActive(true);
-                HitScanner.Initiate(this, myPlayer.GetEnemyTeam());
+                myHitScanner.Initiate(this, myPlayer.GetEnemyTeam());
                 isMoveEnd = true;
+                myPlayer.ItemUseEnd();
             });
         //myPlayer.SetState()
         float duringTime = 0;
+        myHitScanner.SetScanActive(true);
         // 바나나 지속시간동안 동작
         while (duringTime < Value2)
         {
             // 던지는동안 지속시간 감소 X
 
-            if (!isMoveEnd) yield return null;
+            if (!isMoveEnd)
+            {
+                yield return null;
+                continue;
+            }
             duringTime += Time.deltaTime;
             // 유지시간 체크
+
 
             // 동작감지시 효과적용 및 이펙트 , 사운드 출력
             if(Targets != null)
             {
                 // 타겟이 잡히면 동작시키고 터트림
-                //duringTime = Value2;
+                foreach (var target in Targets)
+                {
+                    if(target.GetComponent<PlayerController>() != null)
+                    {
+
+                    }
+                }
+
+                // duringTime = Value2;
             }
 
             // 발동시 오브젝트 작동 불능처리
@@ -158,7 +181,6 @@ public class Item_BananaTrap : Items
 
         // 사용이 끝나면 오브젝트 반환
         ReturnItem();
-
 
     }
 

@@ -29,7 +29,7 @@ public class LoadResultUI : MonoBehaviour
         LoadEff();
     }
 
-    private void LoadResultImg(/*HitScanner.Team BeaconTeam*/)
+    private void LoadResultImg(/*myHitScanner.Team BeaconTeam*/)
     {
         HitScanner.Team playerTeam = Gamemanager.Inst.currentPlayer.myTeam;      // 플레이어의 팀 정보 가져오기
         HitScanner.Team winningTeam = Gamemanager.Inst.VictoryTeam; // 승리팀 정보 가져오기
@@ -111,16 +111,16 @@ public class LoadResultUI : MonoBehaviour
         }
     }
 
-    //HitScanner.Team FindPlayerTeam()
+    //myHitScanner.Team FindPlayerTeam()
     //{
     //    // 플레이어의 팀 정보 가져오기
-    //    foreach (var player in Gamemanager.Inst.GetTeam(HitScanner.Team.RedTeam).Values)
+    //    foreach (var player in Gamemanager.Inst.GetTeam(myHitScanner.Team.RedTeam).Values)
     //    {
     //        if (player.gameObject == Gamemanager.Inst.currentPlayer.gameObject)
     //        {
-    //            return HitScanner.Team.RedTeam;
+    //            return myHitScanner.Team.RedTeam;
     //        }
     //    }
-    //    return HitScanner.Team.BlueTeam;
+    //    return myHitScanner.Team.BlueTeam;
     //}
 }

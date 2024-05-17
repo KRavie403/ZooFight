@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -23,6 +24,12 @@ public class Item_MinimalRazer : Items
     // 방향테스트용
     public GameObject Test1;
 
+    public GameObject RazerGunObj;
+
+    public Transform RazerStartPoint;
+
+    public HitScanner myHitScanner;
+
 
     Vector3 Dir = Vector3.zero;
 
@@ -30,7 +37,27 @@ public class Item_MinimalRazer : Items
     protected override void Awake()
     {
         base.Awake();
-        //Effectmanager.Inst.CreateEffectObj(effectPlayer, transform);
+        //Effectmanager.Inst.CreateEffectObj(effectPlayer, transform);\
+        // 히트스캐너 생성
+        if (GetComponent<HitScanner>() != null)
+        {
+            myHitScanner = GetComponent<HitScanner>();
+
+            // 테스트 구간 시작
+            if(myHitScanner == null )
+            {
+                gameObject.AddComponent<HitScanner>();
+            }
+            // 테스트 구간 종료
+
+            myHitScanner.enabled = false;
+        }
+        else
+        {
+            // 미실행 상태로 생성
+            myHitScanner = transform.AddComponent<HitScanner>();
+            myHitScanner.enabled = false;
+        }
     }
     // Start is called before the first frame update
     protected override void Start()
@@ -47,8 +74,46 @@ public class Item_MinimalRazer : Items
         base.Update();
     }
 
+    public override void Initate(List<float> Values, PlayerController player)
+    {
+        base.Initate(Values, player);
+    }
 
-    
+
+    protected override IEnumerator ItemActions()
+    {
+        yield return base.ItemActions();
+
+        float duringTime = 0;
+
+        GameObject[] curTargets = new GameObject[] { };
+
+
+        // 발동시 히트스캐너 가동
+        
+        while (duringTime < Value2)
+        {
+            duringTime += Time.deltaTime;
+
+
+            // 타겟 검출이 됫을 경우 
+            if(Targets != null)
+            {
+                foreach (GameObject T in Targets)
+                {
+                    if (T.GetComponent<PlayerController>() != null)
+                    {
+                        T.GetComponent<PlayerController>().PlayerSizeChange(0.5f);
+                    }
+                }
+            }
+
+
+        }
+
+    }
+
+
     public IEnumerator RazerShooting(Vector3 pos)
     {
         Vector3 temp = pos - myPlayer.transform.position;

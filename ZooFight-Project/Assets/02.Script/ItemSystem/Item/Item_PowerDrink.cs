@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// 아이템명 : 파워 드링크
-/// Value 1 방어량
+/// Value 1 이동 속도 증가량
 /// Value 2 동작 시간
 /// 
 /// </summary>
@@ -35,7 +35,37 @@ public class Item_PowerDrink : Items
         base.Update();
     }
 
-    
+    public override void ItemUse()
+    {
+        base.ItemUse();
+
+
+    }
+
+    protected override IEnumerator ItemActions()
+    {
+        yield return base.ItemActions();
+
+        float duringTime = 0;
+
+        // 기본 속도값 저장
+        float BaseSpeedRate = 1.0f;
+
+        myPlayer.BaseSpeedRate = Value1;
+
+        // 지속시간 체크
+        while (duringTime < Value2)
+        {
+            duringTime += Time.deltaTime;
+
+            yield return null;
+
+        }
+
+        // 지속시간 종료 후 속도 복귀
+        myPlayer.BaseSpeedRate = BaseSpeedRate;
+        ReturnItem();
+    }
 
     public IEnumerator DrinkActive()
     {

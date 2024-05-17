@@ -70,19 +70,24 @@ public class HitScanner : MonoBehaviour
 
     }
 
-    // 사용 객체와 대상 팀 주입
+    // 사용 객체(아이템 or 투사체? or 다른 무언가) 와 대상 팀 주입
     public void Initiate(Component comp,Team TargetTeam)
     {
         if(comp.GetComponent<Component>() != null)
         {
             UserComponent = comp;
             targetTeam = TargetTeam;
+
         }
     }
-
+                                                                                                                                           
     public void SetScanActive(bool Active)
     {
         isActive = Active;
+        if(Active)
+        {
+            enabled = true;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -96,18 +101,18 @@ public class HitScanner : MonoBehaviour
                 return;
             }
             // 스캔하기
-            //Scan(ScanRange);
-            if ((int)targetTeam * (int)other.gameObject.GetComponent<IHitBox>().Team == 0)
-            {
+            Scan(ScanRange);
+            //if ((int)targetTeam * (int)other.gameObject.GetComponent<IHitBox>().Team == 0)
+            //{
 
-                return;
-            }
-            if (targetTeam != other.gameObject.GetComponent<IHitBox>().Team )
-            {
-                return;
-            }
-            Debug.Log("Hit");
-            other.GetComponent<IHitBox>().HitAction(UserComponent);
+            //    return;
+            //}
+            //if (targetTeam != other.gameObject.GetComponent<IHitBox>().Team )
+            //{
+            //    return;
+            //}
+            //Debug.Log("Hit");
+            //other.GetComponent<IHitBox>().HitAction(UserComponent);
         }
 
     }

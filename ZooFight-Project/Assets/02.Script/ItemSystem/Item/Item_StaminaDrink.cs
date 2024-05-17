@@ -6,7 +6,7 @@ using UnityEngine;
 /// 아이템명 : 스테미너드링크
 /// Value 1 스테미너 회복량
 /// Value 2 스테미너 회복시간 - 미사용 가능성 존재
-/// 
+/// 1 과 2를 합치면 총 시간
 /// </summary>
 
 public class Item_StaminaDrink : Items
@@ -38,26 +38,29 @@ public class Item_StaminaDrink : Items
     public override void ItemUse()
     {
         base.ItemUse();
-        base.ItemAction = DrinkAction();
     }
+
+
 
 
     // 모션동작동안 회복 & 애니메이션 & 이펙트 출력동작
-    public IEnumerator DrinkAction()
+    protected override IEnumerator ItemActions()
     {
-        // 회복
+        yield return base.ItemActions();
 
+        float duringTime = 0;
 
-        // 애니메이션
-
-        // 이펙트
-
-
-        while (true)
+        while (duringTime < Value2)
         {
+            duringTime += Time.deltaTime;
+
+            myPlayer.CurSP += Time.deltaTime * (Value1 / Value2);
+
             yield return null;
         }
     }
+
+
 
 
 }

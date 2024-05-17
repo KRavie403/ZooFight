@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// 아이템명 : 블럭교환스크롤
-/// Value 1 지속시간
+/// Value 1 
 /// Value 2 이펙트 지속시간
 /// Value 3 ???
 /// </summary>
@@ -18,6 +18,10 @@ public class Item_BlockChangeScroll : Items
 
     [SerializeField]
     EffectPlayer myEffect;
+    bool isEffectPlay = false;
+    [SerializeField]
+    SoundSpeaker mySound;
+    bool isSoundPlay = false;   
 
     public GameObject myBlockObj;
     public BlockObject myBlock;
@@ -28,6 +32,7 @@ public class Item_BlockChangeScroll : Items
     {
         base.Awake();
 
+        myCode = ItemCode.BlockChangeScroll;
     }
 
     protected override void Start()
@@ -45,6 +50,11 @@ public class Item_BlockChangeScroll : Items
     public override void ItemUse()
     {
         base.ItemUse();
+
+
+
+        // 코루틴의 동작을 본체로 가져오기
+        isItemUse = true;
 
     }
     protected override IEnumerator ItemActions()
@@ -72,7 +82,7 @@ public class Item_BlockChangeScroll : Items
         // 블럭 교환
         myBlock.ChangeBlockTeam();
         enemyBlock.ChangeBlockTeam();
-
+        
 
         // 블럭교환 이펙트 출력준비
 
@@ -81,15 +91,29 @@ public class Item_BlockChangeScroll : Items
 
         myBlock.isChangeActive = false;
         enemyBlock.isChangeActive = false;
+
+        myPlayer.ItemUseEnd();
+
         // 블럭교환 실행
         while (duringTime < Value2)
         {
             duringTime += Time.deltaTime;
 
 
+            if (isItemUse)
+            {
+                yield return null;
+            }
+            else
+            {
+                yield return base.ItemActions();
+            }
+
             yield return null;
         }
 
+        // 아이템 반환
+        ReturnItem();
     }
 
     public IEnumerator ScrollActive()

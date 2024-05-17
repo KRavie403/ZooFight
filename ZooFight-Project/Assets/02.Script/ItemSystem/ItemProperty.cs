@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 /// <summary>
@@ -30,7 +31,23 @@ public class ItemProperty : MonoBehaviour
     public SoundCode soundCode;
 
     public GameObject myPrefab;
-    public List<GameObject> Targets;
+
+    public UnityAction<List<GameObject>> TargetAction;
+    List<GameObject> _targets;
+    public List<GameObject> Targets
+    {
+        get
+        {
+            return _targets;
+        }
+        set
+        {
+            _targets = value;
+            TargetAction?.Invoke(_targets);
+        }
+    }
+    public bool isTarget = false;
+
 
 
 

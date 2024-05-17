@@ -93,7 +93,7 @@ public class VictoryDecision : MonoBehaviour
         Gamemanager.Inst.currentPlayer.LoseAction();
 
         // 서버 업로드시 사용할부분
-        //for (int i = 0; i < Gamemanager.Inst.GetTeamId((HitScanner.Team)((int)WinnerTeam*-1)).Count; i++)
+        //for (int i = 0; i < Gamemanager.Inst.GetTeamId((myHitScanner.Team)((int)WinnerTeam*-1)).Count; i++)
         //{
         //    // 승리 애니메이션 동작
         //    Gamemanager.Inst.GetEnemyTeam(WinnerTeam)

@@ -31,6 +31,13 @@ public class BlockObject : MonoBehaviour
 
     private void Awake()
     {
+        
+
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
         // 오브젝트가 생성될때 이미 존재하는 블럭이 있으면 삭제
         if(Gamemanager.Inst.GetTeamBlock(myTeam) != null)
         {
@@ -38,17 +45,15 @@ public class BlockObject : MonoBehaviour
             {
                 Destroy(gameObject);
             }
-            else
-            {
-                Gamemanager.Inst.AddBlockObj(this);
-            }
         }
-        
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
+        else
+        {
+                Gamemanager.Inst.AddBlockObj(this);
+        }
+        if(myTeam != HitScanner.Team.NotSetting)
+        {
+            Initate(myTeam);
+        }
     }
 
     // Update is called once per frame
@@ -60,8 +65,18 @@ public class BlockObject : MonoBehaviour
     public void Initate(HitScanner.Team myteam)
     {
         myTeam = myteam;
-        if (myTeam == HitScanner.Team.BlueTeam) Gamemanager.Inst.BlueTeamBlock = this;
-        if (myTeam == HitScanner.Team.RedTeam) Gamemanager.Inst.RedTeamBlock = this;
+        if (myTeam == HitScanner.Team.BlueTeam)
+        {
+            RedBlock.SetActive(false);
+            BlueBlock.SetActive(true);
+            Gamemanager.Inst.BlueTeamBlock = this;
+        }
+        if (myTeam == HitScanner.Team.RedTeam)
+        {
+            RedBlock.SetActive(true);
+            BlueBlock.SetActive(false);
+            Gamemanager.Inst.RedTeamBlock = this;
+        }
     }
 
     #region 잡기관련
@@ -105,11 +120,13 @@ public class BlockObject : MonoBehaviour
         {
             case HitScanner.Team.RedTeam:
                 myTeam = HitScanner.Team.BlueTeam;
+                Initate(myTeam);
                 break;
             case HitScanner.Team.NotSetting:
                 return;
             case HitScanner.Team.BlueTeam:
                 myTeam= HitScanner.Team.RedTeam;
+                Initate(myTeam);
                 break;
             case HitScanner.Team.AllTarget:
                 return;
@@ -121,13 +138,20 @@ public class BlockObject : MonoBehaviour
 
     public void ForceDeGrab()
     {
-        myPlayer.isGrab = false;
-        myPlayer.grabPoint.curGrabBlock = null;
+        if(myPlayer != null)
+        {
+            myPlayer.isGrab = false;
+            myPlayer.grabPoint.curGrabBlock = null;
 
-        StopCoroutine (BlockMove());
+            StopCoroutine (BlockMove());
 
-        myPlayer = null;
-        isGrab = false;
+            myPlayer = null;
+            isGrab = false;
+        }
+        else
+        {
+
+        }
 
 
     }

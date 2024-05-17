@@ -118,21 +118,19 @@ public class Items : ItemProperty , IItems , IEffect
             StopCoroutine(ItemAction);
             ItemAction = ItemActions();
         }
-
-
-
+        isItemUse = true;
     }
 
     public virtual void ItemHitAction()
     {
-
+        isTarget = true;
     }
 
     // 아이템을 오브젝트 풀에 반납할때
     public void ReturnItem()
     {
         //myPlayer = null;
-        //GetComponent<HitScanner>()?.SetMyTeam(HitScanner.Team.NotSetting);
+        //GetComponent<myHitScanner>()?.SetMyTeam(myHitScanner.Team.NotSetting);
         ItemEnd();
         ObjectPoolingManager.instance.ReturnObject(gameObject);
     }
@@ -198,6 +196,7 @@ public class Items : ItemProperty , IItems , IEffect
     {
         dir = Dir;
     }
+
 
 
 }

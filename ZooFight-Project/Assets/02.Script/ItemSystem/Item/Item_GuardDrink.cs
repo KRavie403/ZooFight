@@ -51,6 +51,41 @@ public class Item_GuardDrink : Items
     {
 
     }
+    public override void ItemUse()
+    {
+        base.ItemUse();
+
+        // 시작 동작 이관
+        isItemUse = true;
+    }
+
+    protected override IEnumerator ItemActions()
+    {
+        yield return base.ItemActions();
+        float duringTime = 0;
+
+        // 캐릭터 실드 주입
+        myPlayer.GetShield(Value1);
+
+        while (duringTime < Value2)
+        {
+            duringTime += Time.deltaTime;
+
+
+
+            // 실드가 중간에 파괴되면 종료
+            if(!myPlayer.isShield)
+            {
+                duringTime += Value2;
+                myPlayer.DownAction();
+            }
+            yield return null;
+
+        }
+
+
+
+    }
 
     public IEnumerator DrinkActive()
     {

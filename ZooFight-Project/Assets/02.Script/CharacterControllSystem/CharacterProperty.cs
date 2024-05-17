@@ -10,9 +10,18 @@ public class CharacterProperty : MonoBehaviour
     public int CharacterID = -1;
     public HitScanner.Team myTeam = HitScanner.Team.NotSetting;
 
+    [Range(0f, 10f)]
+    public float BaseSpeedRate;
+    [SerializeField]
+    private float _moveSpeed = 1.0f;
+    public float MoveSpeed
+    {
+        get
+        {
+            return _moveSpeed * BaseSpeedRate;
+        }
+    }
 
-    [Range(0f, 3f)]
-    public float MoveSpeed;
     [Range(0f,10.0f)]
     public float RunSpeedRate = 1;
 
@@ -38,6 +47,7 @@ public class CharacterProperty : MonoBehaviour
     }
 
     public UnityEvent<float> UpdateSp;
+    [Range(0.0f,100.0f)]
     public float MaxSP;
     private float _curSP = -100.0f;
     public float CurSP
@@ -53,6 +63,7 @@ public class CharacterProperty : MonoBehaviour
             UpdateSp?.Invoke(Mathf.Approximately(MaxSP, 0.0f) ? 0.0f : _curSP);
         }
     }
+    public float SPRecovery = 10.0f;
 
     public bool isShield = false;
     public UnityEvent<float> UpdateShield;
@@ -62,7 +73,7 @@ public class CharacterProperty : MonoBehaviour
     {
         get
         {
-            if(isShield) return 0;
+            if(!isShield) return 0;
             if (_curShield < 0.0f) _curShield = 0;
             return _curShield;
         }

@@ -130,21 +130,35 @@ public class ClientInputManager : Singleton<ClientInputManager>
         if (Input.GetKey(KeySetting.keys[KeyAction.Forward]))
         {
             Debug.Log("Stay");
-            Gamemanager.Inst.currentPlayer.AxisY += Time.deltaTime;
+            Gamemanager.Inst.currentPlayer.AxisY = Gamemanager.Inst.currentPlayer.isKeyReverse ?
+                Gamemanager.Inst.currentPlayer.AxisY - Time.deltaTime :
+                Gamemanager.Inst.currentPlayer.AxisY + Time.deltaTime;
+
+            //Gamemanager.Inst.currentPlayer.AxisY += Time.deltaTime;
         }
         if (Input.GetKey(KeySetting.keys[KeyAction.Backward]))
         {
-            Gamemanager.Inst.currentPlayer.AxisY -= Time.deltaTime;
+            Gamemanager.Inst.currentPlayer.AxisY = Gamemanager.Inst.currentPlayer.isKeyReverse ?
+                Gamemanager.Inst.currentPlayer.AxisY + Time.deltaTime :
+                Gamemanager.Inst.currentPlayer.AxisY - Time.deltaTime;
+
+            //Gamemanager.Inst.currentPlayer.AxisY -= Time.deltaTime;
         }
         if (Input.GetKey(KeySetting.keys[KeyAction.Left]))
         {
-            Gamemanager.Inst.currentPlayer.AxisX -= Time.deltaTime;
+            Gamemanager.Inst.currentPlayer.AxisX = Gamemanager.Inst.currentPlayer.isKeyReverse ?
+                Gamemanager.Inst.currentPlayer.AxisX + Time.deltaTime :
+                Gamemanager.Inst.currentPlayer.AxisX - Time.deltaTime;
 
+            //Gamemanager.Inst.currentPlayer.AxisX -= Time.deltaTime;
         }
         if (Input.GetKey(KeySetting.keys[KeyAction.Right]))
         {
-            Gamemanager.Inst.currentPlayer.AxisX += Time.deltaTime;
+            Gamemanager.Inst.currentPlayer.AxisX = Gamemanager.Inst.currentPlayer.isKeyReverse ?
+                Gamemanager.Inst.currentPlayer.AxisX - Time.deltaTime :
+                Gamemanager.Inst.currentPlayer.AxisX + Time.deltaTime;
 
+            //Gamemanager.Inst.currentPlayer.AxisX += Time.deltaTime;
         }
         if (Input.GetKey(KeySetting.keys[KeyAction.Jump]))
         {

@@ -43,7 +43,7 @@ public class Character_ItemUse : BaseState
 
         player.myAnim.SetBool("ItemUse", false);
 
-        player.curItems = null;
+        //player.curItems = null;
     }
 
     public override void LogicUpdate()
