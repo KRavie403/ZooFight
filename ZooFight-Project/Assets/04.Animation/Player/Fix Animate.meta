@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:ZooFight-Project/Assets/04.Animation/Player/Fix Animate.meta
 guid: b94c7654d83390f45b520be2d9c06d7c
 folderAsset: yes
+========
+guid: c6ab0cf6066d5674e98bc0a593afe23a
+>>>>>>>> origin/develop:ZooFight-Project/Assets/05.Maps/Terrain_datas.unitypackage.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
