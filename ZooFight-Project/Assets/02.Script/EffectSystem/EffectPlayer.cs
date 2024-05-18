@@ -96,9 +96,17 @@ public class EffectPlayer : MonoBehaviour , IEffect
     }
     private void OnParticleCollision(GameObject other)
     {
-        if (triggerTarget.Contains(other.transform)) return;
-        triggerTarget.Add(other.transform);
-        Debug.Log(other.name);
+        if (!triggerTarget.Contains(other.transform))
+        {
+            triggerTarget.Add(other.transform);
+            PerformCollisionAction(other);       // 추가적인 충돌 처리
+        }
+    }
+
+    // 충돌 오브젝트 로그
+    public void PerformCollisionAction(GameObject collidedObject)
+    {
+        Debug.Log($"{ collidedObject.name} 충돌");
     }
 
     public void EffectEnd(int index,UnityAction e = null)
@@ -106,6 +114,7 @@ public class EffectPlayer : MonoBehaviour , IEffect
         if (myEffect[index].isStopped)
         {
             e?.Invoke();
+            gameObject.SetActive(false);        // 이펙트가 종료되면 게임 오브젝트 비활성화
         }
     }
 
