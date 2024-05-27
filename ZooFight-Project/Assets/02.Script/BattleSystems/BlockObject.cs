@@ -94,6 +94,7 @@ public class BlockObject : MonoBehaviour
         myPlayer.grabPoint.curGrabBlock = this;
         myPlayer.isGrab = true;
         isGrab = true;
+        Debug.Log($"{player.name} Grab");
         StartCoroutine(BlockMove());
     }
 
@@ -105,6 +106,7 @@ public class BlockObject : MonoBehaviour
 
         
         StopCoroutine(BlockMove());
+        Debug.Log($"{player.name} DeGrab");
 
         myPlayer = null;
         isGrab=false;
@@ -121,12 +123,14 @@ public class BlockObject : MonoBehaviour
             case HitScanner.Team.RedTeam:
                 myTeam = HitScanner.Team.BlueTeam;
                 Initate(myTeam);
+                Debug.Log($"{this.gameObject.name} ChangeTeam");
                 break;
             case HitScanner.Team.NotSetting:
                 return;
             case HitScanner.Team.BlueTeam:
                 myTeam= HitScanner.Team.RedTeam;
                 Initate(myTeam);
+                Debug.Log($"{this.gameObject.name} ChangeTeam");
                 break;
             case HitScanner.Team.AllTarget:
                 return;

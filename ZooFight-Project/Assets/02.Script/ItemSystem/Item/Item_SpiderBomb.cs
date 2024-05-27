@@ -35,4 +35,37 @@ public class Item_SpiderBomb : Items
     {
         base.Update();
     }
+
+    protected override IEnumerator ItemActions()
+    {
+        yield return base.ItemActions();
+
+        float duringTime = 0;
+
+        while (duringTime < Value2)
+        {
+            duringTime += Time.deltaTime;
+
+
+        }
+
+
+        ReturnItem();
+    }
+
+    public override void Initate(List<float> Values, PlayerController player)
+    {
+        base.Initate(Values, player);
+
+    }
+
+    public override void ItemUse()
+    {
+        base.ItemUse();
+
+        isItemUse = true;
+    }
+
+
+
 }

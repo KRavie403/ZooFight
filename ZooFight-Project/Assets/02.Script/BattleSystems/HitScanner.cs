@@ -37,7 +37,7 @@ public class HitScanner : MonoBehaviour
 
 
 
-    List<Collider> Targets;
+    List<GameObject> Targets;
     bool isScan = false;
     bool isActive = false;
     float ScanRange = 0.2f;
@@ -57,7 +57,7 @@ public class HitScanner : MonoBehaviour
 
     private void Start()
     {
-        Targets = new List<Collider>();
+        Targets = new List<GameObject>();
         //targetTeam = Team.BlueTeam;
         if(!isActive)
         {
@@ -95,13 +95,57 @@ public class HitScanner : MonoBehaviour
         // 사용 시작시
         if(isActive)
         {
+            Debug.Log("HitScanStart");
             // 대상의 히트박스가 없다면 종료
-            if(other.gameObject.GetComponent<IHitBox>() == null)
+            if (other.gameObject.GetComponent<IHitBox>() == null) return;
+            else
             {
-                return;
+                Debug.Log(other.gameObject);
+                if(targetTeam == Team.NotSetting)
+                {
+                    return;
+                }
+                else if(targetTeam != other.GetComponent<IHitBox>().Team)
+                {
+                    return;
+                }
+
+            
+                if(!Targets.Contains(other.gameObject))
+                {
+                    Targets.Add(other.gameObject);
+                    Debug.Log($"{other} Add Target");
+                }
+            
+                if( UserComponent.GetComponent<Items>() != null )
+                {
+                    if( other.gameObject != UserComponent.GetComponent<Items>().GetPlayer().gameObject)
+                    {
+                        UserComponent.GetComponent<Items>().AddTargets(other.gameObject); 
+                        Targets.Remove(other.gameObject);
+                        Debug.Log($"{other} Add Item Target");
+                    }
+
+
+                }
+                else if(UserComponent.GetComponent<PlayerController>() != null)
+                {
+
+                }
+
+
+                if (Targets != null) 
+                {
+                    isScan = true;
+                }
+
             }
             // 스캔하기
-            Scan(ScanRange);
+            //Scan(ScanRange);
+
+            //Targets.Add(other.gameObject);
+
+
             //if ((int)targetTeam * (int)other.gameObject.GetComponent<IHitBox>().Team == 0)
             //{
 
@@ -124,7 +168,13 @@ public class HitScanner : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        
+        if (isActive)
+        {
+            if(other.gameObject.GetComponent<IHitBox>() != null)
+            {
+
+            }
+        }
     }
 
 
@@ -133,15 +183,20 @@ public class HitScanner : MonoBehaviour
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, Range);
 
-        Targets = new List<Collider>();
+        Targets = new List<GameObject>();
 
         foreach (Collider collider in colliders)
         {
-            if(collider.GetComponent<IHitBox>() != null)
+            if (collider.gameObject == this.gameObject) continue;
+
+            if (collider.GetComponent<IHitBox>() != null) 
             {
                 if(targetTeam == Team.AllTarget)
                 {
-                    Targets.Add(collider);
+                    if(!Targets.Contains(collider.gameObject))
+                    {
+                        Targets.Add(collider.gameObject);
+                    }
                     continue;
                 }
                 if (targetTeam == Team.NotSetting) 
@@ -152,11 +207,23 @@ public class HitScanner : MonoBehaviour
                 {
                     continue;
                 }
-                Targets.Add(collider);
+                Debug.Log(collider.gameObject);
+                if (!Targets.Contains(collider.gameObject))
+                {
+                    Targets.Add(collider.gameObject);
+                }
             }
         }
         if (Targets != null)
         {
+            if (UserComponent.GetComponent<Items>() != null)
+            {
+                UserComponent.GetComponent<Items>().AddTargets(Targets);
+            }
+            else if (UserComponent.GetComponent<PlayerController>() != null) 
+            {
+
+            }
             isScan = true;
         }
     }

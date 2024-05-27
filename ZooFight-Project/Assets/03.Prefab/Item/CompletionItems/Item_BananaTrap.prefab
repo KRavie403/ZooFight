@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2564735256729784727}
   - component: {fileID: 7710901862858997161}
+  - component: {fileID: 2948924129698286627}
   m_Layer: 0
   m_Name: Item_BananaTrap
   m_TagString: Untagged
@@ -55,7 +56,7 @@ MonoBehaviour:
   effectCode: 100
   soundCode: 0
   myPrefab: {fileID: 9091358806984954437}
-  Targets: []
+  isTarget: 0
   myPlayer: {fileID: 0}
   InputCount: 0
   dir: {x: 0, y: 0, z: 0}
@@ -63,7 +64,28 @@ MonoBehaviour:
   myEffect: {fileID: 0}
   NonActiveObj: {fileID: 6738735083283184989}
   ActivedObj: {fileID: 1119810086636074631}
-  HitScanner: {fileID: 0}
+  myHitScanner: {fileID: 0}
+--- !u!135 &2948924129698286627
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9091358806984954437}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1679845051062798430
 PrefabInstance:
   m_ObjectHideFlags: 0

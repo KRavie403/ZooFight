@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using static UnityEditor.PlayerSettings;
 
 /// <summary>
 /// 아이템명 : 바나나
-/// Value 1 밀려나는 시간
+/// Value 1 밀려나는 속도
 /// Value 2 함정 유지시간
 /// Value 3 밀려나는 거리
 /// Value 4 투사체 속도 
@@ -151,18 +152,33 @@ public class Item_BananaTrap : Items
 
 
             // 동작감지시 효과적용 및 이펙트 , 사운드 출력
-            if(Targets != null)
+            if(Targets.Count != 0)
             {
                 // 타겟이 잡히면 동작시키고 터트림
                 foreach (var target in Targets)
                 {
                     if(target.GetComponent<PlayerController>() != null)
                     {
-
+                        // 대상이 이동중이면 진행하던 방향으로 일정시간 미끄러짐
+                        // 대상이 정지중일경우 랜덤방향으로 미끄러짐
+                        if(target.GetComponent<PlayerController>().GetIsmoving())
+                        {
+                            target.GetComponent<PlayerController>().Slide(target.transform.forward,Value3,Value1);
+                            Debug.Log("ForwardSlide");
+                        }
+                        else
+                        {
+                            Vector3 rndDir = new Vector3(Random.Range(-1.0f,1.0f), 0,Random.Range(-1.0f,1.0f));
+                            target.GetComponent<PlayerController>().Slide(rndDir, Value3, Value1);
+                            Debug.Log("RandomSlide");
+                        }
+                        Debug.Log("BananaHit");
+                        Debug.Log(target.gameObject.name);
                     }
                 }
-
-                // duringTime = Value2;
+                Debug.Log("HitEnd");
+                //
+                duringTime += Value2;
             }
 
             // 발동시 오브젝트 작동 불능처리
@@ -178,6 +194,7 @@ public class Item_BananaTrap : Items
             }
             yield return null;
         }
+        Debug.Log($"{this} ActiveEnd");
 
         // 사용이 끝나면 오브젝트 반환
         ReturnItem();

@@ -28,6 +28,7 @@ public class Character_Jump : BaseState
         {
             //player.SetisJump(true);
             ableFuncs[PlayerController.pFunc.Jump]();
+            Debug.Log($"{player.name} Jump");
         }
 
     }

@@ -23,9 +23,9 @@ public class Item_BlockChangeScroll : Items
     SoundSpeaker mySound;
     bool isSoundPlay = false;   
 
-    public GameObject myBlockObj;
+    //public GameObject myBlockObj;
     public BlockObject myBlock;
-    public GameObject enemyBlockObj;
+    //public GameObject enemyBlockObj;
     public BlockObject enemyBlock;
 
     protected override void Awake()
@@ -112,8 +112,16 @@ public class Item_BlockChangeScroll : Items
             yield return null;
         }
 
+        Debug.Log($"{this} ActiveEnd");
         // 아이템 반환
         ReturnItem();
+    }
+
+    public override void ReturnItem()
+    {
+        myBlock = null;
+        enemyBlock = null;
+        base.ReturnItem();
     }
 
     public IEnumerator ScrollActive()

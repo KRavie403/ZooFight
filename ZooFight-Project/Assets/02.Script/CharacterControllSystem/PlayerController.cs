@@ -306,6 +306,7 @@ public class PlayerController : MovementController, IHitBox
     public void Move(float AxisX , float AxisY)
     {
 
+
         // 입력 이동값이 0일때 아무것도안하기
         if (AxisX == 0 && AxisY == 0)
         {
@@ -366,6 +367,31 @@ public class PlayerController : MovementController, IHitBox
             myAnim.SetBool("IsRunning", false);
             DenialPos = Vector3.zero;
         }
+    }
+
+    public void Slide(Vector3 dir, float dist, float Speed, UnityAction e = null)
+    {
+        
+        StartCoroutine(CharacterSlide(dir, dist, Speed, e));    
+    }
+
+    public IEnumerator CharacterSlide(Vector3 dir, float Dist,float Speed, UnityAction e = null)
+    {
+        float duringTime = 0.0f;
+
+        myAnim.SetBool("IsSlide", true);
+        myAnim.SetTrigger("Sliding");
+        while (duringTime < Dist/Speed)
+        {
+            duringTime += Time.deltaTime;
+            CharacterMove(false, dir.x, dir.z);
+            
+            yield return null;
+        }
+
+        myAnim.SetBool("isSlide", false);
+
+        e?.Invoke();
     }
 
     // 패킷 데이터용 이동 함수 -- 목표 좌표를 인자로받음

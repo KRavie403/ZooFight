@@ -31,6 +31,7 @@ public class Item_MinimalRazer : Items
     public HitScanner myHitScanner;
 
 
+
     Vector3 Dir = Vector3.zero;
 
 
@@ -86,11 +87,12 @@ public class Item_MinimalRazer : Items
 
         float duringTime = 0;
 
-        GameObject[] curTargets = new GameObject[] { };
+        List<GameObject> curTargets = new List<GameObject>();
 
 
         // 발동시 히트스캐너 가동
-        
+        myHitScanner.SetScanActive(true);
+
         while (duringTime < Value2)
         {
             duringTime += Time.deltaTime;
@@ -101,15 +103,25 @@ public class Item_MinimalRazer : Items
             {
                 foreach (GameObject T in Targets)
                 {
+                    if (curTargets.Contains(T)) continue;
+
                     if (T.GetComponent<PlayerController>() != null)
                     {
                         T.GetComponent<PlayerController>().PlayerSizeChange(0.5f);
+                        curTargets.Add(T);
                     }
                 }
             }
-
-
         }
+
+        // 사용 종료시 크기 원상복구
+        foreach (GameObject T in curTargets)
+        {
+            T.GetComponent<PlayerController>().PlayerSizeChange(1.0f);
+        }
+
+
+        ReturnItem();
 
     }
 

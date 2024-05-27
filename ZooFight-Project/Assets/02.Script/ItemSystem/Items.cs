@@ -99,7 +99,7 @@ public class Items : ItemProperty , IItems , IEffect
             Debug.Log(value);
         }
         transform.localPosition = Vector3.zero;
-        //Debug.Log(Values);
+        Debug.Log($"{gameObject.name} Initate");
     }
 
 
@@ -119,6 +119,7 @@ public class Items : ItemProperty , IItems , IEffect
             ItemAction = ItemActions();
         }
         isItemUse = true;
+        Debug.Log($"{gameObject.name} ItemUse");
     }
 
     public virtual void ItemHitAction()
@@ -127,11 +128,12 @@ public class Items : ItemProperty , IItems , IEffect
     }
 
     // 아이템을 오브젝트 풀에 반납할때
-    public void ReturnItem()
+    public virtual void ReturnItem()
     {
         //myPlayer = null;
         //GetComponent<myHitScanner>()?.SetMyTeam(myHitScanner.Team.NotSetting);
         ItemEnd();
+        Debug.Log($"{gameObject.name} ObjectReturn");
         ObjectPoolingManager.instance.ReturnObject(gameObject);
     }
 
@@ -142,15 +144,19 @@ public class Items : ItemProperty , IItems , IEffect
         StopCoroutine(ItemAction);
         myPlayer.ItemUseEnd();
         myPlayer.curItems = null;
+        Debug.Log($"{isItemUseEnd} , {myPlayer.curItems}");
         myPlayer = null;
         ItemAction = null;
         StopAllCoroutines();
         dir = Vector3.zero;
+        Targets = null;
+        Debug.Log($"{myPlayer} , {ItemAction} , {dir} , {Targets} ");
         GetComponent<HitScanner>()?.Reset();
     }
 
     protected virtual IEnumerator ItemActions()
     {
+        Debug.Log($"{gameObject.name} ItemStandby");
 
         // 사용 시작전 정보갱신
         while (!isItemUse)
@@ -161,6 +167,8 @@ public class Items : ItemProperty , IItems , IEffect
 
             yield return null;
         }
+
+        Debug.Log($"{gameObject.name} Activate");
         // 상속받는 아이템이 사용중 동작 작성
         // 
     }
@@ -195,6 +203,28 @@ public class Items : ItemProperty , IItems , IEffect
     public void SetDir(Vector3 Dir)
     {
         dir = Dir;
+    }
+
+
+    public void AddTargets(List<GameObject> target)
+    {
+        if (target == null) return;
+        //foreach (GameObject targetItem in target)
+        //{
+        //    if (!Targets.Contains(targetItem))
+        //    {
+        //        Targets.Add(targetItem);
+                
+        //    }
+        //}
+        Targets.AddRange(target);
+    }
+
+
+    public void AddTargets(GameObject target)
+    {
+        if (target == null) return;
+        Targets.Add(target);
     }
 
 
