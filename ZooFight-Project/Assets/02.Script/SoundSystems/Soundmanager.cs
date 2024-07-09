@@ -11,6 +11,7 @@ using UnityEngine;
 /// 300 ~ 400 UI 관련 사운드
 /// 추후 확장가능
 /// </summary>
+/// 
 public enum SoundCode
 {
     MainBgm =0,CharacterMove,CharacterJump,CharacterDameged , CharacterAttack,

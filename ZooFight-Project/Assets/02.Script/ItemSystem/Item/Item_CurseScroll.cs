@@ -70,13 +70,15 @@ public class Item_CurseScroll : Items
             c.isKeyReverse = true;
         }
 
-        // 
+        // 키반전 테스트용 자체 반전코드(삭제예정)
+        myPlayer.isKeyReverse = true;
 
         // 저주 이펙트 출력 대기
-        CuresEffectSetting();
+        //CuresEffectSetting();
         // 저주 사운드 재생 대기
-        CurseSoundSetting();
+        //CurseSoundSetting();
 
+        myPlayer.ItemUseEnd();
 
 
         while (duringTime < Value1)
@@ -96,6 +98,8 @@ public class Item_CurseScroll : Items
             c.isKeyReverse = false;
         }
 
+        // 테스트 코드
+        myPlayer.isKeyReverse = false;
         // 아이템 반환
         ReturnItem();
     }

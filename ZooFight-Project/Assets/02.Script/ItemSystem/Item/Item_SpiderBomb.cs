@@ -42,6 +42,14 @@ public class Item_SpiderBomb : Items
 
         float duringTime = 0;
 
+        
+        // 기본 속도값 저장
+        float BaseSpeedRate = 1.0f;
+
+        myPlayer.BaseSpeedRate = Value1;
+
+
+
         while (duringTime < Value2)
         {
             duringTime += Time.deltaTime;
@@ -49,6 +57,7 @@ public class Item_SpiderBomb : Items
 
         }
 
+        myPlayer.BaseSpeedRate = BaseSpeedRate;
 
         ReturnItem();
     }

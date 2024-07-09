@@ -67,6 +67,10 @@ public class Item_GuardDrink : Items
         // 캐릭터 실드 주입
         myPlayer.GetShield(Value1);
 
+        // 실드 이펙트 생성
+
+        // 실드 사운드 출력
+
         while (duringTime < Value2)
         {
             duringTime += Time.deltaTime;
@@ -79,11 +83,12 @@ public class Item_GuardDrink : Items
                 duringTime += Value2;
                 myPlayer.DownAction();
             }
-            yield return null;
 
+
+            yield return null;
         }
 
-
+        ReturnItem();
 
     }
 

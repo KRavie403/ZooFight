@@ -53,10 +53,22 @@ public class Item_PowerDrink : Items
 
         myPlayer.BaseSpeedRate = Value1;
 
+        // 이펙트 출력
+
+        // 마시는 모션 출력
+        myPlayer.myAnim.SetBool("isDrink", true);
+        myPlayer.myAnim.SetTrigger("Drinking");
+
+        myPlayer.ItemUseEnd();
+
+
         // 지속시간 체크
         while (duringTime < Value2)
         {
             duringTime += Time.deltaTime;
+
+
+            // UI 추가할시 남은값전달은 여기서
 
             yield return null;
 
@@ -67,22 +79,5 @@ public class Item_PowerDrink : Items
         ReturnItem();
     }
 
-    public IEnumerator DrinkActive()
-    {
-        // 회복대상 캐릭터 확정
-
-        // 회복 이펙트 출력준비
-
-        // 회복 사운드 재생준비
-
-        // 회복 동작 작동
-        myPlayer.isShield = true;
-        while (myPlayer.isShield)
-        {
-
-
-            yield return null;
-        }
-    }
 
 }

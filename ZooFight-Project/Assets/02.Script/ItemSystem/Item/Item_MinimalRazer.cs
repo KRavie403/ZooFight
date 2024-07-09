@@ -125,31 +125,7 @@ public class Item_MinimalRazer : Items
 
     }
 
-
-    public IEnumerator RazerShooting(Vector3 pos)
-    {
-        Vector3 temp = pos - myPlayer.transform.position;
-        // 사출방향 설정
-        Vector3 dir = Vector3.Normalize(pos - myPlayer.transform.position) * Value3;
-
-
-
-        // 이펙트 발동상태 설정 - 함수화 예정
-        RazerEffectSetting();
-
-        // 사운드 재생상태 설정 - 함수화 예정
-        RazerSoundSetting();
-
-        //effectPlayer.myEffect[1].main.startLifetime;
-
-        // 사출시간동안 동작
-        while (effectPlayer.myEffect[1].main.duration < Value4)
-        {
-
-            yield return null;
-        }
-
-    }
+    
     
     public void RazerEffectSetting()
     {

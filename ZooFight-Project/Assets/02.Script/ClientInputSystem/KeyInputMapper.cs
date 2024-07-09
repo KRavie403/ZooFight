@@ -13,7 +13,8 @@ public enum KeyAction
     Forward=0,Backward,Left,Right,
     Jump,Attack,Selectskill,Usingskill,Grab,
     Menu,Run,
-    ItemCreate,    
+    ItemCreate,
+    // ¸Ê¿­±â = M
     KeyCount
 }
 

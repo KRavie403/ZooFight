@@ -38,30 +38,40 @@ public class Item_InkBomb : Items
         base.Update();
     }
 
-    public void BombShoot(Vector3 Pos)
+
+
+    public override void Initate(List<float> Values, PlayerController player)
     {
-        // 
-        ItemAction = BombActive(Pos);
-        //StartCoroutine(BombActive(Pos));
+        base.Initate(Values, player);
+
     }
 
-    public IEnumerator BombActive(Vector3 Pos)
+    protected override IEnumerator ItemActions()
     {
-        // 발사지점 확정
+        yield return base.ItemActions();
 
-        // 물체 이동궤적 준비
+        float duringTime = 0.0f;
 
-        // 폭탄 이펙트 준비
-        BombEffectSetting();
-        // 폭탄 사운드 준비
-        BombSoundSetting();
-        //
+        bool isActive = false;
 
-        while (!isItemActive)
+        while (duringTime < Value2)
         {
-            yield return null;
+
+            if (isActive)
+            {
+                duringTime += Time.deltaTime;
+            }
+
+            if(Targets.Count != 0)
+            {
+
+            }
+
+
         }
     }
+
+
 
     void BombEffectSetting()
     {

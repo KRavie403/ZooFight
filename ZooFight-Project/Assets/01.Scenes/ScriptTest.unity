@@ -473,8 +473,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 149454384}
+  - component: {fileID: 149454385}
   m_Layer: 0
-  m_Name: GameObject (3)
+  m_Name: Item_PowerDrink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -495,6 +496,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 591785896}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &149454385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149454383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6e77b19ff9c5ef45803fb75be35495c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value1: 0
+  Value2: 0
+  Value3: 0
+  Value4: 0
+  Value5: 0
+  myCode: 101
+  effectCode: 102
+  soundCode: 103
+  myPrefab: {fileID: 0}
+  Targets: []
+  isTarget: 0
+  myPlayer: {fileID: 0}
+  InputCount: 0
+  dir: {x: 0, y: 0, z: 0}
+  ItemEffect: 102
 --- !u!1 &194062739
 GameObject:
   m_ObjectHideFlags: 0
@@ -1275,6 +1303,7 @@ MonoBehaviour:
   effectCode: 111
   soundCode: 111
   myPrefab: {fileID: 0}
+  Targets: []
   isTarget: 0
   myPlayer: {fileID: 0}
   InputCount: 0
@@ -1282,9 +1311,7 @@ MonoBehaviour:
   ItemEffect: 111
   myEffect: {fileID: 0}
   mySound: {fileID: 0}
-  myBlockObj: {fileID: 0}
   myBlock: {fileID: 0}
-  enemyBlockObj: {fileID: 0}
   enemyBlock: {fileID: 0}
 --- !u!4 &462744634
 Transform:
@@ -2088,6 +2115,8 @@ MonoBehaviour:
   - {fileID: 1572445032}
   - {fileID: 462744633}
   - {fileID: 1518868856}
+  - {fileID: 1634121417}
+  - {fileID: 149454385}
   ItemOrignin:
     m_PersistentCalls:
       m_Calls: []
@@ -3664,6 +3693,12 @@ MonoBehaviour:
     poolCount: 6
     explan: "\uB9DD\uCE58 \uC544\uC774\uD15C"
   - prefab: {fileID: 5165083796546160346, guid: cc69232d8cc8919409a244517c251b7d, type: 3}
+    poolCount: 6
+    explan: "\uC2A4\uD06C\uB864 \uC544\uC774\uD15C"
+  - prefab: {fileID: 5165083796546160346, guid: 2e6198b3f13cc84418f915e31c244182, type: 3}
+    poolCount: 6
+    explan: "\uC2A4\uD06C\uB864 \uC544\uC774\uD15C"
+  - prefab: {fileID: 5165083796546160346, guid: 74f5701f4f124c44eac5fcbb1f533fb0, type: 3}
     poolCount: 6
     explan: "\uC2A4\uD06C\uB864 \uC544\uC774\uD15C"
   ObjectPoolList: []
@@ -6182,6 +6217,7 @@ MonoBehaviour:
   effectCode: 0
   soundCode: 0
   myPrefab: {fileID: 0}
+  Targets: []
   isTarget: 0
   myPlayer: {fileID: 0}
   InputCount: 0
@@ -6615,6 +6651,7 @@ MonoBehaviour:
   effectCode: 0
   soundCode: 0
   myPrefab: {fileID: 9091358806984954437, guid: d7197135b064d4d48b50c4198f65dcfe, type: 3}
+  Targets: []
   isTarget: 0
   myPlayer: {fileID: 0}
   InputCount: 0
@@ -6830,8 +6867,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1634121416}
+  - component: {fileID: 1634121417}
   m_Layer: 0
-  m_Name: GameObject (2)
+  m_Name: Item_CurseScroll
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6852,6 +6890,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 591785896}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1634121417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634121415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea9602fd479ef014ea60a27d74de4503, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value1: 10
+  Value2: 0
+  Value3: 0
+  Value4: 0
+  Value5: 0
+  myCode: 201
+  effectCode: 110
+  soundCode: 110
+  myPrefab: {fileID: 5165083796546160346, guid: 2e6198b3f13cc84418f915e31c244182, type: 3}
+  Targets: []
+  isTarget: 0
+  myPlayer: {fileID: 0}
+  InputCount: 0
+  dir: {x: 0, y: 0, z: 0}
+  ItemEffect: 110
+  effectPlayer: {fileID: 0}
 --- !u!1 &1659123040
 GameObject:
   m_ObjectHideFlags: 0
@@ -7672,6 +7738,7 @@ MonoBehaviour:
   effectPlayers: []
   effectObj:
   - {fileID: 7055220179825546305, guid: 93cc0f379d0077148bfcdaf294a369f6, type: 3}
+  activeEffectObjects: []
 --- !u!114 &1910160415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7998,6 +8065,7 @@ MonoBehaviour:
   effectCode: 0
   soundCode: 0
   myPrefab: {fileID: 0}
+  Targets: []
   isTarget: 0
   myPlayer: {fileID: 0}
   isItemUseEnd: 0
