@@ -5,20 +5,20 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
-/// ÀÌÆåÆ® ÄÚµå ±âÁØ
-/// 0 ~ 99 Ä³¸¯ÅÍ °ü·Ã ÀÌÆåÆ®
-/// 100 ~ 200 ¾ÆÀÌÅÛ °ü·Ã ÀÌÆåÆ®
-/// 200 ~ 300 UI °ü·Ã ÀÌÆåÆ®
+/// ì´í™íŠ¸ ì½”ë“œ ê¸°ì¤€
+/// 0 ~ 99 ìºë¦­í„° ê´€ë ¨ ì´í™íŠ¸
+/// 100 ~ 200 ì•„ì´í…œ ê´€ë ¨ ì´í™íŠ¸
+/// 200 ~ 300 UI ê´€ë ¨ ì´í™íŠ¸
 /// 
 /// </summary>
 public enum EffectCode
 {
-    CharacterWalk = 0, CharacterRun = 1, CharacterJump = 2 , CharacterAttack = 3 , CharacterDamaged = 4,
-    GuardDrink = 100, StaminaDrink = 101 , PowerDrink = 102,
-    BananaTrap = 103,
-    Bomb = 104, SpiderBomb = 105, InkBomb = 106,
-    ToyHammer = 107, WhippingMachine = 108, MinimalRazer = 109,
-    CurseScroll = 110, BlockChangeScroll = 111,
+    CharacterWalk = 0, CharacterRun, CharacterJump, CharacterAttack, CharacterDamaged,
+    GuardDrink = 100, StaminaDrink, PowerDrink, 
+    BananaTrap,
+    Bomb, SpiderBomb, InkBomb,
+    ToyHammer, WhippingMachine, MinimalRazer,
+    CurseScroll, BlockChangeScroll,
     ButtonClick = 200,
     CodeCount
 }
@@ -40,19 +40,27 @@ public class Effectmanager : Singleton<Effectmanager>
 
     public List<EffectPlayer> effectPlayers;
     public List<GameObject> effectObj;
-    public List<GameObject> activeEffectObjects;    // ½ÇÇàµÈ ¿ÀºêÁ§Æ®
+    public List<GameObject> activeEffectObjects;    // ì‹¤í–‰ëœ ì˜¤ë¸Œì íŠ¸
 
     private void Awake()
     {
-        effectPlayers = new List<EffectPlayer>();  // ÃÊ±âÈ­
+        effectPlayers = new List<EffectPlayer>();  // ì´ˆê¸°í™”
         for (int i = 0; i < effectObj.Count; i++)
         {
             if (effectObj[i] != null)
             {
-                effectPlayers.Add(effectObj[i].GetComponent<EffectPlayer>());
-                EffectSetting.keys.Add(effectPlayers[i].GetComponent<IEffect>().GetEffectCode(), effectPlayers[i]);
-                Debug.Log(effectPlayers[i].GetComponent<IEffect>().GetEffectCode());
+                //effectPlayers.Add(effectObj[i].GetComponent<EffectPlayer>());
+                EffectPlayer effectPlayer = effectObj[i].GetComponent<EffectPlayer>();
+                effectPlayers.Add(effectPlayer);
+                EffectSetting.keys.Add(effectPlayers[i].GetComponent<IEffect>().EffectCode, effectPlayers[i]);
+                Debug.Log(effectPlayers[i].GetComponent<IEffect>().EffectCode);
             }
+            //if (effectObj[i] != null)
+            //{
+            //    effectPlayers.Add(effectObj[i].GetComponent<EffectPlayer>());
+            //    EffectSetting.keys.Add(effectPlayers[i].GetComponent<IEffect>().GetEffectCode(), effectPlayers[i]);
+            //    Debug.Log(effectPlayers[i].GetComponent<IEffect>().GetEffectCode());
+            //}
         }
 
         effectPool = GetComponent<EffectPool>();
@@ -75,27 +83,29 @@ public class Effectmanager : Singleton<Effectmanager>
             return;
         }
         GameObject obj = Instantiate(player.myObj,target);
-        activeEffectObjects.Add(obj);   // »ı¼ºµÈ °´Ã¼ ¸®½ºÆ®¿¡ Ãß°¡
+        activeEffectObjects.Add(obj);   // ìƒì„±ëœ ê°ì²´ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
     }
 
-    // Æ¯Á¤ »óÈ²¿¡¼­ ¿ÀºêÁ§Æ® Á¦°Å
+    // íŠ¹ì • ìƒí™©ì—ì„œ ì˜¤ë¸Œì íŠ¸ ì œê±°
     public void RemoveEffectObj(GameObject effectObject)
     {
         if (activeEffectObjects.Contains(effectObject))
         {
             activeEffectObjects.Remove(effectObject);
-            Destroy(effectObject);      // °ÔÀÓ ¿ÀºêÁ§Æ® Á¦°Å
+            Destroy(effectObject);      // ê²Œì„ ì˜¤ë¸Œì íŠ¸ ì œê±°
         }
     }
 
-    // »ç¿ëÇÏÁö ¾Ê´Â ÀÌÆåÆ®¸¦ ÀÚµ¿À¸·Î ºñÈ°¼ºÈ­ ¹× ÇÊ¿äÇÒ ¶§ ÀçÈ°¼ºÈ­ÇÏ´Â ±â´É
+    // ì‚¬ìš©í•˜ì§€ ì•ŠëŠ” ì´í™íŠ¸ë¥¼ ìë™ìœ¼ë¡œ ë¹„í™œì„±í™” ë° í•„ìš”í•  ë•Œ ì¬í™œì„±í™”í•˜ëŠ” ê¸°ëŠ¥
     public void ManageEffectPool()
     {
-        foreach (var effect in activeEffectObjects)
+        for (int i = activeEffectObjects.Count - 1; i >= 0; i--)
         {
-            if (!effect.activeInHierarchy)      // ºñÈ°¼ºÈ­µÈ ÀÌÆåÆ® Ã£±â
+            var effect = activeEffectObjects[i];
+            if (!effect.activeInHierarchy)      // ë¹„í™œì„±í™”ëœ ì´í™íŠ¸ ì°¾ê¸°
             {
-                effectPool.ReturnToPool(effect);    // Ç®·Î ¹İÈ¯
+                effectPool.ReturnToPool(effect);    // í’€ë¡œ ë°˜í™˜
+                activeEffectObjects.RemoveAt(i);   // ë¦¬ìŠ¤íŠ¸ì—ì„œ ì œê±°
             }
         }
     }

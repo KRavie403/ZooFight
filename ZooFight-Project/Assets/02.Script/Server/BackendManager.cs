@@ -27,11 +27,11 @@ public class BackendManager : MonoBehaviour
 
         if (bro.IsSuccess())
         {
-            Debug.Log("ÃÊ±âÈ­ ¼º°ø : " + bro);
+            Debug.Log("ì´ˆê¸°í™” ì„±ê³µ : " + bro);
         }
         else
         {
-            Debug.LogError("ÃÊ±âÈ­ ½ÇÆÐ: " + bro);
+            Debug.LogError("ì´ˆê¸°í™” ì‹¤íŒ¨: " + bro);
         }
 
     }

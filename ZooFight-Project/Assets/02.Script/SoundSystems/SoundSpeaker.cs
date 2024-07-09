@@ -5,26 +5,21 @@ using UnityEngine.UI;
 
 public class SoundSpeaker : MonoBehaviour
 {
+    public AudioClip myClip;    // 사운드 클립
 
-    public AudioClip myClip;
-
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        SoundPlay();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    // 사운드 재생
     public void SoundPlay()
     {
-
+        AudioSource audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        audioSource.clip = myClip;
+        audioSource.Play();
     }
-
 }

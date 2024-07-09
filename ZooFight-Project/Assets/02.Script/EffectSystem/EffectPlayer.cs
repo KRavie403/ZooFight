@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// ÀÌÆåÆ®ÀÇ ½ÇÇà , ½ÃÀÛ ½Ã°£ , ·çÇÁ , Ãâ·Â¹æÇâ , Ãâ·ÂÀ§Ä¡ ¸¦ °áÁ¤ÇÏ´Â Å¬·¡½º 
+/// ì´í™íŠ¸ì˜ ì‹¤í–‰ , ì‹œì‘ ì‹œê°„ , ë£¨í”„ , ì¶œë ¥ë°©í–¥ , ì¶œë ¥ìœ„ì¹˜ ë¥¼ ê²°ì •í•˜ëŠ” í´ë˜ìŠ¤ 
 /// </summary>
 public class EffectPlayer : MonoBehaviour , IEffect
 {
@@ -20,12 +20,6 @@ public class EffectPlayer : MonoBehaviour , IEffect
 
     EffectCode IEffect.EffectCode => myEffectCode;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -36,13 +30,13 @@ public class EffectPlayer : MonoBehaviour , IEffect
         }
     }
 
-    #region ÀÌÆåÆ® ½ÇÇà
-    // ÀÎµ¦½º ½ÇÇà
+    #region ì´í™íŠ¸ ì‹¤í–‰
+    // ì¸ë±ìŠ¤ ì‹¤í–‰
     public void EffectPlay(int index)
     {
         myEffect[index].Play();
     }
-    // ÀÎµ¦½º ½ÇÇà + ½ÃÀÛÁöÁ¡ ÁöÁ¤
+    // ì¸ë±ìŠ¤ ì‹¤í–‰ + ì‹œì‘ì§€ì  ì§€ì •
     public void EffectPlay(int index,float playTime)
     {
         myEffect[index].time = playTime;
@@ -53,7 +47,7 @@ public class EffectPlayer : MonoBehaviour , IEffect
         myEffect[index].transform.position = StartPoint.position;
         myEffect[index].Play();
     }
-    // ÀÎµ¦½º ½ÇÇà , ¹İº¹Ãâ·Â
+    // ì¸ë±ìŠ¤ ì‹¤í–‰ , ë°˜ë³µì¶œë ¥
     public void EffectPlay(int index,float playTime,bool isLoop)
     {
         var main = myEffect[index].main;
@@ -61,7 +55,7 @@ public class EffectPlayer : MonoBehaviour , IEffect
         myEffect[index].time = playTime; 
         myEffect[index].Play();
     }
-    // ÀÎµ¦½º ½ÇÇà , ½ÃÀÛÀ§Ä¡ , ¹Ù¶óº¼ ¹æÇâ
+    // ì¸ë±ìŠ¤ ì‹¤í–‰ , ì‹œì‘ìœ„ì¹˜ , ë°”ë¼ë³¼ ë°©í–¥
     public void EffectPlay(int index,float playTime,Transform StartPoint,Vector3 dir)
     {
         myEffect[index].time = playTime;
@@ -70,7 +64,7 @@ public class EffectPlayer : MonoBehaviour , IEffect
         myEffect[index].Play();
 
     }
-    // ÀÎµ¦½º ½ÇÇà , ½ÃÀÛÀ§Ä¡ , È¸Àü
+    // ì¸ë±ìŠ¤ ì‹¤í–‰ , ì‹œì‘ìœ„ì¹˜ , íšŒì „
     public void EffectPlay(int index, float playTime,Transform StartPoint,Quaternion rot)
     {
         myEffect[index].time = playTime;
@@ -81,14 +75,13 @@ public class EffectPlayer : MonoBehaviour , IEffect
 
     #endregion
 
-    public void Test1(int index)
-    {
+    //public void Test1(int index)
+    //{
         
-    }
+    //}
 
     private void OnParticleTrigger()
     {
-
         foreach (var v in triggerTarget)
         {
             Debug.Log(v.name);
@@ -99,14 +92,14 @@ public class EffectPlayer : MonoBehaviour , IEffect
         if (!triggerTarget.Contains(other.transform))
         {
             triggerTarget.Add(other.transform);
-            PerformCollisionAction(other);       // Ãß°¡ÀûÀÎ Ãæµ¹ Ã³¸®
+            PerformCollisionAction(other);       // ì¶”ê°€ì ì¸ ì¶©ëŒ ì²˜ë¦¬
         }
     }
 
-    // Ãæµ¹ ¿ÀºêÁ§Æ® ·Î±×
+    // ì¶©ëŒ ì˜¤ë¸Œì íŠ¸ ë¡œê·¸
     public void PerformCollisionAction(GameObject collidedObject)
     {
-        Debug.Log($"{ collidedObject.name} Ãæµ¹");
+        Debug.Log($"{ collidedObject.name} ì¶©ëŒ");
     }
 
     public void EffectEnd(int index,UnityAction e = null)
@@ -114,7 +107,7 @@ public class EffectPlayer : MonoBehaviour , IEffect
         if (myEffect[index].isStopped)
         {
             e?.Invoke();
-            gameObject.SetActive(false);        // ÀÌÆåÆ®°¡ Á¾·áµÇ¸é °ÔÀÓ ¿ÀºêÁ§Æ® ºñÈ°¼ºÈ­
+            gameObject.SetActive(false);        // ì´í™íŠ¸ê°€ ì¢…ë£Œë˜ë©´ ê²Œì„ ì˜¤ë¸Œì íŠ¸ ë¹„í™œì„±í™”
         }
     }
 

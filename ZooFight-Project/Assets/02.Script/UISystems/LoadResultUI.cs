@@ -4,12 +4,12 @@ using UnityEngine.UI;
 public class LoadResultUI : MonoBehaviour
 {
 
-    // Eff-Ä«¸Ş¶ó Á¶Á¤
+    // Eff-ì¹´ë©”ë¼ ì¡°ì •
     [SerializeField] private Camera EFFCamera;
     [SerializeField] private float _winFOV = 50f;
     [SerializeField] private float _loseFOV = 111f;
 
-    // °á°ú ÀÌ¹ÌÁö
+    // ê²°ê³¼ ì´ë¯¸ì§€
     public Image text;
     public Image t1;
     public Image t2;
@@ -23,7 +23,7 @@ public class LoadResultUI : MonoBehaviour
 
     private void Start()
     {
-        // ½Â/ÆĞ/¹«½ÂºÎ
+        // ìŠ¹/íŒ¨/ë¬´ìŠ¹ë¶€
         LoadResultImg();
         //LoadUserName();
         LoadEff();
@@ -31,10 +31,10 @@ public class LoadResultUI : MonoBehaviour
 
     private void LoadResultImg(/*HitScanner.Team BeaconTeam*/)
     {
-        HitScanner.Team playerTeam = Gamemanager.Inst.currentPlayer.myTeam;      // ÇÃ·¹ÀÌ¾îÀÇ ÆÀ Á¤º¸ °¡Á®¿À±â
-        HitScanner.Team winningTeam = Gamemanager.Inst.VictoryTeam; // ½Â¸®ÆÀ Á¤º¸ °¡Á®¿À±â
+        HitScanner.Team playerTeam = Gamemanager.Inst.currentPlayer.myTeam;      // í”Œë ˆì´ì–´ì˜ íŒ€ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
+        HitScanner.Team winningTeam = Gamemanager.Inst.VictoryTeam; // ìŠ¹ë¦¬íŒ€ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 
-        // ½Â¸®
+        // ìŠ¹ë¦¬
         if (winningTeam == playerTeam)
         {
             _textSprite = Resources.Load<Sprite>("WIN");
@@ -43,7 +43,7 @@ public class LoadResultUI : MonoBehaviour
             BGImage1.color = new Color(51 / 255f, 63 / 255f, 94 / 255f, 1);
             BGImage2.color = new Color(41 / 255f, 44 / 255f, 60 / 255f, 1);
         }
-        // ¹«½ÂºÎ
+        // ë¬´ìŠ¹ë¶€
         else if (winningTeam == HitScanner.Team.NotSetting)
         {
             _textSprite = Resources.Load<Sprite>("DRAW");
@@ -52,7 +52,7 @@ public class LoadResultUI : MonoBehaviour
             BGImage1.color = new Color(51 / 255f, 63 / 255f, 94 / 255f, 1);
             BGImage2.color = new Color(41 / 255f, 44 / 255f, 60 / 255f, 1);
         }
-        // ÆĞ¹è
+        // íŒ¨ë°°
         else  
         {
             _textSprite = Resources.Load<Sprite>("LOSE");
@@ -73,12 +73,12 @@ public class LoadResultUI : MonoBehaviour
 
     private void LoadEff()
     {
-        // EFF Ä«¸Ş¶ó
-        //EFFCamera = GetComponent<Camera>();   // ´Ù¸¥ ¾À¿¡¼­ ½ÇÇàÇÏ¸é null
-        // Â÷¾È
+        // EFF ì¹´ë©”ë¼
+        //EFFCamera = GetComponent<Camera>();   // ë‹¤ë¥¸ ì”¬ì—ì„œ ì‹¤í–‰í•˜ë©´ null
+        // ì°¨ì•ˆ
         if (EFFCamera == null)
         {
-            // "MyCamera"¶ó´Â ÅÂ±×¸¦ °¡Áø GameObject¿¡¼­ Camera ÄÄÆ÷³ÍÆ®¸¦ Ã£À½
+            // "MyCamera"ë¼ëŠ” íƒœê·¸ë¥¼ ê°€ì§„ GameObjectì—ì„œ Camera ì»´í¬ë„ŒíŠ¸ë¥¼ ì°¾ìŒ
             GameObject cameraGameObject = GameObject.FindGameObjectWithTag("EffCamera");
             if (cameraGameObject != null)
             {
@@ -86,25 +86,25 @@ public class LoadResultUI : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Ä«¸Ş¶ó¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+                Debug.LogError("ì¹´ë©”ë¼ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
             }
         }
 
-        // Field of View °ªÀ» º¯°æ
-        HitScanner.Team playerTeam = Gamemanager.Inst.currentPlayer.myTeam;      // ÇÃ·¹ÀÌ¾îÀÇ ÆÀ Á¤º¸ °¡Á®¿À±â
-        HitScanner.Team winningTeam = Gamemanager.Inst.VictoryTeam;                  // ½Â¸®ÆÀ Á¤º¸ °¡Á®¿À±â
+        // Field of View ê°’ì„ ë³€ê²½
+        HitScanner.Team playerTeam = Gamemanager.Inst.currentPlayer.myTeam;      // í”Œë ˆì´ì–´ì˜ íŒ€ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
+        HitScanner.Team winningTeam = Gamemanager.Inst.VictoryTeam;                  // ìŠ¹ë¦¬íŒ€ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 
-        // ½Â¸®
+        // ìŠ¹ë¦¬
         if (winningTeam == playerTeam)
         {
             EFFCamera.fieldOfView = _winFOV;
         }
-        // ¹«½ÂºÎ
+        // ë¬´ìŠ¹ë¶€
         else if (winningTeam == HitScanner.Team.NotSetting)
         {
             EFFCamera.fieldOfView = _winFOV;
         }
-        // ÆĞ¹è
+        // íŒ¨ë°°
         else
         {
             EFFCamera.fieldOfView = _loseFOV;
@@ -113,7 +113,7 @@ public class LoadResultUI : MonoBehaviour
 
     //HitScanner.Team FindPlayerTeam()
     //{
-    //    // ÇÃ·¹ÀÌ¾îÀÇ ÆÀ Á¤º¸ °¡Á®¿À±â
+    //    // í”Œë ˆì´ì–´ì˜ íŒ€ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
     //    foreach (var player in Gamemanager.Inst.GetTeam(HitScanner.Team.RedTeam).Values)
     //    {
     //        if (player.gameObject == Gamemanager.Inst.currentPlayer.gameObject)

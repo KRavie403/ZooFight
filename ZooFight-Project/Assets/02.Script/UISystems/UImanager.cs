@@ -3,7 +3,10 @@ using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
-    public static CanvasGroup settingsCanvas = null;
+    [SerializeField] private SettingsController settngsController;
+    [SerializeField] private MenuUI menuUI;
+
+    //public static CanvasGroup settingsCanvas = null;
 
     //public Image hpBarImage;
     //public Image spBarImage;
@@ -15,10 +18,10 @@ public class UIManager : Singleton<UIManager>
     //    characterProperty.UpdateHp.AddListener(OnHPBarFilled);
     //    characterProperty.UpdateSp.AddListener(OnSPBarFilled);
 
-    //    // √ ±‚ √º∑¬ ∞™¿∏∑Œ UI º≥¡§
+    //    // Ï¥àÍ∏∞ Ï≤¥Î†• Í∞íÏúºÎ°ú UI ÏÑ§Ï†ï
     //    OnHPBarFilled(characterProperty.CurHP);
 
-    //    // √ ±‚ Ω∫≈◊πÃ≥  ∞™¿∏∑Œ UI º≥¡§
+    //    // Ï¥àÍ∏∞ Ïä§ÌÖåÎØ∏ÎÑà Í∞íÏúºÎ°ú UI ÏÑ§Ï†ï
     //    OnSPBarFilled(characterProperty.CurSP);
     //}
 
@@ -28,7 +31,7 @@ public class UIManager : Singleton<UIManager>
     //    {
     //        float fillAmount = newHP / characterProperty.MaxHP;
 
-    //        // UI¿« Fill Amount ¡∂¿˝
+    //        // UIÏùò Fill Amount Ï°∞Ï†à
     //        hpBarImage.fillAmount = fillAmount;
     //    }
     //}
@@ -39,21 +42,21 @@ public class UIManager : Singleton<UIManager>
     //    {
     //        float fillAmount = newSP / characterProperty.MaxSP;
 
-    //        // UI¿« Fill Amount ¡∂¿˝
+    //        // UIÏùò Fill Amount Ï°∞Ï†à
     //        spBarImage.fillAmount = fillAmount;
     //    }
     //}
 
-    private void Awake()
-    {
-        base.Initialize();
-        if (settingsCanvas == null)
-        {
-            settingsCanvas = Camera.main.GetComponent<CanvasGroup>();
-            if(settingsCanvas != null )
-            {
-                settingsCanvas = Camera.main.gameObject.AddComponent<CanvasGroup>();
-            }
-        }
-    }
+    //private void Awake()
+    //{
+    //    base.Initialize();
+    //    if (settingsCanvas == null)
+    //    {
+    //        settingsCanvas = Camera.main.GetComponent<CanvasGroup>();
+    //        if(settingsCanvas != null )
+    //        {
+    //            settingsCanvas = Camera.main.gameObject.AddComponent<CanvasGroup>();
+    //        }
+    //    }
+    //}
 }

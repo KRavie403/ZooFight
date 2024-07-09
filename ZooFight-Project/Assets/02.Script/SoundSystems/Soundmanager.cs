@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -5,25 +6,23 @@ using UnityEngine;
 
 
 /// <summary>
-/// ���� �ڵ� ����
-/// 0 ~ 99 ĳ���� ���� ����
-/// 100 ~ 300 ������ ���� ����
-/// 300 ~ 400 UI ���� ����
-/// ���� Ȯ�尡��
+/// 사운드 코드 기준
+/// 0 ~ 99 캐릭터 관련 사운드
+/// 100 ~ 199 아이템 관련 사운드
+/// 200 ~ 299 UI 관련 사운드
+/// 300 ~ 399 BGM 관련 사운드
+/// 추후 확장가능
 /// </summary>
 public enum SoundCode
 {
     MainBgm =0,CharacterMove,CharacterJump,CharacterDameged , CharacterAttack,
-
     BananaTrap = 100,
     GuardDrink, StaminaDrink, PowerDrink,
     Bomb, SpiderBomb, InkBomb,
     ToyHammer, WhippingMachine, MinimalRazer,
     CurseScroll, BlockChangeScroll,
-    Item11,
-    ButtonClick = 200, 
-
-
+    ButtonClick = 200, GameStart,
+    LoginScene = 300, MainMenuScene, LobbyScene, LoadingScene, GameScene, GameResultScene, CreditScene,
     CodeCount
 }
 
@@ -35,11 +34,17 @@ public static class SoundSettings
 public class Soundmanager : Singleton<Soundmanager>
 {
 
-    public List<SoundSpeaker> SoundSpeakers;
+    public List<SoundSpeaker> SoundSpeakers;    // 에디터에서 할당된 사운드 스피커 리스트
+    public SoundPool SoundPool;                           // 사운드 풀 객체
 
-    public SoundPool SoundPool;
+    protected override void Awake()
+    {
+        base.Awake();
+        InitializeSoundSettings();      // 초기화 메소드 호출
+    }
 
-    private void Awake()
+    // 사운드 스피커 리스트를 딕셔너리에 추가하는 초기화 메소드
+    private void InitializeSoundSettings()
     {
         for (int i = 0; i < (int)SoundCode.CodeCount; i++)
         {
@@ -50,38 +55,33 @@ public class Soundmanager : Singleton<Soundmanager>
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    // 특정 사운드 스피커의 클론을 생성하는 메소드
+    private SoundSpeaker CreateClone(SoundSpeaker sound)
     {
-        
+        GameObject obj = Instantiate(sound.gameObject, SoundPool.transform);
+        SoundSpeaker clone = obj.GetComponent<SoundSpeaker>();
+        SoundPool.AddClone(clone);
+        return clone;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void MakeClone(SoundSpeaker sound)
-    {
-        if(!SoundPool.Clones.Contains(sound))
-        {
-            GameObject obj = Instantiate(sound.gameObject, SoundPool.transform);
-        }
-        else
-        {
-            return;
-        }
-    }
-
+    // 특정 사운드 스피커의 클론을 반환하는 메소드
     public SoundSpeaker GetClone(SoundSpeaker sound)
     {
-        if (!SoundPool.Clones.Contains(sound))
+        SoundSpeaker clone = SoundPool.FindClone(sound.myClip);
+        if (clone == null)
         {
-            MakeClone(sound);
+            clone = CreateClone(sound);
         }
-        return SoundPool.Clones[SoundPool.Clones.IndexOf(sound)];
+        return clone;
     }
 
-
+    // 사운드 코드를 입력받아 해당 사운드를 재생하는 메소드
+    public void PlaySound(SoundCode code)
+    {
+        if (SoundSettings.keys.TryGetValue(code, out SoundSpeaker speaker))
+        {
+            SoundSpeaker clone = GetClone(speaker);
+            clone.SoundPlay();
+        }
+    }
 }
