@@ -5,39 +5,44 @@ using UnityEngine.Rendering;
 
 public class MinimapMovement : MonoBehaviour
 {
-    private float moveSpeed = 80f;
+    public float moveSpeed = 59;
     private float boundary = 20f;
 
-    private float boundaryXMin = 55f;
-    private float boundaryXMax = 305f;
-    private float boundaryYMin = 15f;
-    private float boundaryYMax = 225f;
+    public float boundaryXMin = 114;
+    public float boundaryXMax = 352;
+    public float boundaryYMin = 48;
+    public float boundaryYMax = 278;
 
     private void Start()
     {
-        transform.position = Vector3.zero;
+        transform.localPosition = Vector3.zero;
     }
 
     void Update()
     {
-        // ¸¶¿ì½º À§Ä¡ °¨Áö
+        // ë§ˆìš°ìŠ¤ ìœ„ì¹˜ ê°ì§€
         Vector2 mousePos = Input.mousePosition;
 
-        // ÀÌµ¿ Á¶°Ç °Ë»ç ¹× ÀÌµ¿
+        // ëª©í‘œ ìœ„ì¹˜ ì„¤ì •
+        Vector3 targetPosition = transform.position;
+
+
+        // ì´ë™ ì¡°ê±´ ê²€ì‚¬ ë° ëª©í‘œ ìœ„ì¹˜ ê°±ì‹ 
         if (mousePos.x < boundary)
-            transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+            targetPosition += Vector3.left * moveSpeed * Time.deltaTime;
         else if (mousePos.x > Screen.width - boundary)
-            transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+            targetPosition += Vector3.right * moveSpeed * Time.deltaTime;
 
         if (mousePos.y < boundary)
-            transform.Translate(Vector3.down * moveSpeed * Time.deltaTime);
+            targetPosition += Vector3.down * moveSpeed * Time.deltaTime;
         else if (mousePos.y > Screen.height - boundary)
-            transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
+            targetPosition += Vector3.up * moveSpeed * Time.deltaTime;
 
-        // °æ°è°ªÀ» ³Ñ¾î°¡Áö ¾Êµµ·Ï Á¦ÇÑ
-        float clampedX = Mathf.Clamp(transform.position.x, boundaryXMin + boundary, boundaryXMax - boundary);
-        float clampedY = Mathf.Clamp(transform.position.y, boundaryYMin + boundary, boundaryYMax - boundary);
+        // ê²½ê³„ê°’ì„ ë„˜ì–´ê°€ì§€ ì•Šë„ë¡ ëª©í‘œ ìœ„ì¹˜ ì œí•œ
+        targetPosition.x = Mathf.Clamp(targetPosition.x, boundaryXMin + boundary, boundaryXMax - boundary);
+        targetPosition.y = Mathf.Clamp(targetPosition.y, boundaryYMin + boundary, boundaryYMax - boundary);
 
-        transform.position = new Vector3(clampedX, clampedY, 0);
+        // ë¶€ë“œëŸ¬ìš´ ì´ë™ì„ ìœ„í•´ Lerp ì‚¬ìš©
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed);
     }
 }

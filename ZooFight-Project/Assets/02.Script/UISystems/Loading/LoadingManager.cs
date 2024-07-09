@@ -8,9 +8,6 @@ public class LoadingManager : MonoBehaviour
 {
     public GameObject loginBtn;
 
-    [SerializeField]
-    Image loadingImg;
-
     public static string loadScene;
     public static int loadType;
     public static void LoadSceneHandle(string _name, int _loadType)
@@ -19,15 +16,13 @@ public class LoadingManager : MonoBehaviour
         loadType = _loadType;
         LoadScene();
     }
-
+    public void Login()
+    {
+        SceneManager.LoadScene("LobbyScene");
+    }
 
     public static void LoadScene()
     {
         SceneManager.LoadScene("LoadingScene");
-    }
-
-    public void Login()
-    {
-        SceneManager.LoadScene("LobbyScene");
     }
 }

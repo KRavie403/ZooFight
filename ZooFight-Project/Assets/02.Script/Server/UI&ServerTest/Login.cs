@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
+using Cysharp.Threading.Tasks;
+using System;
 using BackEnd;
 using Unity.VisualScripting;
 using static BackEnd.SendQueue;
@@ -28,8 +31,8 @@ public class Login : LoginBase
     {
         ResetUI(imageID, imagePW);
 
-        if (isFieldDataEmpty(imageID, inputFieldID.text, "¾ÆÀÌµð")) return;
-        if (isFieldDataEmpty(imagePW, inputFieldPW.text, "ºñ¹Ð¹øÈ£")) return;
+        if (isFieldDataEmpty(imageID, inputFieldID.text, "ì•„ì´ë””")) return;
+        if (isFieldDataEmpty(imagePW, inputFieldPW.text, "ë¹„ë°€ë²ˆí˜¸")) return;
 
         btnLogin.interactable = false;
 
@@ -46,16 +49,8 @@ public class Login : LoginBase
 
             if (callback.IsSuccess())
             {
-                
-                //string myNickname;
-                //Enqueue(Backend.BMember.GetUserInfo, callback =>
-                //{
-                //    var info = callback.GetReturnValuetoJSON()["row"];
-     
-                //    myNickname = info["nickname"].ToString();
-                //    SetMessage($"{myNickname}´Ô È¯¿µÇÕ´Ï´Ù.");
-                //});
-                LoginSuccess.SetActive(true);
+                SetMessage($"{inputFieldID.text}ë‹˜ í™˜ì˜í•©ë‹ˆë‹¤.");
+                OnLoadGameScene().Forget();
             }
             else
             {
@@ -65,13 +60,13 @@ public class Login : LoginBase
                 switch (int.Parse(callback.GetStatusCode()))
                 {
                     case 401:
-                        message = callback.GetMessage().Contains("CustomID") ? "Á¸ÀçÇÏÁö ¾Ê´Â ¾ÆÀÌµðÀÔ´Ï´Ù." : "Àß¸øµÈ ºñ¹Ð¹øÈ£ ÀÔ´Ï´Ù.";
+                        message = callback.GetMessage().Contains("CustomID") ? "ì¡´ìž¬í•˜ì§€ ì•ŠëŠ” ì•„ì´ë””ìž…ë‹ˆë‹¤." : "ìž˜ëª»ëœ ë¹„ë°€ë²ˆí˜¸ ìž…ë‹ˆë‹¤.";
                         break;
                     case 403:
-                        message = callback.GetMessage().Contains("user") ? "Â÷´Ü´çÇÑ À¯ÀúÀÔ´Ï´Ù." : "Â÷´Ü´çÇÑ °èÁ¤ÀÔ´Ï´Ù.";
+                        message = callback.GetMessage().Contains("user") ? "ì°¨ë‹¨ë‹¹í•œ ìœ ì €ìž…ë‹ˆë‹¤." : "ì°¨ë‹¨ë‹¹í•œ ê³„ì •ìž…ë‹ˆë‹¤.";
                         break;
                     case 410:
-                        message = "Å»Åð°¡ ÁøÇàÁßÀÎ À¯ÀúÀÔ´Ï´Ù.";
+                        message = "íƒˆí‡´ê°€ ì§„í–‰ì¤‘ì¸ ìœ ì €ìž…ë‹ˆë‹¤.";
                         break;
                     default:
                         message = callback.GetMessage();
@@ -79,7 +74,7 @@ public class Login : LoginBase
                 }
 
 
-                if (message.Contains("ºñ¹Ð¹øÈ£"))
+                if (message.Contains("ë¹„ë°€ë²ˆí˜¸"))
                 {
                     GuideForIncorrectlyEnteredData(imagePW, message);
                 }
@@ -99,9 +94,29 @@ public class Login : LoginBase
         {
             time += Time.deltaTime;
 
-            SetMessage($"·Î±×ÀÎ ÁßÀÔ´Ï´Ù . . . {time:F1}");
+            SetMessage($"ë¡œê·¸ì¸ ì¤‘ìž…ë‹ˆë‹¤ . . . {time:F1}");
 
             yield return null;
+        }
+    }
+
+    private async UniTaskVoid OnLoadGameScene()
+    {
+        await UniTask.Yield();
+
+        AsyncOperation loadSceneAsync = SceneManager.LoadSceneAsync("MainMenuScene");
+        loadSceneAsync.allowSceneActivation = false;
+
+        while (!loadSceneAsync.isDone)
+        {
+            await UniTask.Yield();
+
+            if (loadSceneAsync.progress >= 0.9f)
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(2));
+
+                loadSceneAsync.allowSceneActivation = true;
+            }
         }
     }
 }

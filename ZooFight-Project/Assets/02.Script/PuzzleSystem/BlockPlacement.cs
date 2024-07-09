@@ -16,11 +16,13 @@ public class BlockPlacement : MonoBehaviour
     public Dictionary<int, Vector3> mapCoordinates = new Dictionary<int, Vector3>();
     private Dictionary<int, Vector3> placedBlockPositions = new Dictionary<int, Vector3>();
 
-    // CharacterPlacement.cs¿¡¼­ User Position °ª ¹ŞÀ½
+    public MapManager mapManager; // MapManagerë¥¼ ì°¸ì¡°
+
+    // CharacterPlacement.csì—ì„œ User Position ê°’ ë°›ìŒ
     private List<Vector3> receivedSpawnUsers = new List<Vector3>();
     private List<Vector3> receivedSpawnItems = new List<Vector3>();
 
-    // ·Î±× È®ÀÎ
+    // ë¡œê·¸ í™•ì¸
     private int blockCount = 0;
     private int maxCount = 0;
     private int mapNum = 1;
@@ -29,10 +31,12 @@ public class BlockPlacement : MonoBehaviour
 
     void Start()
     {
-        // ¸Ê ÁÂÇ¥ »ı¼º(40x60)
+        // ë§µ ì¢Œí‘œ ìƒì„±(40x60)
         GenerateMapCoordiantes();
-        // ºí·Ï ¹èÄ¡
+        // ë¸”ë¡ ë°°ì¹˜
         PlaceBlocks();
+        // ì €ì¥ëœ ë§µ ë¶ˆëŸ¬ì˜¤ê¸°
+        //LoadMapData();
     }
 
     void GenerateMapCoordiantes()
@@ -50,7 +54,7 @@ public class BlockPlacement : MonoBehaviour
     void PlaceBlocks()
     {
         mapCoordinates[0] = new Vector3(0, 0, 0);
-        // Å»Ãâ ºí·Ï ¹èÄ¡
+        // íƒˆì¶œ ë¸”ë¡ ë°°ì¹˜
         Vector3 pinkBlockPosition = new Vector3(20.5f, 0.5f, 10.5f);
         Vector3 blueBlockPosition = new Vector3(40.5f, 0.5f, 10.5f);
         Instantiate(redBlock, pinkBlockPosition, Quaternion.identity);
@@ -61,14 +65,14 @@ public class BlockPlacement : MonoBehaviour
         Debug.Log("blockCount: " + blockCount);
         MarkPositionAsOccupied(blockCount++, blueBlockPosition);
         Debug.Log("blockCount: " + blockCount);
-        //// ·£´ıÀ¸·Î Ä³¸¯ÅÍ ¹èÄ¡
+        //// ëœë¤ìœ¼ë¡œ ìºë¦­í„° ë°°ì¹˜
         //for (int i = 0; i < receivedSpawnUsers.Count; i++)
         //{
         //    mapCoordinates[FindMapCoordinatesKey(mapCoordinates, receivedSpawnUsers[i])] = new Vector3(0, 0, 0);
         //    MarkPositionAsOccupied(receivedSpawnUsers[i]);
         //}
 
-        // ·£´ıÀ¸·Î ºí·Ï Àå¾Ö¹° ¹èÄ¡
+        // ëœë¤ìœ¼ë¡œ ë¸”ë¡ ì¥ì• ë¬¼ ë°°ì¹˜
         while (blockCount < 2250 & maxCount < 400)
         {
             float x = UnityEngine.Random.Range(0f, mapWidth + 1.0f);
@@ -80,13 +84,13 @@ public class BlockPlacement : MonoBehaviour
 
             Vector3 blockPosition = new Vector3(x + 0.5f, 0.5f, y + 0.5f);
 
-            // À§Ä¡°¡ ¸ÊÀ» ¹ş¾î³ªÁö ¾Ê°í, ³ôÀÌ°¡ mapHeight¸¦ ³Êºñ°¡ mapWidth ³ÑÁö ¾Ê´ÂÁö È®ÀÎ
+            // ìœ„ì¹˜ê°€ ë§µì„ ë²—ì–´ë‚˜ì§€ ì•Šê³ , ë†’ì´ê°€ mapHeightë¥¼ ë„ˆë¹„ê°€ mapWidth ë„˜ì§€ ì•ŠëŠ”ì§€ í™•ì¸
             if (IsPositionInsideMap(blockPosition))
             {
-                // 80% È®·ü·Î 1:2 ¶Ç´Â 2:1 ºí·Ï »ı¼º
+                // 80% í™•ë¥ ë¡œ 1:2 ë˜ëŠ” 2:1 ë¸”ë¡ ìƒì„±
                 if (randomValue < 0.8f)
                 {
-                    if (Random.Range(0f, 1f) < 0.5f) // 50% È®·ü·Î 1:2 ºí·Ï »ı¼º
+                    if (Random.Range(0f, 1f) < 0.5f) // 50% í™•ë¥ ë¡œ 1:2 ë¸”ë¡ ìƒì„±
                     {
                         if (mapCoordinates[FindMapCoordinatesKey(mapCoordinates, blockPosition)] != Vector3.zero)
                         {
@@ -104,7 +108,7 @@ public class BlockPlacement : MonoBehaviour
                             }
                         }
                     }
-                    else if (Random.Range(0f, 1f) < 0.5f)// ³ª¸ÓÁö 50% È®·ü·Î 2:1 ºí·Ï »ı¼º
+                    else if (Random.Range(0f, 1f) < 0.5f)// ë‚˜ë¨¸ì§€ 50% í™•ë¥ ë¡œ 2:1 ë¸”ë¡ ìƒì„±
                     {
                         if (mapCoordinates[FindMapCoordinatesKey(mapCoordinates, blockPosition)] != Vector3.zero)
                         {
@@ -117,13 +121,13 @@ public class BlockPlacement : MonoBehaviour
                                 blockPosition.x += 0.5f;
 
                                 blockNum %= block2x1.Length;
-                                Instantiate(block2x1[blockNum++], blockPosition, Quaternion.Euler(0, 90, 0)); //Y ÃàÀ¸·Î 90µµ È¸Àü => Quaternion.identity³ªÁß¿¡ ¼öÁ¤
+                                Instantiate(block2x1[blockNum++], blockPosition, Quaternion.Euler(0, 90, 0)); //Y ì¶•ìœ¼ë¡œ 90ë„ íšŒì „ => Quaternion.identityë‚˜ì¤‘ì— ìˆ˜ì •
                                 MarkPositionAsOccupied(blockCount, blockPosition);
                             }
                         }
                     }
                 }
-                else // ³ª¸ÓÁö 20% È®·ü·Î 1:1 ºí·Ï »ı¼º
+                else // ë‚˜ë¨¸ì§€ 20% í™•ë¥ ë¡œ 1:1 ë¸”ë¡ ìƒì„±
                 {
                     if (mapCoordinates[FindMapCoordinatesKey(mapCoordinates, blockPosition)] != Vector3.zero)
                     {
@@ -139,6 +143,7 @@ public class BlockPlacement : MonoBehaviour
                 Debug.Log("blockCount: " + blockCount);
             }
         }
+        SaveMapData();
         //for (int i = 0; i < receivedSpawnItems.Count; i++)
         //{
         //    if (mapCoordinates[FindMapCoordinatesKey(mapCoordinates, receivedSpawnItems[i])] != Vector3.zero)
@@ -161,7 +166,7 @@ public class BlockPlacement : MonoBehaviour
         return 0;
     }
 
-    public void MarkPositionAsOccupied(int num, Vector3 position)   // (Key)ºí·ÏID  (Value)¹× À§Ä¡
+    public void MarkPositionAsOccupied(int num, Vector3 position)   // (Key)ë¸”ë¡ID  (Value)ë° ìœ„ì¹˜
     {
         placedBlockPositions.Add(num, position);
     }
@@ -189,5 +194,37 @@ public class BlockPlacement : MonoBehaviour
         }
         receivedSpawnItems.Clear();
         receivedSpawnItems.AddRange(spawnItems);
+    }
+
+    public void SaveMapData()
+    {
+        mapManager.SaveMapData(placedBlockPositions);
+    }
+
+    public void LoadMapData()
+    {
+        placedBlockPositions = mapManager.LoadMapData();
+
+        foreach (var kvp in placedBlockPositions)
+        {
+            Instantiate(GetBlockPrefabById(kvp.Key), kvp.Value, Quaternion.identity);
+        }
+    }
+
+    GameObject GetBlockPrefabById(int id)
+    {
+        // ë¸”ë¡ IDì— ë”°ë¼ ì ì ˆí•œ ë¸”ë¡ prefabì„ ë°˜í™˜í•˜ëŠ” ë¡œì§ì„ êµ¬í˜„í•˜ì„¸ìš”
+        if (id < block1x1.Length)
+        {
+            return block1x1[id];
+        }
+        else if (id < block1x1.Length + block1x2.Length)
+        {
+            return block1x2[id - block1x1.Length];
+        }
+        else
+        {
+            return block2x1[id - block1x1.Length - block1x2.Length];
+        }
     }
 }
