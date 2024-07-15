@@ -24,7 +24,7 @@ public class LoadScene : MonoBehaviour
     {
         await UniTask.Yield();
 
-        AsyncOperation loadSceneAsync = SceneManager.LoadSceneAsync("GameScene");
+        AsyncOperation loadSceneAsync = SceneManager.LoadSceneAsync("LobbyScene");
         loadSceneAsync.allowSceneActivation = false;
 
         while(!loadSceneAsync.isDone)

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Singleton<T> : MonoBehaviour where T : Component
 {
     private static T _inst = null;
-    //public static T Inst => inst;
     public static T Inst
     {
         get
@@ -15,8 +14,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
                 _inst = FindObjectOfType<T>();
                 if (_inst == null)
                 {
-                    GameObject obj = new();
-                    obj.name = typeof(T).ToString();
+                    GameObject obj = new GameObject(typeof(T).ToString());
                     _inst = obj.AddComponent<T>();
                 }
             }
@@ -24,16 +22,25 @@ public class Singleton<T> : MonoBehaviour where T : Component
         }
     }
 
-    protected void Initialize()
+    protected virtual void Awake()
     {
         if (_inst == null)
         {
             _inst = this as T;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoadOnRoot(this.gameObject);
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
+    }
+
+    private void DontDestroyOnLoadOnRoot(GameObject root)
+    {
+        if (root.transform.parent != null)
+        {
+            root.transform.SetParent(null);
+        }
+        DontDestroyOnLoad(root);
     }
 }

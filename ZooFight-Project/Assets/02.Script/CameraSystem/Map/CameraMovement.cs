@@ -5,36 +5,42 @@ using UnityEngine.Rendering;
 
 public class CameraMovement : MonoBehaviour
 {
-    private float moveSpeed = 10f;
+    public float moveSpeed = 10f;
     private float boundary = 20f;
 
-    // Á¤»ç°¢ÇüÀÇ Å×µÎ¸® Á¤º¸
-    private float boundaryXMin = 13.0f;
-    private float boundaryXMax = 47.0f;
-    private float boundaryZMin = 7.0f;
-    private float boundaryZMax = 32.5f;
+    // ì •ì‚¬ê°í˜•ì˜ í…Œë‘ë¦¬ ì •ë³´
+    public float boundaryXMin = 13.7f;
+    public float boundaryXMax = 46.3f;
+    public float boundaryZMin = 6.0f;
+    public float boundaryZMax = 33.2f;
 
     void Update()
     {
-        // ¸¶¿ì½º À§Ä¡ °¨Áö
+        // ë§ˆìš°ìŠ¤ ìœ„ì¹˜ ê°ì§€
         Vector2 mousePos = Input.mousePosition;
 
-        // ÀÌµ¿ Á¶°Ç °Ë»ç ¹× ÀÌµ¿
+        // ëª©í‘œ ìœ„ì¹˜ ì„¤ì •
+        Vector3 targetPosition = transform.position;
+
+        // ì´ë™ ì¡°ê±´ ê²€ì‚¬ ë° ëª©í‘œ ìœ„ì¹˜ ê°±ì‹ 
         if (mousePos.x < boundary)
-            transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+            targetPosition += Vector3.left * moveSpeed * Time.deltaTime;
         else if (mousePos.x > Screen.width - boundary)
-            transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+            targetPosition += Vector3.right * moveSpeed * Time.deltaTime;
 
         if (mousePos.y < boundary)
-            transform.Translate(Vector3.down * moveSpeed * 0.8f * Time.deltaTime);
+            targetPosition += Vector3.down * moveSpeed * 0.8f * Time.deltaTime;
         else if (mousePos.y > Screen.height - boundary)
-            transform.Translate(Vector3.up * moveSpeed * 0.8f * Time.deltaTime);
+            targetPosition += Vector3.up * moveSpeed * 0.8f * Time.deltaTime;
 
-        // °æ°è°ªÀ» ³Ñ¾î°¡Áö ¾Êµµ·Ï Á¦ÇÑ
+        // ê²½ê³„ê°’ì„ ë„˜ì–´ê°€ì§€ ì•Šë„ë¡ ì œí•œ
         transform.position = new Vector3(
             Mathf.Clamp(transform.position.x, boundaryXMin, boundaryXMax),
             Mathf.Clamp(transform.position.y, -40, 40),
             Mathf.Clamp(transform.position.z, boundaryZMin, boundaryZMax)
         );
+
+        // ë¶€ë“œëŸ¬ìš´ ì´ë™ì„ ìœ„í•´ Lerp ì‚¬ìš©
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed);
     }
 }

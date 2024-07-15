@@ -5,67 +5,21 @@ using UnityEngine.UI;
 
 public class SoundSpeaker : MonoBehaviour
 {
-    public AudioSource Speaker;
+    public AudioClip myClip;    // 사운드 클립
 
-    public AudioClip myClip;
-
-    public SoundCode mySoundCode;
-
-
-    private void Awake()
+    private void Start()
     {
-        Speaker.clip = myClip;
+        SoundPlay();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    #region ���
+    // 사운드 재생
     public void SoundPlay()
     {
-        Speaker.Play();
-    }
-    public void SoundPlay(bool isLoop)
-    {
-        Speaker.loop = isLoop;
-        Speaker.Play();
-    }
-    public void SoundPlay(ulong Delay ,bool isLoop = false)
-    {
-        Speaker.loop = isLoop;
-        Speaker.Play(Delay);
-    }
-
-    public void SoundStop()
-    {
-
-    }
-    public void SoundStop(float WaitTime)
-    {
-
-    }
-
-    #endregion
-
-    IEnumerator StopTimer(float WaitTime)
-    {
-        float T = 0;
-        while (T < WaitTime)
+        AudioSource audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
         {
-            T += Time.deltaTime;
-            yield return null;
+            audioSource = gameObject.AddComponent<AudioSource>();
         }
-        Speaker.Play();
+        audioSource.clip = myClip;
+        audioSource.Play();
     }
-
-
-
 }
