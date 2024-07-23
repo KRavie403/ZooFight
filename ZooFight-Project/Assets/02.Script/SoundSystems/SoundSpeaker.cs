@@ -7,6 +7,8 @@ public class SoundSpeaker : MonoBehaviour
 {
     public AudioClip myClip;    // 사운드 클립
 
+    public SoundCode mySoundCode;
+
     private void Start()
     {
         SoundPlay();

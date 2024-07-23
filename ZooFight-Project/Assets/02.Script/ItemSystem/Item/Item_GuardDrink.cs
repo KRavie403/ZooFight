@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ¾ÆÀÌÅÛ¸í : ¹æ¾îÆ÷¼Ç
-/// Value 1 ¹æ¾î¸··®
-/// Value 2 Áö¼Ó½Ã°£
+/// ì•„ì´í…œëª… : ë°©ì–´í¬ì…˜
+/// Value 1 ë°©ì–´ë§‰ëŸ‰
+/// Value 2 ì§€ì†ì‹œê°„
 /// Value 3
 /// 
 /// </summary>
@@ -55,7 +55,7 @@ public class Item_GuardDrink : Items
     {
         base.ItemUse();
 
-        // ½ÃÀÛ µ¿ÀÛ ÀÌ°ü
+        // ì‹œì‘ ë™ì‘ ì´ê´€
         isItemUse = true;
     }
 
@@ -64,12 +64,12 @@ public class Item_GuardDrink : Items
         yield return base.ItemActions();
         float duringTime = 0;
 
-        // Ä³¸¯ÅÍ ½Çµå ÁÖÀÔ
+        // ìºë¦­í„° ì‹¤ë“œ ì£¼ì…
         myPlayer.GetShield(Value1);
 
-        // ½Çµå ÀÌÆåÆ® »ı¼º
+        // ì‹¤ë“œ ì´í™íŠ¸ ìƒì„±
 
-        // ½Çµå »ç¿îµå Ãâ·Â
+        // ì‹¤ë“œ ì‚¬ìš´ë“œ ì¶œë ¥
 
         while (duringTime < Value2)
         {
@@ -77,7 +77,7 @@ public class Item_GuardDrink : Items
 
 
 
-            // ½Çµå°¡ Áß°£¿¡ ÆÄ±«µÇ¸é Á¾·á
+            // ì‹¤ë“œê°€ ì¤‘ê°„ì— íŒŒê´´ë˜ë©´ ì¢…ë£Œ
             if(!myPlayer.isShield)
             {
                 duringTime += Value2;
@@ -92,27 +92,16 @@ public class Item_GuardDrink : Items
 
     }
 
-    public IEnumerator DrinkActive()
+
+    public void StartShield()
     {
-        // º¸È£¸· ´ë»ó ¼¼ÆÃ
 
-        // º¸È£¸· ÀÌÆåÆ® Ãâ·ÂÁØºñ
-
-        // º¸È£¸· »ç¿îµå Àç»ıÁØºñ
-
-
-        // º¸È£¸· Áö¼Óµ¿ÀÛ ½ÇÇà
-        while (true)
-        {
-            // Áö¼Ó½Ã°£ Ä«¿îÆ®
-            
-            // ÇÇ°İ°¨Áö½Ã »ç¿îµå ÀÌÆåÆ® Ãâ·Â
-
-            // ÇÇ°İ½Ã º¸È£¸··® °¨¼Ò
-
-            yield return null;
-        }
     }
+    public void EndShield()
+    {
+
+    }
+    
 
 
 

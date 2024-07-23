@@ -27,7 +27,10 @@ public class EffectPlayer : MonoBehaviour , IEffect
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            EffectPlayAll();
+        }
 
     }
 
@@ -52,7 +55,7 @@ public class EffectPlayer : MonoBehaviour , IEffect
     }
 
     // 인덱스 실행 , 반복출력
-    public void EffectPlay(int index,float playTime,bool isLoop)
+    public void EffectPlay(int index,float playTime,Transform StartPoint, bool isLoop)
 
     {
         var main = myEffect[index].main;
@@ -88,6 +91,28 @@ public class EffectPlayer : MonoBehaviour , IEffect
     }
     #endregion
 
+    #region 전체실행
+
+    public void EffectPlayAll()
+    {
+        for (int i = 0;i < myEffect.Count;i++)
+        {
+            myEffect[i].Play();
+        }
+    }
+
+    public void EffectPlayAll(float playTime)
+    {
+        for (int i = 0; i < myEffect.Count; i++)
+        {
+            myEffect[i].time = playTime;
+            myEffect[i].Play();
+        }
+    }
+
+    #endregion
+
+
 
     private void OnParticleTrigger()
     {
@@ -117,8 +142,6 @@ public class EffectPlayer : MonoBehaviour , IEffect
             e?.Invoke();
             gameObject.SetActive(false);        // 이펙트가 종료되면 게임 오브젝트 비활성화
         }
-
-        
     }
 
  
