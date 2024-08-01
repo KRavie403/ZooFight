@@ -31,7 +31,7 @@ public static class SoundSettings
     public static Dictionary<SoundCode, SoundSpeaker> keys = new();
 }
 
-public class Soundmanager : Singleton<Soundmanager>
+public class SoundManager : Singleton<SoundManager>
 {
 
     public List<SoundSpeaker> SoundSpeakers;    // 에디터에서 할당된 사운드 스피커 리스트

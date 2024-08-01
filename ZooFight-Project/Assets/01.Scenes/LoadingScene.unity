@@ -349,10 +349,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uB9E4\uCE6D\uC911..."
+  m_text: "\uACFC\uC790 \uB098\uB77C"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ee759f96311c7304aaba11aaa057cade, type: 2}
-  m_sharedMaterial: {fileID: -8127814136976576388, guid: ee759f96311c7304aaba11aaa057cade, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f495a2165056a344cb7bdd2a6063e223, type: 2}
+  m_sharedMaterial: {fileID: -8127814136976576388, guid: f495a2165056a344cb7bdd2a6063e223, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -949,7 +949,7 @@ GameObject:
   - component: {fileID: 2147425419}
   - component: {fileID: 2147425418}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: LoadingSceneManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

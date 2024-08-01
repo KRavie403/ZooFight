@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
+using System.Threading;
+using System;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -11,42 +15,38 @@ public class MainMenuManager : MonoBehaviour
     // 설정
     public GameObject settingsBtn;
 
-    //public GameObject Settings;
-    //public CanvasGroup SettingGroup;
-    //public CanvasGroup DisplayGroup;
-    //public CanvasGroup AudioGroup;
-    //public CanvasGroup ControlGroup;
-
-    private bool _isESC = true;
 
     // 게임 종료
     public GameObject exitBtn;
+    private bool _isESC = true;
+
+
+    // 매칭 이미지
+    [SerializeField] private GameObject _matchingUI;
+    [SerializeField] private Animator _anim;
+    [SerializeField] private RawImage _uiRawImage;
+
+    private bool _isMatchmaking;
+    private CancellationTokenSource _cts;
 
     private void Start()
     {
-        //if (Settings != null)
-        //{
-        //    Settings.SetActive(false);
-        //}
-        //CanvasGroupOff(SettingGroup);
+        //_matchingUI.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        if (_cts != null)
+        {
+            _cts.Cancel();
+        }
     }
 
     public void ClickPlay()
     {
+        //_matchingUI.SetActive(true);
+        //StartMatchmakingTimer().Forget();
         SceneManager.LoadScene("LobbyScene");
-    }
-
-    public void ClickSetting()
-    {
-        //if (Settings != null)
-        //{
-        //    Settings.SetActive(true);
-        //    _isESC = false;
-        //    CanvasGroupOn(SettingGroup);
-        //    CanvasGroupOn(DisplayGroup);
-        //    CanvasGroupOff(AudioGroup);
-        //    CanvasGroupOff(ControlGroup);
-        //}
     }
 
     public void ClickExit()
@@ -58,16 +58,40 @@ public class MainMenuManager : MonoBehaviour
 #endif
     }
 
-    //private void CanvasGroupOn(CanvasGroup cg)
-    //{
-    //    cg.alpha = 1;
-    //    cg.interactable = true;
-    //    cg.blocksRaycasts = true;
-    //}
-    //private void CanvasGroupOff(CanvasGroup cg)
-    //{
-    //    cg.alpha = 0;
-    //    cg.interactable = false;
-    //    cg.blocksRaycasts = false;
-    //}
+    private async UniTaskVoid StartMatchmakingTimer()
+    {
+        _isMatchmaking = true;
+        _cts = new CancellationTokenSource();
+
+        int elapsedTime = 0;
+
+        try
+        {
+            while (_isMatchmaking)
+            {
+                Debug.Log($"매칭 시간: {elapsedTime}초");
+
+                // 1초 대기
+                await UniTask.Delay(1000, cancellationToken: _cts.Token);
+
+                elapsedTime++;
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            Debug.Log("매칭 취소됨");
+        }
+    }
+
+    // 매칭을 종료할 때 호출
+    public void StopMatchmaking()
+    {
+        _isMatchmaking = false;
+        _cts.Cancel();
+    }
+
+    public void LoadLoadingImg()
+    {
+        _anim.SetBool("IsRotating", true);
+    }
 }
