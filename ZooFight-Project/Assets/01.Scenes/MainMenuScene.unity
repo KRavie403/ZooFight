@@ -7600,7 +7600,6 @@ GameObject:
   - component: {fileID: 567083640}
   - component: {fileID: 567083639}
   - component: {fileID: 567083638}
-  - component: {fileID: 567083642}
   m_Layer: 5
   m_Name: UI Canvas
   m_TagString: Untagged
@@ -7691,18 +7690,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &567083642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 567083637}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 942d2b23d2beafb4f9131bdddda9d0db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &576328395
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18893,10 +18880,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playBtn: {fileID: 299237569}
   settingsBtn: {fileID: 1691792028}
+  exitBtn: {fileID: 186581174}
   _matchingUI: {fileID: 1146809897}
   _anim: {fileID: 476673650}
   _uiRawImage: {fileID: 476673651}
-  exitBtn: {fileID: 186581174}
+  timerText: {fileID: 454534631}
 --- !u!1001 &1819255495
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -19,9 +19,9 @@ public class GameSceneManager : MonoBehaviour
         GetUser(curUser);
     }
 
-    // 유저 번호 불러오기
     private void GetUser(int curUser)
     {
+        // 유저 번호 불러오기
         UpdateCharacterUI(curUser);
     }
     private void UpdateCharacterUI(int curUser)

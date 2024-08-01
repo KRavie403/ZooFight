@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
@@ -25,13 +26,14 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject _matchingUI;
     [SerializeField] private Animator _anim;
     [SerializeField] private RawImage _uiRawImage;
+    [SerializeField] private TextMeshProUGUI timerText;
 
     private bool _isMatchmaking;
     private CancellationTokenSource _cts;
 
     private void Start()
     {
-        //_matchingUI.SetActive(false);
+        _matchingUI.SetActive(false);
     }
 
     private void OnDestroy()
@@ -69,7 +71,10 @@ public class MainMenuManager : MonoBehaviour
         {
             while (_isMatchmaking)
             {
-                Debug.Log($"매칭 시간: {elapsedTime}초");
+                int minutes = Mathf.FloorToInt(elapsedTime / 60);
+                int seconds = Mathf.FloorToInt(elapsedTime % 60);
+
+                timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
 
                 // 1초 대기
                 await UniTask.Delay(1000, cancellationToken: _cts.Token);
@@ -90,6 +95,7 @@ public class MainMenuManager : MonoBehaviour
         _cts.Cancel();
     }
 
+    // 원형 로딩 이미지
     public void LoadLoadingImg()
     {
         _anim.SetBool("IsRotating", true);

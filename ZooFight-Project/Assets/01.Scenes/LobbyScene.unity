@@ -29981,7 +29981,7 @@ GameObject:
   - component: {fileID: 1874088733}
   - component: {fileID: 1874088732}
   m_Layer: 0
-  m_Name: LobbyManager
+  m_Name: LobbySceneManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30003,9 +30003,7 @@ MonoBehaviour:
   - {fileID: 919132149155446097, guid: 8d372d6464c19564f878415495dcc79f, type: 3}
   - {fileID: 919132149155446097, guid: effd69fa6d6ae25468275ef2ab5580a2, type: 3}
   - {fileID: 919132149155446097, guid: 7268f3d541d9f8c428ed3e94985a5563, type: 3}
-  spawnPoint: {fileID: 0}
-  rightButton: {fileID: 0}
-  leftButton: {fileID: 0}
+  spawnPoint: {fileID: 1128379088}
 --- !u!4 &1874088733
 Transform:
   m_ObjectHideFlags: 0
