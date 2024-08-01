@@ -50,7 +50,7 @@ public class SoundManager : Singleton<SoundManager>
         {
             if (SoundSpeakers[i] != null)
             {
-                SoundSettings.keys.Add(SoundSpeakers[i].mySoundCode, SoundSpeakers[i]);
+                //SoundSettings.keys.Add(SoundSpeakers[i].mySoundCode, SoundSpeakers[i]);
             }
         }
     }

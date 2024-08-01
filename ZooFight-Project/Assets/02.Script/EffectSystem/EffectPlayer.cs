@@ -52,17 +52,16 @@ public class EffectPlayer : MonoBehaviour , IEffect
     }
 
     // 인덱스 실행 , 반복출력
-    public void EffectPlay(int index,float playTime,bool isLoop)
-
+    public void EffectPlay(int index, float playTime, Transform StartPoint, bool isLoop = false)
     {
         var main = myEffect[index].main;
         main.loop = isLoop;
         myEffect[index].transform.position = StartPoint.position;
-        myEffect[index].time = playTime; 
+        myEffect[index].time = playTime;
         myEffect[index].Play();
     }
     // 인덱스 실행 , 시작위치 , 바라볼 방향
-    public void EffectPlay(int index,float playTime,Transform StartPoint,Vector3 dir)
+    public void EffectPlay(int index, float playTime, Transform StartPoint, Vector3 dir)
     {
         myEffect[index].time = playTime;
         myEffect[index].transform.position = StartPoint.position;
@@ -71,17 +70,17 @@ public class EffectPlayer : MonoBehaviour , IEffect
 
     }
     // 인덱스 실행 , 시작위치 , 회전
-    public void EffectPlay(int index, float playTime,Transform StartPoint,Quaternion rot)
+    public void EffectPlay(int index, float playTime, Transform StartPoint, Quaternion rot)
     {
         myEffect[index].time = playTime;
         myEffect[index].transform.position = StartPoint.position;
         myEffect[index].transform.rotation = rot;
         myEffect[index].Play();
     }
-    public void EffectPlay(int index, float playTime, Transform StartPoint, Quaternion rot,Vector3 size)
+    public void EffectPlay(int index, float playTime, Transform StartPoint, Quaternion rot, Vector3 size)
     {
         myEffect[index].time = playTime;
-        
+
         myEffect[index].transform.position = StartPoint.position;
         myEffect[index].transform.rotation = rot;
         myEffect[index].Play();
