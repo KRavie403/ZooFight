@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -27,10 +28,10 @@ public class EffectPlayer : MonoBehaviour , IEffect
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            EffectPlayAll();
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    EffectPlayAll();
+        //}
 
     }
 
@@ -81,6 +82,20 @@ public class EffectPlayer : MonoBehaviour , IEffect
         myEffect[index].transform.rotation = rot;
         myEffect[index].Play();
     }
+
+    // 인덱스 실행 , 시작위치 , 회전
+    public void EffectPlay(int index, float playTime, Transform StartPoint, Quaternion rot,bool isLoop)
+    {
+
+        var main = myEffect[index].main;
+        main.loop = isLoop;
+
+        myEffect[index].time = playTime;
+        myEffect[index].transform.position = StartPoint.position;
+        myEffect[index].transform.rotation = rot;
+        myEffect[index].Play();
+    }
+
     public void EffectPlay(int index, float playTime, Transform StartPoint, Quaternion rot,Vector3 size)
     {
         myEffect[index].time = playTime;
@@ -105,11 +120,32 @@ public class EffectPlayer : MonoBehaviour , IEffect
     {
         for (int i = 0; i < myEffect.Count; i++)
         {
-            myEffect[i].time = playTime;
-            myEffect[i].Play();
+            EffectPlay(i,playTime);
         }
     }
 
+    public void EffectPlayAll(float playTime,Transform Target)
+    {
+        for (int i = 0; i < myEffect.Count; i++)
+        {
+            EffectPlay(i, playTime,Target,false);
+        }
+    }
+
+    public void EffectPlayAll(float playTime,Transform Target , Quaternion Rot)
+    {
+        for (int i = 0; i < myEffect.Count; i++)
+        {
+            EffectPlay(i, playTime, Target, Rot);
+        }
+    }
+    public void EffectPlayAll(float playTime, Transform Target, Quaternion Rot,Vector3 size)
+    {
+        for (int i = 0; i < myEffect.Count; i++)
+        {
+            EffectPlay(i, playTime, Target, Rot,size);
+        }
+    }
     #endregion
 
 

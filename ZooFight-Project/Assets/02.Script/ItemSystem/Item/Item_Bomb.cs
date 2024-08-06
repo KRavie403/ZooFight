@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ¾ÆÀÌÅÛ¸í : ÆøÅº
-/// Value 1 µ¥¹ÌÁö
-/// Value 2 ÆøÅº À¯Áö ½Ã°£
-/// Value 3 Æø¹ß¹üÀ§
-/// Value 4 ÆøÅº ¼Óµµ
-/// Value 5 »ç°Å¸®
-/// Ä³¸¯ÅÍ¸¸ ¹Ğ·Á³² ºí·°Àº ¹Ğ·Á³ªÁö¾ÊÀ½
+/// ì•„ì´í…œëª… : í­íƒ„
+/// Value 1 ë°ë¯¸ì§€
+/// Value 2 í­íƒ„ ìœ ì§€ ì‹œê°„
+/// Value 3 í­ë°œë²”ìœ„
+/// Value 4 í­íƒ„ ì†ë„
+/// Value 5 ì‚¬ê±°ë¦¬
+/// ìºë¦­í„°ë§Œ ë°€ë ¤ë‚¨ ë¸”ëŸ­ì€ ë°€ë ¤ë‚˜ì§€ì•ŠìŒ
 /// </summary>
 
 
@@ -64,7 +64,7 @@ public class Item_Bomb : Items
         bool isMoveEnd = false;
 
         //transform.localPosition = Vector3.zero;
-        // Æ¯Á¤ °æ·Î·Î ÀÌµ¿ ½ÃÀÛ
+        // íŠ¹ì • ê²½ë¡œë¡œ ì´ë™ ì‹œì‘
         BattleSystems.Inst.routeMaker.RouteKeys[RouteTypes.Arc].
             GetComponent<IRoute>().RouteStart(transform, dir, Value5, Value4, () =>
             {
@@ -82,14 +82,14 @@ public class Item_Bomb : Items
 
         while (!isDone)
         {
-            // À¯Áö½Ã°£ ÃÊ°ú½Ã »ç¿ë Á¾·á
+            // ìœ ì§€ì‹œê°„ ì´ˆê³¼ì‹œ ì‚¬ìš© ì¢…ë£Œ
             if(duringTime >= Value2)
             {
                 isDone = true;
                 continue;
             }
 
-            // À¯Áö½Ã°£ Ã¼Å©
+            // ìœ ì§€ì‹œê°„ ì²´í¬
             duringTime += Time.deltaTime;
 
 
@@ -100,17 +100,17 @@ public class Item_Bomb : Items
             }
 
 
-            // µ¿ÀÛ°¨Áö½Ã È¿°úÀû¿ë ¹× ÀÌÆåÆ® , »ç¿îµå Ãâ·Â
+            // ë™ì‘ê°ì§€ì‹œ íš¨ê³¼ì ìš© ë° ì´í™íŠ¸ , ì‚¬ìš´ë“œ ì¶œë ¥
             if (Targets.Count != 0) 
             {
-                // Å¸°ÙÀÌ ÀâÈ÷¸é µ¿ÀÛ½ÃÅ°°í ÅÍÆ®¸²
+                // íƒ€ê²Ÿì´ ì¡íˆë©´ ë™ì‘ì‹œí‚¤ê³  í„°íŠ¸ë¦¼
 
 
 
                 isDone = false;
             }
 
-            // ¹ßµ¿½Ã ¿ÀºêÁ§Æ® ÀÛµ¿ ºÒ´ÉÃ³¸®
+            // ë°œë™ì‹œ ì˜¤ë¸Œì íŠ¸ ì‘ë™ ë¶ˆëŠ¥ì²˜ë¦¬
 
             if (isItemUse)
             {
@@ -126,14 +126,30 @@ public class Item_Bomb : Items
 
         myHitScanner.SetScanActive(false);
 
-        // »ç¿ëÀÌ ³¡³ª¸é ¿ÀºêÁ§Æ® ¹İÈ¯
+        // ì‚¬ìš©ì´ ëë‚˜ë©´ ì˜¤ë¸Œì íŠ¸ ë°˜í™˜
         Debug.Log($"{this} ActiveEnd");
         isDone = false;
         ReturnItem();
     }
 
+    public void BombExplosionEffect()
+    {
 
-    // ´ë»óÀ» ³Ë¹é½ÃÅ°´Â ÇÔ¼ö - Transform , ¹Ğ·Á³¯ °Å¸® , ¼Óµµ ÀÔ·Â¹Ş±â
+        myEffect.EffectPlayAll();
+
+
+    }
+
+    public void BombExplosionSound() 
+    {
+
+
+
+    }
+
+
+
+    // ëŒ€ìƒì„ ë„‰ë°±ì‹œí‚¤ëŠ” í•¨ìˆ˜ - Transform , ë°€ë ¤ë‚  ê±°ë¦¬ , ì†ë„ ì…ë ¥ë°›ê¸°
     public void PushOut(Transform transform , float Dist , float Speed)
     {
         StartCoroutine(PushedOut(transform, Dist, Speed));

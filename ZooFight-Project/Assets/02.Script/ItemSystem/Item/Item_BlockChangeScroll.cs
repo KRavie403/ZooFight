@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ¾ÆÀÌÅÛ¸í : ºí·°±³È¯½ºÅ©·Ñ
+/// ì•„ì´í…œëª… : ë¸”ëŸ­êµí™˜ìŠ¤í¬ë¡¤
 /// Value 1 
-/// Value 2 ÀÌÆåÆ® Áö¼Ó½Ã°£
+/// Value 2 ì´í™íŠ¸ ì§€ì†ì‹œê°„
 /// Value 3 ???
 /// </summary>
 
@@ -53,7 +53,7 @@ public class Item_BlockChangeScroll : Items
 
 
 
-        // ÄÚ·çÆ¾ÀÇ µ¿ÀÛÀ» º»Ã¼·Î °¡Á®¿À±â
+        // ì½”ë£¨í‹´ì˜ ë™ì‘ì„ ë³¸ì²´ë¡œ ê°€ì ¸ì˜¤ê¸°
         isItemUse = true;
 
     }
@@ -62,7 +62,7 @@ public class Item_BlockChangeScroll : Items
         yield return base.ItemActions();
 
         float duringTime = 0;
-        // ¾Æ±º , »ó´ëÆí ºí·°Á¤º¸ °¡Á®¿À±â
+        // ì•„êµ° , ìƒëŒ€í¸ ë¸”ëŸ­ì •ë³´ ê°€ì ¸ì˜¤ê¸°
         if (myPlayer.myTeam == HitScanner.Team.RedTeam)
         {
             myBlock = Gamemanager.Inst.RedTeamBlock;
@@ -74,19 +74,19 @@ public class Item_BlockChangeScroll : Items
             enemyBlock = Gamemanager.Inst.RedTeamBlock;
         }
 
-        // ÀâÇôÀÖ´Â »óÅÂ ÇØÁ¦
+        // ì¡í˜€ìˆëŠ” ìƒíƒœ í•´ì œ
         myBlock.isChangeActive = true;
         enemyBlock.isChangeActive = true;
         myBlock.ForceDeGrab();
         enemyBlock.ForceDeGrab();
-        // ºí·° ±³È¯
+        // ë¸”ëŸ­ êµí™˜
         myBlock.ChangeBlockTeam();
         enemyBlock.ChangeBlockTeam();
-        
 
-        // ºí·°±³È¯ ÀÌÆåÆ® Ãâ·ÂÁØºñ
 
-        // ºí·°±³È¯ »ç¿îµå Ãâ·ÂÁØºñ
+        // ë¸”ëŸ­êµí™˜ ì´í™íŠ¸ ì¶œë ¥ì¤€ë¹„
+        ChangeEffect();
+        // ë¸”ëŸ­êµí™˜ ì‚¬ìš´ë“œ ì¶œë ¥ì¤€ë¹„
 
 
         myBlock.isChangeActive = false;
@@ -94,7 +94,7 @@ public class Item_BlockChangeScroll : Items
 
         myPlayer.ItemUseEnd();
 
-        // ºí·°±³È¯ ½ÇÇà
+        // ë¸”ëŸ­êµí™˜ ì‹¤í–‰
         while (duringTime < Value2)
         {
             duringTime += Time.deltaTime;
@@ -113,7 +113,7 @@ public class Item_BlockChangeScroll : Items
         }
 
         Debug.Log($"{this} ActiveEnd");
-        // ¾ÆÀÌÅÛ ¹İÈ¯
+        // ì•„ì´í…œ ë°˜í™˜
         ReturnItem();
     }
 
@@ -121,13 +121,34 @@ public class Item_BlockChangeScroll : Items
     {
         myBlock = null;
         enemyBlock = null;
+        myEffect.gameObject.SetActive(false);
+        myEffect.transform.SetParent(transform, false);
         base.ReturnItem();
+    }
+
+    public void ChangeEffect()
+    {
+        myEffect.gameObject.SetActive(true);
+
+        //Transform pos = 
+        myEffect.transform.SetParent(null);
+
+        for (int i = 0; i < 5; i++)
+        {
+            myEffect.EffectPlay(i, 0, myBlock.transform, Quaternion.identity, true);
+        }
+        for (int i = 5; i < 10; i++)
+        {
+            myEffect.EffectPlay(i, 0, enemyBlock.transform, Quaternion.identity, true);
+        }
+        
+
     }
 
     public IEnumerator ScrollActive()
     {
         float duringTime = 0;
-        // ¾Æ±º , »ó´ëÆí ºí·°Á¤º¸ °¡Á®¿À±â
+        // ì•„êµ° , ìƒëŒ€í¸ ë¸”ëŸ­ì •ë³´ ê°€ì ¸ì˜¤ê¸°
         if(myPlayer.myTeam == HitScanner.Team.RedTeam)
         {
             myBlock = Gamemanager.Inst.RedTeamBlock;
@@ -140,12 +161,12 @@ public class Item_BlockChangeScroll : Items
         }
 
 
-        // ºí·°±³È¯ ÀÌÆåÆ® Ãâ·ÂÁØºñ
+        // ë¸”ëŸ­êµí™˜ ì´í™íŠ¸ ì¶œë ¥ì¤€ë¹„
 
-        // ºí·°±³È¯ »ç¿îµå Ãâ·ÂÁØºñ
+        // ë¸”ëŸ­êµí™˜ ì‚¬ìš´ë“œ ì¶œë ¥ì¤€ë¹„
 
 
-        // ºí·°±³È¯ ½ÇÇà
+        // ë¸”ëŸ­êµí™˜ ì‹¤í–‰
         while (duringTime < Value2)
         {
             duringTime += Time.deltaTime;   
