@@ -44,30 +44,30 @@ public class SoundManager : Singleton<SoundManager>
         InitializeSoundSettings();      // 초기화 메소드 호출
     }
 
-    // 사운드 스피커 리스트를 딕셔너리에 추가하는 초기화 메소드
     private void InitializeSoundSettings()
     {
-        for (int i = 0; i < SoundSpeakers.Count; i++)
+        // 사운드 스피커 리스트를 딕셔너리에 추가하는 초기화 메소드
+        for (int i = 0; i < (int)SoundCode.CodeCount; i++)
         {
             if (SoundSpeakers[i] != null)
             {
-                SoundSettings.keys.Add(SoundSpeakers[i].mySoundCode, SoundSpeakers[i]);
+                //SoundSettings.keys.Add(SoundSpeakers[i].mySoundCode, SoundSpeakers[i]);
             }
         }
     }
 
-    // 특정 사운드 스피커의 클론을 생성하는 메소드
     private SoundSpeaker CreateClone(SoundSpeaker sound)
     {
+        // 특정 사운드 스피커의 클론을 생성하는 메소드
         GameObject obj = Instantiate(sound.gameObject, SoundPool.transform);
         SoundSpeaker clone = obj.GetComponent<SoundSpeaker>();
         SoundPool.AddClone(clone);
         return clone;
     }
 
-    // 특정 사운드 스피커의 클론을 반환하는 메소드
     public SoundSpeaker GetClone(SoundSpeaker sound)
     {
+        // 특정 사운드 스피커의 클론을 반환하는 메소드
         SoundSpeaker clone = SoundPool.FindClone(sound.myClip);
         if (clone == null)
         {
@@ -76,9 +76,9 @@ public class SoundManager : Singleton<SoundManager>
         return clone;
     }
 
-    // 사운드 코드를 입력받아 해당 사운드를 재생하는 메소드
     public void PlaySound(SoundCode code)
     {
+        // 사운드 코드를 입력받아 해당 사운드를 재생하는 메소드
         if (SoundSettings.keys.TryGetValue(code, out SoundSpeaker speaker))
         {
             SoundSpeaker clone = GetClone(speaker);
