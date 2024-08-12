@@ -14,7 +14,7 @@ public class MainMenuManager : MonoBehaviour
     public GameObject playBtn;
 
     // 설정
-    public GameObject settingsBtn;
+    public Button settingsBtn;
 
 
     // 게임 종료
@@ -34,6 +34,18 @@ public class MainMenuManager : MonoBehaviour
     private void Start()
     {
         _matchingUI.SetActive(false);
+        settingsBtn.onClick.AddListener(OnSettingsButtonClick);
+    }
+
+    private void OnSettingsButtonClick()
+    {
+        if (SettingsController.Inst != null)
+        {
+            SettingsController.Inst.ClickSetting();
+        }
+        #if DEBUG
+        Debug.LogWarning("SettingsController 인스턴스를 찾을 수 없습니다.");
+#endif
     }
 
     private void OnDestroy()
