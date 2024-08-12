@@ -9,22 +9,22 @@ using UnityEngine.UI;
 
 public class LobbyUI : MonoBehaviour
 {
-    // À¯Àú ´Ğ³×ÀÓ
+    // ìœ ì € ë‹‰ë„¤ì„
     [SerializeField] private TextMeshProUGUI _user1text;
     [SerializeField] private TextMeshProUGUI _user2text;
     [SerializeField] private TextMeshProUGUI _user3text;
 
 
-    // ÁØºñ ¹öÆ°
+    // ì¤€ë¹„ ë²„íŠ¼
     public GameObject readyBtn;
-    // ÁØºñ ¿Ï·áµÇ¸é Ã¼Å© 
+    // ì¤€ë¹„ ì™„ë£Œë˜ë©´ ì²´í¬ 
     public GameObject checkBox;
     public GameObject check2Box;
     public GameObject check3Box;
 
-    // Ä«¿îÆ®´Ù¿î
-    [SerializeField] private bool[] _isPlayerReady = new bool[3]; // ÇÃ·¹ÀÌ¾î ÁØºñ »óÅÂ ¹è¿­
-    [SerializeField] private bool _allPlayersReady = false; // ¸ğµç ÇÃ·¹ÀÌ¾î°¡ ÁØºñ »óÅÂÀÎÁö
+    // ì¹´ìš´íŠ¸ë‹¤ìš´
+    [SerializeField] private bool[] _isPlayerReady = new bool[3]; // í”Œë ˆì´ì–´ ì¤€ë¹„ ìƒíƒœ ë°°ì—´
+    [SerializeField] private bool _allPlayersReady = false; // ëª¨ë“  í”Œë ˆì´ì–´ê°€ ì¤€ë¹„ ìƒíƒœì¸ì§€
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private float remainingTime = 20f;
     [SerializeField] private float readyTime = 10f;
@@ -33,29 +33,28 @@ public class LobbyUI : MonoBehaviour
     private void Start()
     {
         LoadUserName();
-        Debug.Log("Test: Start Initialize Ready State");
         InitializeReadyState();
     }
 
     private void Update()
     {
-        // À¯Àú°¡ ¿£ÅÍ(ÁØºñ)¸¦ ´­·¶À» °æ¿ì //³ªÁß¿¡ ¾ø¾Ù ¿¹Á¤
+        // ìœ ì €ê°€ ì—”í„°(ì¤€ë¹„)ë¥¼ ëˆŒë €ì„ ê²½ìš° //ë‚˜ì¤‘ì— ì—†ì•¨ ì˜ˆì •
         HandleInput();
         HandleCountdown();
     }
 
-    // À¯Àú ´Ğ³×ÀÓ ºÒ·¯¿À±â
+    // ìœ ì € ë‹‰ë„¤ì„ ë¶ˆëŸ¬ì˜¤ê¸°
     private void LoadUserName()
     {
-        // À¯Àú1ÀÇ ´Ğ³×ÀÓ
+        // ìœ ì €1ì˜ ë‹‰ë„¤ì„
         //_user1text.text = ;
-        // À¯Àú2ÀÇ ´Ğ³×ÀÓ
+        // ìœ ì €2ì˜ ë‹‰ë„¤ì„
         //_user2text.text = ;
-        // À¯Àú3ÀÇ ´Ğ³×ÀÓ
+        // ìœ ì €3ì˜ ë‹‰ë„¤ì„
         //_user3text.text = ;
     }
 
-    // ÃÊ±â ÁØºñ »óÅÂ ÀüºÎ ºñÈ°¼ºÈ­
+    // ì´ˆê¸° ì¤€ë¹„ ìƒíƒœ ì „ë¶€ ë¹„í™œì„±í™”
     private void InitializeReadyState()
     {
         checkBox.SetActive(false);
@@ -67,19 +66,18 @@ public class LobbyUI : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.KeypadEnter))
         {
-            Debug.Log("Test: Enter´­·¶À½");
             ClickReady();
         }
     }
 
     private void HandleCountdown()
     {
-        // ¸ğµç ÇÃ·¹ÀÌ¾î°¡ ÁØºñµÇ¸é 10ÃÊ Ä«¿îÆ®´Ù¿î ½ÃÀÛ
+        // ëª¨ë“  í”Œë ˆì´ì–´ê°€ ì¤€ë¹„ë˜ë©´ 10ì´ˆ ì¹´ìš´íŠ¸ë‹¤ìš´ ì‹œì‘
         if (CheckIfAllPlayersReady() && !_allPlayersReady)
         {
             StartCountdown();
         }
-        // Ä«¿îÆ®´Ù¿î ÁøÇà
+        // ì¹´ìš´íŠ¸ë‹¤ìš´ ì§„í–‰
         if (remainingTime > 0)
         {
             timerText.color = !_allPlayersReady ? Color.white 
@@ -89,7 +87,6 @@ public class LobbyUI : MonoBehaviour
         }
         else if (!_allPlayersReady)
         {
-            Debug.Log("Test: Ä«¿îÆ®´Ù¿î ³¡ StartCountdown() ½ÇÇà ");
             remainingTime = 0;
             StartCountdown();
         }
@@ -102,9 +99,9 @@ public class LobbyUI : MonoBehaviour
 
     private void StartCountdown()
     {
-        // ¸ğµç ÇÃ·¹ÀÌ¾î°¡ ÁØºñ »óÅÂÀÏ ¶§
+        // ëª¨ë“  í”Œë ˆì´ì–´ê°€ ì¤€ë¹„ ìƒíƒœì¼ ë•Œ
         _allPlayersReady = true;
-        // Ä«¿îÆ®´Ù¿î 10ÃÊ·Î ¼³Á¤
+        // ì¹´ìš´íŠ¸ë‹¤ìš´ 10ì´ˆë¡œ ì„¤ì •
         remainingTime = readyTime;
         checkBox.SetActive(true);
         check2Box.SetActive(true);
@@ -113,29 +110,28 @@ public class LobbyUI : MonoBehaviour
 
     public void ClickReady()
     {
-        Debug.Log("Test: ClickReady");
-        //int n = 0; //ÀÓ½Ã
+        //int n = 0; //ì„ì‹œ
         for(int i = 0; i < _isPlayerReady.Length; i++)
         {
             _isPlayerReady[i] = true;
         }
-        // Å¬¸¯ ´©¸¥ ÇØ´ç À¯ÀúÀÇ ÀÌ¹ÌÁö¸¸ È°¼ºÈ­ÇÒ °Í
+        // í´ë¦­ ëˆ„ë¥¸ í•´ë‹¹ ìœ ì €ì˜ ì´ë¯¸ì§€ë§Œ í™œì„±í™”í•  ê²ƒ
         checkBox.SetActive(true);
         check2Box.SetActive(true);
         check3Box.SetActive(true);
     }
 
-    // ÇÃ·¹ÀÌ¾î ÁØºñ »óÅÂ Ã¼Å©
+    // í”Œë ˆì´ì–´ ì¤€ë¹„ ìƒíƒœ ì²´í¬
     private bool CheckIfAllPlayersReady()
     {
         foreach(bool isReady in _isPlayerReady)
         {
-            if (!isReady) return false; // ÇÏ³ª¶óµµ ÁØºñ »óÅÂ°¡ ¾Æ´Ï¶ó¸é false
+            if (!isReady) return false; // í•˜ë‚˜ë¼ë„ ì¤€ë¹„ ìƒíƒœê°€ ì•„ë‹ˆë¼ë©´ false
         }
         return true;
     }
 
-    // ·Îµù½ÅÀ¸·Î ÀüÈ¯
+    // ë¡œë”©ì‹ ìœ¼ë¡œ ì „í™˜
     private async UniTaskVoid OnLoadScene()
     {
         await UniTask.Yield();
