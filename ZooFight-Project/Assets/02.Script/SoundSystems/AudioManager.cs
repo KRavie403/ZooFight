@@ -46,10 +46,11 @@ public class AudioManager : Singleton<AudioManager>
             BGMSource.clip = clip;
             BGMSource.Play();
         }
-        else
+#if DEBUG
         {
-            Debug.LogWarning("BGM clip not found for scene: " + sceneName);
+            Debug.LogWarning("해당 BGM 클립을 찾을 수 없음: " + sceneName);
         }
+#endif
     }
 
     public void PlayUIEffect(int index)

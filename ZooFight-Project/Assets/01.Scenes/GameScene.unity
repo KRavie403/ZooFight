@@ -4740,6 +4740,7 @@ GameObject:
   - component: {fileID: 374406006}
   - component: {fileID: 374406007}
   - component: {fileID: 374406008}
+  - component: {fileID: 374406009}
   m_Layer: 0
   m_Name: GameSceneManager
   m_TagString: Untagged
@@ -4798,6 +4799,39 @@ MonoBehaviour:
   - {fileID: 1894558861}
   - {fileID: 920737353}
   - {fileID: 572327610}
+  _character: 
+--- !u!114 &374406009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374406005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8fac74a47f4d03498fee0a10d688c0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons:
+  - {fileID: 1470282092}
+  - {fileID: 1817772021}
+  - {fileID: 1959898307}
+  - {fileID: 2137069861}
+  - {fileID: 1131851608}
+  - {fileID: 1907415694}
+  - {fileID: 425473172}
+  - {fileID: 1884051392}
+  - {fileID: 1143676570}
+  - {fileID: 1344019696}
+  - {fileID: 49774063}
+  - {fileID: 2043579212}
+  - {fileID: 401441478}
+  - {fileID: 1838720465}
+  - {fileID: 1186658484}
+  - {fileID: 98072865}
+  - {fileID: 733863923}
+  - {fileID: 476644027}
+  - {fileID: 683882410}
 --- !u!1 &386729223
 GameObject:
   m_ObjectHideFlags: 0
@@ -8585,6 +8619,8 @@ MonoBehaviour:
   MaxTeamMember: 1
   RedTeamId: 
   BlueTeamId: 
+  RedTeamBlock: {fileID: 0}
+  BlueTeamBlock: {fileID: 0}
 --- !u!1 &666312970
 GameObject:
   m_ObjectHideFlags: 0

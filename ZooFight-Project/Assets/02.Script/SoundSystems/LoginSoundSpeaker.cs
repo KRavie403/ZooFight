@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SoundPool : MonoBehaviour
+public class LoginSoundSpeaker : MonoBehaviour
 {
     public Button[] buttons;
 
@@ -11,7 +12,7 @@ public class SoundPool : MonoBehaviour
 
     private void Start()
     {
-        foreach (var btn in buttons)
+        foreach(var btn in buttons)
         {
             btn.onClick.AddListener(OnSettingsButtonClick);
         }

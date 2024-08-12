@@ -17175,6 +17175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1802326420}
   - component: {fileID: 1802326421}
+  - component: {fileID: 1802326422}
   m_Layer: 0
   m_Name: MainMenuManager
   m_TagString: Untagged
@@ -17216,6 +17217,22 @@ MonoBehaviour:
   _anim: {fileID: 476673650}
   _uiRawImage: {fileID: 476673651}
   timerText: {fileID: 454534631}
+--- !u!114 &1802326422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802326419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8fac74a47f4d03498fee0a10d688c0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons:
+  - {fileID: 186581176}
+  - {fileID: 299237571}
+  - {fileID: 1691792030}
 --- !u!1001 &1819255495
 PrefabInstance:
   m_ObjectHideFlags: 0

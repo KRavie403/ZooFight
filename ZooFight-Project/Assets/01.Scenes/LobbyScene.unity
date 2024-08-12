@@ -29980,6 +29980,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1874088733}
   - component: {fileID: 1874088732}
+  - component: {fileID: 1874088734}
   m_Layer: 0
   m_Name: LobbySceneManager
   m_TagString: Untagged
@@ -30019,6 +30020,46 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1874088734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874088731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8fac74a47f4d03498fee0a10d688c0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons:
+  - {fileID: 1933859760}
+  - {fileID: 1335316274}
+  - {fileID: 1984834416}
+  - {fileID: 115189784}
+  - {fileID: 813630399}
+  - {fileID: 926569333}
+  - {fileID: 1521570405}
+  - {fileID: 129867674}
+  - {fileID: 527552183}
+  - {fileID: 2061135187}
+  - {fileID: 1151286293}
+  - {fileID: 918522133}
+  - {fileID: 1368149973}
+  - {fileID: 2005465779}
+  - {fileID: 1287559615}
+  - {fileID: 138858709}
+  - {fileID: 241137215}
+  - {fileID: 1985489719}
+  - {fileID: 865825299}
+  - {fileID: 1486939210}
+  - {fileID: 606203535}
+  - {fileID: 271088212}
+  - {fileID: 1498456899}
+  - {fileID: 829506375}
+  - {fileID: 613451075}
+  - {fileID: 438693711}
+  - {fileID: 1263155468}
 --- !u!1 &1876664854
 GameObject:
   m_ObjectHideFlags: 0
@@ -38436,7 +38477,8 @@ MonoBehaviour:
   SessionId: 0
   CharacterID: -1
   myTeam: 0
-  MoveSpeed: 0
+  BaseSpeedRate: 0
+  _moveSpeed: 1
   RunSpeedRate: 1
   JumpHeight: 2
   MaxHP: 0
@@ -38447,6 +38489,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   MaxSP: 0
+  SPRecovery: 10
+  isShield: 0
+  UpdateShield:
+    m_PersistentCalls:
+      m_Calls: []
+  MaxShield: 0
   MotionSpeed: 0
   State: 0
   AxisX: 0
@@ -38457,10 +38505,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   grabPoint: {fileID: 0}
+  AttackPoint: {fileID: 0}
+  ItemPoint: {fileID: 0}
   curItems: {fileID: 0}
   IsMoving: 0
   IsRunning: 0
   isJump: 0
+  isKeyReverse: 0
   isGrab: 0
   RecoveryTime: 2
 --- !u!54 &6562615062600056646
@@ -39959,7 +40010,8 @@ MonoBehaviour:
   SessionId: 0
   CharacterID: -1
   myTeam: 0
-  MoveSpeed: 0
+  BaseSpeedRate: 0
+  _moveSpeed: 1
   RunSpeedRate: 1
   JumpHeight: 2
   MaxHP: 0
@@ -39970,6 +40022,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   MaxSP: 0
+  SPRecovery: 10
+  isShield: 0
+  UpdateShield:
+    m_PersistentCalls:
+      m_Calls: []
+  MaxShield: 0
   MotionSpeed: 0
   State: 0
   AxisX: 0
@@ -39980,10 +40038,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   grabPoint: {fileID: 0}
+  AttackPoint: {fileID: 0}
+  ItemPoint: {fileID: 0}
   curItems: {fileID: 0}
   IsMoving: 0
   IsRunning: 0
   isJump: 0
+  isKeyReverse: 0
   isGrab: 0
   RecoveryTime: 2
 --- !u!54 &8114623531230849210
@@ -40528,7 +40589,8 @@ MonoBehaviour:
   SessionId: 0
   CharacterID: -1
   myTeam: 0
-  MoveSpeed: 0
+  BaseSpeedRate: 0
+  _moveSpeed: 1
   RunSpeedRate: 1
   JumpHeight: 2
   MaxHP: 0
@@ -40539,6 +40601,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   MaxSP: 0
+  SPRecovery: 10
+  isShield: 0
+  UpdateShield:
+    m_PersistentCalls:
+      m_Calls: []
+  MaxShield: 0
   MotionSpeed: 0
   State: 0
   AxisX: 0
@@ -40549,10 +40617,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   grabPoint: {fileID: 0}
+  AttackPoint: {fileID: 0}
+  ItemPoint: {fileID: 0}
   curItems: {fileID: 0}
   IsMoving: 0
   IsRunning: 0
   isJump: 0
+  isKeyReverse: 0
   isGrab: 0
   RecoveryTime: 2
 --- !u!54 &8824108822490889469
