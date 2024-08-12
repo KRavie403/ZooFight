@@ -45633,6 +45633,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9303b73de82a6c429b81e8c687e4441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  masterVolumeSlider: {fileID: 53913859}
+  soundEffectVolumeSlider: {fileID: 13912334}
   BGMSource: {fileID: 1695335920}
   SFXSource: {fileID: 1782634048}
   bgm:
