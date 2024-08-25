@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class AudioManager : Singleton<AudioManager>
 {
+
+    public Slider masterVolumeSlider;
+    public Slider soundEffectVolumeSlider;
+
     [Header("---------- Audio Source ----------")]
     [SerializeField] AudioSource BGMSource;
     [SerializeField] AudioSource SFXSource;
@@ -20,6 +25,14 @@ public class AudioManager : Singleton<AudioManager>
     {
         // 초기화 작업, 기본 BGM을 설정하는 등
         PlayBackgroundMusic(SceneManager.GetActiveScene().name);
+
+        // 저장된 볼륨 설정 로드
+        masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        soundEffectVolumeSlider.value = PlayerPrefs.GetFloat("SoundEffectVolume", 1f);
+
+        // 슬라이더 값 변경 시 호출될 메서드 추가
+        masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
+        soundEffectVolumeSlider.onValueChanged.AddListener(SetSoundEffectVolume);
     }
 
     private void OnEnable()
@@ -46,10 +59,11 @@ public class AudioManager : Singleton<AudioManager>
             BGMSource.clip = clip;
             BGMSource.Play();
         }
-        else
+#if DEBUG
         {
-            Debug.LogWarning("BGM clip not found for scene: " + sceneName);
+            Debug.LogWarning("해당 BGM 클립을 찾을 수 없음: " + sceneName);
         }
+#endif
     }
 
     public void PlayUIEffect(int index)
@@ -76,5 +90,22 @@ public class AudioManager : Singleton<AudioManager>
             }
         }
         return null;
+    }
+
+    private void SetMasterVolume(float volume)
+    {
+        // 마스터 볼륨 설정
+        AudioListener.volume = volume;
+        PlayerPrefs.SetFloat("MasterVolume", volume); // 설정 저장
+    }
+
+    private void SetSoundEffectVolume(float volume)
+    {
+        // SFX 볼륨 설정
+        if (SFXSource != null)
+        {
+            SFXSource.volume = volume;
+            PlayerPrefs.SetFloat("SoundEffectVolume", volume); // 설정 저장
+        }
     }
 }

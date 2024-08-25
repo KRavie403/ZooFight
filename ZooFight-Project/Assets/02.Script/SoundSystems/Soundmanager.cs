@@ -60,28 +60,28 @@ public class SoundManager : Singleton<SoundManager>
         // 특정 사운드 스피커의 클론을 생성하는 메소드
         GameObject obj = Instantiate(sound.gameObject, SoundPool.transform);
         SoundSpeaker clone = obj.GetComponent<SoundSpeaker>();
-        SoundPool.AddClone(clone);
+        //SoundPool.AddClone(clone);
         return clone;
     }
 
-    public SoundSpeaker GetClone(SoundSpeaker sound)
-    {
-        // 특정 사운드 스피커의 클론을 반환하는 메소드
-        SoundSpeaker clone = SoundPool.FindClone(sound.myClip);
-        if (clone == null)
-        {
-            clone = CreateClone(sound);
-        }
-        return clone;
-    }
+    //public SoundSpeaker GetClone(SoundSpeaker sound)
+    //{
+    //    // 특정 사운드 스피커의 클론을 반환하는 메소드
+    //    SoundSpeaker clone = SoundPool.FindClone(sound.myClip);
+    //    if (clone == null)
+    //    {
+    //        clone = CreateClone(sound);
+    //    }
+    //    return clone;
+    //}
 
-    public void PlaySound(SoundCode code)
-    {
-        // 사운드 코드를 입력받아 해당 사운드를 재생하는 메소드
-        if (SoundSettings.keys.TryGetValue(code, out SoundSpeaker speaker))
-        {
-            SoundSpeaker clone = GetClone(speaker);
-            clone.SoundPlay();
-        }
-    }
+    //public void PlaySound(SoundCode code)
+    //{
+    //    // 사운드 코드를 입력받아 해당 사운드를 재생하는 메소드
+    //    if (SoundSettings.keys.TryGetValue(code, out SoundSpeaker speaker))
+    //    {
+    //        SoundSpeaker clone = GetClone(speaker);
+    //        clone.SoundPlay();
+    //    }
+    //}
 }

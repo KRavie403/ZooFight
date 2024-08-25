@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEditor.PlayerSettings;
 
 /// <summary>
-/// ¾ÆÀÌÅÛ¸í : ¹Ù³ª³ª
-/// Value 1 ¹Ğ·Á³ª´Â ¼Óµµ
-/// Value 2 ÇÔÁ¤ À¯Áö½Ã°£
-/// Value 3 ¹Ğ·Á³ª´Â °Å¸®
-/// Value 4 Åõ»çÃ¼ ¼Óµµ 
-/// Value 5 ÅõÃ´ »ç°Å¸®
+/// ì•„ì´í…œëª… : ë°”ë‚˜ë‚˜
+/// Value 1 ë°€ë ¤ë‚˜ëŠ” ì†ë„
+/// Value 2 í•¨ì • ìœ ì§€ì‹œê°„
+/// Value 3 ë°€ë ¤ë‚˜ëŠ” ê±°ë¦¬
+/// Value 4 íˆ¬ì‚¬ì²´ ì†ë„ 
+/// Value 5 íˆ¬ì²™ ì‚¬ê±°ë¦¬
 /// </summary>
 
 public class Item_BananaTrap : Items
@@ -37,7 +36,7 @@ public class Item_BananaTrap : Items
     {
         base.Awake();
 
-        // È÷Æ®½ºÄ³³Ê »ı¼º
+        // íˆíŠ¸ìŠ¤ìºë„ˆ ìƒì„±
         if(GetComponent<HitScanner>() != null )
         {
             myHitScanner = GetComponent<HitScanner>();
@@ -45,7 +44,7 @@ public class Item_BananaTrap : Items
         }
         else
         {
-            // ¹Ì½ÇÇà »óÅÂ·Î »ı¼º
+            // ë¯¸ì‹¤í–‰ ìƒíƒœë¡œ ìƒì„±
             myHitScanner = transform.AddComponent<HitScanner>();
             myHitScanner.enabled = false;
         }
@@ -102,9 +101,9 @@ public class Item_BananaTrap : Items
     {
         base.ItemUse();
 
-        // ¾ÆÀÌÅÛ ¹ßµ¿½ÃÀÛ½Ã ÇÊ¿äÇÑ µ¿ÀÛ
+        // ì•„ì´í…œ ë°œë™ì‹œì‘ì‹œ í•„ìš”í•œ ë™ì‘
 
-        // ÄÚ·çÆ¾ÀÇ µ¿ÀÛÀ» º»Ã¼·Î °¡Á®¿À±â
+        // ì½”ë£¨í‹´ì˜ ë™ì‘ì„ ë³¸ì²´ë¡œ ê°€ì ¸ì˜¤ê¸°
         isItemUse = true;
     }
 
@@ -117,14 +116,14 @@ public class Item_BananaTrap : Items
 
     protected override IEnumerator ItemActions()
     {
-        // Á¤º¸°»½Å µ¹¸®±â
+        // ì •ë³´ê°±ì‹  ëŒë¦¬ê¸°
         yield return base.ItemActions();
         transform.SetParent(null);
 
         bool isMoveEnd = false;
 
         //transform.localPosition = Vector3.zero;
-        // Æ¯Á¤ °æ·Î·Î ÀÌµ¿ ½ÃÀÛ
+        // íŠ¹ì • ê²½ë¡œë¡œ ì´ë™ ì‹œì‘
         BattleSystems.Inst.routeMaker.RouteKeys[RouteTypes.Arc].
             GetComponent<IRoute>().RouteStart(transform, dir, Value5, Value4, () =>
             {
@@ -137,10 +136,10 @@ public class Item_BananaTrap : Items
         //myPlayer.SetState()
         float duringTime = 0;
         myHitScanner.SetScanActive(true);
-        // ¹Ù³ª³ª Áö¼Ó½Ã°£µ¿¾È µ¿ÀÛ
+        // ë°”ë‚˜ë‚˜ ì§€ì†ì‹œê°„ë™ì•ˆ ë™ì‘
         while (duringTime < Value2)
         {
-            // ´øÁö´Âµ¿¾È Áö¼Ó½Ã°£ °¨¼Ò X
+            // ë˜ì§€ëŠ”ë™ì•ˆ ì§€ì†ì‹œê°„ ê°ì†Œ X
 
             if (!isMoveEnd)
             {
@@ -148,19 +147,19 @@ public class Item_BananaTrap : Items
                 continue;
             }
             duringTime += Time.deltaTime;
-            // À¯Áö½Ã°£ Ã¼Å©
+            // ìœ ì§€ì‹œê°„ ì²´í¬
 
 
-            // µ¿ÀÛ°¨Áö½Ã È¿°úÀû¿ë ¹× ÀÌÆåÆ® , »ç¿îµå Ãâ·Â
+            // ë™ì‘ê°ì§€ì‹œ íš¨ê³¼ì ìš© ë° ì´í™íŠ¸ , ì‚¬ìš´ë“œ ì¶œë ¥
             if(Targets.Count != 0)
             {
-                // Å¸°ÙÀÌ ÀâÈ÷¸é µ¿ÀÛ½ÃÅ°°í ÅÍÆ®¸²
+                // íƒ€ê²Ÿì´ ì¡íˆë©´ ë™ì‘ì‹œí‚¤ê³  í„°íŠ¸ë¦¼
                 foreach (var target in Targets)
                 {
                     if(target.GetComponent<PlayerController>() != null)
                     {
-                        // ´ë»óÀÌ ÀÌµ¿ÁßÀÌ¸é ÁøÇàÇÏ´ø ¹æÇâÀ¸·Î ÀÏÁ¤½Ã°£ ¹Ì²ô·¯Áü
-                        // ´ë»óÀÌ Á¤ÁöÁßÀÏ°æ¿ì ·£´ı¹æÇâÀ¸·Î ¹Ì²ô·¯Áü
+                        // ëŒ€ìƒì´ ì´ë™ì¤‘ì´ë©´ ì§„í–‰í•˜ë˜ ë°©í–¥ìœ¼ë¡œ ì¼ì •ì‹œê°„ ë¯¸ë„ëŸ¬ì§
+                        // ëŒ€ìƒì´ ì •ì§€ì¤‘ì¼ê²½ìš° ëœë¤ë°©í–¥ìœ¼ë¡œ ë¯¸ë„ëŸ¬ì§
                         if(target.GetComponent<PlayerController>().GetIsmoving())
                         {
                             target.GetComponent<PlayerController>().Slide(target.transform.forward,Value3,Value1);
@@ -181,7 +180,7 @@ public class Item_BananaTrap : Items
                 duringTime += Value2;
             }
 
-            // ¹ßµ¿½Ã ¿ÀºêÁ§Æ® ÀÛµ¿ ºÒ´ÉÃ³¸®
+            // ë°œë™ì‹œ ì˜¤ë¸Œì íŠ¸ ì‘ë™ ë¶ˆëŠ¥ì²˜ë¦¬
 
             if (isItemUse)
             {
@@ -196,7 +195,7 @@ public class Item_BananaTrap : Items
         }
         Debug.Log($"{this} ActiveEnd");
 
-        // »ç¿ëÀÌ ³¡³ª¸é ¿ÀºêÁ§Æ® ¹İÈ¯
+        // ì‚¬ìš©ì´ ëë‚˜ë©´ ì˜¤ë¸Œì íŠ¸ ë°˜í™˜
         ReturnItem();
 
     }
