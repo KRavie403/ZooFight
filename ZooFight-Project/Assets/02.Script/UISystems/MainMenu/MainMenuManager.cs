@@ -43,8 +43,11 @@ public class MainMenuManager : MonoBehaviour
         {
             SettingsController.Inst.ClickSetting();
         }
-        #if DEBUG
-        Debug.LogWarning("SettingsController 인스턴스를 찾을 수 없습니다.");
+#if DEBUG
+        else
+        {
+            Debug.LogWarning("SettingsController 인스턴스를 찾을 수 없습니다.");
+        }
 #endif
     }
 
