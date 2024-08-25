@@ -13,7 +13,8 @@ public enum KeyAction
     Forward=0,Backward,Left,Right,
     Jump,Attack,Selectskill,Usingskill,Grab,
     Menu,Run,
-    ItemCreate,    
+    ItemCreate,
+    // 맵열기 = M
     KeyCount
 }
 
@@ -80,6 +81,9 @@ public class KeyInputMapper : MonoBehaviour
 
     }
 
-
+    public void TargetKeySetting(KeyAction KeyType,KeyCode keyCode) 
+    {
+        KeySetting.keys[KeyType] = keyCode;
+    }
 
 }

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3609101216410058071}
   m_Layer: 0
-  m_Name: New Prefab 9
+  m_Name: Item_SpiderBomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -8,7 +8,7 @@ using UnityEngine.Events;
 public class PlayerController : MovementController, IHitBox
 {
 
-    #region ÂüÁ¶ º¯¼ö ¸ñ·Ï
+    #region ì°¸ì¡° ë³€ìˆ˜ ëª©ë¡
     public enum pState
     {
         Create = 0,
@@ -32,7 +32,7 @@ public class PlayerController : MovementController, IHitBox
         StateCount
     }
 
-    // Ä³¸¯ÅÍµ¿ÀÛ¿¡ ÇÊ¿äÇÑ ÇÔ¼öµé ¸ñ·Ï
+    // ìºë¦­í„°ë™ì‘ì— í•„ìš”í•œ í•¨ìˆ˜ë“¤ ëª©ë¡
     public enum pFunc
     {
         Move,
@@ -51,9 +51,9 @@ public class PlayerController : MovementController, IHitBox
     private pState State;
     protected StateMachine PlayerSM;
 
-    // ±âº» ¸ğµç »óÅÂ¸ñ·Ï
+    // ê¸°ë³¸ ëª¨ë“  ìƒíƒœëª©ë¡
     public Dictionary<pState, BaseState> p_States = new Dictionary<pState, BaseState>();
-    // ½´ÆÛ¾Æ¸Ó »óÅÂ ¸ñ·Ï
+    // ìŠˆí¼ì•„ë¨¸ ìƒíƒœ ëª©ë¡
     public Dictionary<pState, BaseState> S_States = new Dictionary<pState, BaseState>();
 
     public bool IsDown => PlayerSM.CurrentState != p_States[pState.Down];
@@ -82,9 +82,12 @@ public class PlayerController : MovementController, IHitBox
     bool IsRunning = false;
     [SerializeField]
     bool isJump = false;
+    [SerializeField]
+    bool isAbleMove = false;
+    public bool isCrashed = false;
     public bool isKeyReverse = false;
     public bool isGrab = false;
-    // Ä³¸¯ÅÍ À§Ä¡ °ËÁõ¿©ºÎ
+    // ìºë¦­í„° ìœ„ì¹˜ ê²€ì¦ì—¬ë¶€
     bool isDenial = false;
     Vector2 acceleration = Vector2.zero;
 
@@ -113,7 +116,7 @@ public class PlayerController : MovementController, IHitBox
     // Start is called before the first frame update
     protected override void Start()
     {
-        // ³ªÁß¿¡´Â ÆĞÅ¶ ¹­´Â°÷¿¡ ´øÁö°í ¹­ÀÎ ÆĞÅ¶À» ÁÖ±âÀûÀ¸·Î Àü¼ÛÇÏ±â
+        // ë‚˜ì¤‘ì—ëŠ” íŒ¨í‚· ë¬¶ëŠ”ê³³ì— ë˜ì§€ê³  ë¬¶ì¸ íŒ¨í‚·ì„ ì£¼ê¸°ì ìœ¼ë¡œ ì „ì†¡í•˜ê¸°
         //Gamemanager.OnPollingRate += () => ;
         PlayerSM = new StateMachine();
 
@@ -137,7 +140,7 @@ public class PlayerController : MovementController, IHitBox
         p_States.Add(pState.S_ItemReady, new Character_SItemReady(this, PlayerSM));
         p_States.Add(pState.S_ItemUse,new Character_SItemUse(this, PlayerSM));
 
-        // Å×½ºÆ®
+        // í…ŒìŠ¤íŠ¸
         S_States.Add(pState.S_Idle, new Character_SIdle(this, PlayerSM));
         S_States.Add(pState.S_Move, new Character_SMove(this, PlayerSM));
         S_States.Add(pState.S_Jump, new Character_Jump(this, PlayerSM));
@@ -189,10 +192,10 @@ public class PlayerController : MovementController, IHitBox
         }
     }
 
-    #region Á¤º¸ Æú¸µ
+    #region ì •ë³´ í´ë§
 
 
-    // ÇöÀç ÀÌ Ä³¸¯ÅÍÀÇ »óÅÂÁ¤º¸ Àü¼Û
+    // í˜„ì¬ ì´ ìºë¦­í„°ì˜ ìƒíƒœì •ë³´ ì „ì†¡
     public void StatusPolling()
     {
 
@@ -203,7 +206,7 @@ public class PlayerController : MovementController, IHitBox
 
     }
 
-    // ÇÃ·¹ÀÌ¾î Á¤º¸ÁÖÀÔ - ¼¼¼Çid , ÆÀ , ÇÃ·¹ÀÌ¾î id 
+    // í”Œë ˆì´ì–´ ì •ë³´ì£¼ì… - ì„¸ì…˜id , íŒ€ , í”Œë ˆì´ì–´ id 
     public void CharacterInitalize(HitScanner.Team PlayerTeam,int SessionID,int PlayerID)
     {
         myTeam = PlayerTeam;
@@ -227,9 +230,9 @@ public class PlayerController : MovementController, IHitBox
 
     #endregion
 
-    #region Ä³¸¯ÅÍ ¹«ºê¸ÕÆ®
+    #region ìºë¦­í„° ë¬´ë¸Œë¨¼íŠ¸
 
-    #region Ä³¸¯ÅÍ ÀÌµ¿
+    #region ìºë¦­í„° ì´ë™
 
     public void SetIsMoving(bool isMoving)
     {
@@ -307,7 +310,7 @@ public class PlayerController : MovementController, IHitBox
     {
 
 
-        // ÀÔ·Â ÀÌµ¿°ªÀÌ 0ÀÏ¶§ ¾Æ¹«°Íµµ¾ÈÇÏ±â
+        // ì…ë ¥ ì´ë™ê°’ì´ 0ì¼ë•Œ ì•„ë¬´ê²ƒë„ì•ˆí•˜ê¸°
         if (AxisX == 0 && AxisY == 0)
         {
             myAnim.SetBool("IsMoving", false);
@@ -321,7 +324,7 @@ public class PlayerController : MovementController, IHitBox
 
         float Speed = IsRunning ? MoveSpeed * RunSpeedRate : MoveSpeed;
 
-        // ÇÁ·ÎÅäÄİ Àü¼Û¿ë º¤ÅÍ
+        // í”„ë¡œí† ì½œ ì „ì†¡ìš© ë²¡í„°
         Vector3 Dir = MakeDir(AxisX, AxisY);
         //transform.Translate(MoveSpeed * Time.deltaTime * Direction, Space.Self);
         transform.position += MakeDir(AxisX, AxisY) * Speed * Time.deltaTime;
@@ -394,10 +397,10 @@ public class PlayerController : MovementController, IHitBox
         e?.Invoke();
     }
 
-    // ÆĞÅ¶ µ¥ÀÌÅÍ¿ë ÀÌµ¿ ÇÔ¼ö -- ¸ñÇ¥ ÁÂÇ¥¸¦ ÀÎÀÚ·Î¹ŞÀ½
+    // íŒ¨í‚· ë°ì´í„°ìš© ì´ë™ í•¨ìˆ˜ -- ëª©í‘œ ì¢Œí‘œë¥¼ ì¸ìë¡œë°›ìŒ
     public void MoveToPos(Vector3 dir)
     {
-        // ÇöÀç À§Ä¡ ±×´ë·Î ÀÌµ¿ÇÏ¸é ¹Ìµ¿ÀÛ
+        // í˜„ì¬ ìœ„ì¹˜ ê·¸ëŒ€ë¡œ ì´ë™í•˜ë©´ ë¯¸ë™ì‘
         if (dir == transform.position) return;
 
         Vector3 Axis =  Quaternion.Euler(-transform.rotation.eulerAngles) * dir;
@@ -407,7 +410,7 @@ public class PlayerController : MovementController, IHitBox
         float curSpeed = Mathf.Sqrt(Axis.x * Axis.x + Axis.z * Axis.z);
 
         transform.position = dir;
-        // 30 Æ½ ÀÌ»óÀÇ°İÂ÷°¡ ³ª¸é ÀÌµ¿¸ğ¼Ç¾øÀÌ ÀÌµ¿½ÃÅ°±â
+        // 30 í‹± ì´ìƒì˜ê²©ì°¨ê°€ ë‚˜ë©´ ì´ë™ëª¨ì…˜ì—†ì´ ì´ë™ì‹œí‚¤ê¸°
         if (curSpeed > 30 * Speed / Gamemanager.Inst.PollingRate) return;
 
         myAnim.SetFloat("MoveAxisX", Mathf.Clamp(Axis.x * MotionSpeed, -1.0f, 1.0f));
@@ -437,7 +440,7 @@ public class PlayerController : MovementController, IHitBox
 
     #endregion
 
-    #region Á¡ÇÁ
+    #region íŠ¹ìˆ˜ì´ë™
 
     public void Jump()
     {
@@ -463,10 +466,45 @@ public class PlayerController : MovementController, IHitBox
         return isJump;
     }
 
+    // ì…ë ¥ë°›ì€ íƒ€ê²Ÿì„ ëŒ€ìƒìœ¼ë¡œ ì…ë ¥ë°›ì€ ê±°ë¦¬ë§Œí¼ ë°€ë ¤ë‚˜ê¸°
+    public void KnockBack(Transform target, float dist, float Speed, UnityAction e = null)
+    {
+
+        StartCoroutine(KnockBackStart(target, dist, Speed, e));
+    }
+
+    public IEnumerator KnockBackStart(Transform target, float dist, float Speed, UnityAction e = null)
+    {
+
+        isDenial = true;
+
+        Vector3 dir = Vector3.Normalize(transform.position - target.position); 
+        
+        Vector3 StartPos = transform.position;
+
+        float duringDist = 0;
+
+        while (duringDist < dist)
+        {
+            duringDist += Speed * Time.deltaTime;
+
+            transform.position += StartPos + dir * Speed * Time.deltaTime;
+
+
+            // ë¬¼ì²´ ë˜ëŠ” ë²½ì— ì¶©ëŒì‹œ ì¤‘ë‹¨
+            if (isCrashed) break;
+
+
+            yield return null;
+        }
+
+
+        isDenial = false;   
+    }
 
     #endregion
 
-    #region ºí·°Àâ±â
+    #region ë¸”ëŸ­ì¡ê¸°
 
     public void Grab()
     {
@@ -498,9 +536,9 @@ public class PlayerController : MovementController, IHitBox
 
     #endregion
 
-    #region ¾ÆÀÌÅÛ
+    #region ì•„ì´í…œ
 
-    // ¾ÆÀÌÅÛ ²¨³»±â or Áı¾î³Ö±â
+    // ì•„ì´í…œ êº¼ë‚´ê¸° or ì§‘ì–´ë„£ê¸°
     public void ItemRelease()
     {
 
@@ -516,7 +554,7 @@ public class PlayerController : MovementController, IHitBox
 
     }
 
-    // µ¿ÀÛ ºÒ°¡´É»óÅÂ = ¾ÆÀÌÅÛ »ç¿ëÁß , »óÅÂÀÌ»ó, ±â»ó, Á¡ÇÁ
+    // ë™ì‘ ë¶ˆê°€ëŠ¥ìƒíƒœ = ì•„ì´í…œ ì‚¬ìš©ì¤‘ , ìƒíƒœì´ìƒ, ê¸°ìƒ, ì í”„
     public void ItemReady()
     {
         if (curItems == null) return;
@@ -536,7 +574,7 @@ public class PlayerController : MovementController, IHitBox
         }
     }
 
-    // ÇöÀç º¸À¯ÁßÀÎ ¾ÆÀÌÅÛ »ç¿ë
+    // í˜„ì¬ ë³´ìœ ì¤‘ì¸ ì•„ì´í…œ ì‚¬ìš©
     public void ItemUse()
     {
         if(curItems != null)
@@ -558,7 +596,7 @@ public class PlayerController : MovementController, IHitBox
         }
     }
 
-    // ¾ÆÀÌÅÛ Áö±Ş¹Ş±â
+    // ì•„ì´í…œ ì§€ê¸‰ë°›ê¸°
     public void GetItem()
     {
 
@@ -576,18 +614,23 @@ public class PlayerController : MovementController, IHitBox
 
     #endregion
 
-    #region ÆÇÁ¤°ü·Ã
+    #region íŒì •ê´€ë ¨
     [SerializeField] float RecoveryTime = 2.0f;
 
-    // Å¸°İ ÆÇÁ¤ ¹ß»ı
+    // íƒ€ê²© íŒì • ë°œìƒ
     void IHitBox.HitAction(Component comp)
     {
         //comp.GetComponent<myHitScanner>().MyDamage
+        //switch (comp.GetComponent<>)
+        //{
+        //    default:
+        //        break;
+        //}
 
         GetDamaged(comp.GetComponent<HitScanner>().MyDamage);
     }
 
-    // ´ÜÅ¸ µ¥¹ÌÁö¸¦ ¹Ş´Â ÇÔ¼ö
+    // ë‹¨íƒ€ ë°ë¯¸ì§€ë¥¼ ë°›ëŠ” í•¨ìˆ˜
     public void GetDamaged(float Damage)
     {
         Debug.Log("Damaged");
@@ -609,7 +652,7 @@ public class PlayerController : MovementController, IHitBox
 
     }
 
-    // ½Çµå°¡ ¾øÀ»¶§ ½ÇµåÈ¹µæ
+    // ì‹¤ë“œê°€ ì—†ì„ë•Œ ì‹¤ë“œíšë“
     public void GetShield(float ShieldValue)
     {
         if (ShieldValue < 0) return;
@@ -628,15 +671,15 @@ public class PlayerController : MovementController, IHitBox
     public IEnumerator StaminaWork()
     {
 
-        // Ç×»ó µ¿ÀÛÇÏ°Ô ÇÏ±â
+        // í•­ìƒ ë™ì‘í•˜ê²Œ í•˜ê¸°
         while(true)
         {
-            // ½ºÅ× °¨¼Ò
+            // ìŠ¤í…Œ ê°ì†Œ
             if (IsRunning)
             {
                 CurSP -= Time.deltaTime * SPRecovery;
             }
-            // ½ºÅ× Áõ°¡
+            // ìŠ¤í…Œ ì¦ê°€
             else
             {
                 CurSP += Time.deltaTime * SPRecovery;
@@ -645,7 +688,7 @@ public class PlayerController : MovementController, IHitBox
         }
     }
 
-    // »óÅÂÀÌ»óÀ» ¹Ş´Â ÇÔ¼ö
+    // ìƒíƒœì´ìƒì„ ë°›ëŠ” í•¨ìˆ˜
     public void GetCrowdControl(StatusCode code, float Time, float Power=0)
     {
 
@@ -703,7 +746,7 @@ public class PlayerController : MovementController, IHitBox
         PlayerSM.ChangeState(p_States[pState.Idle]);
     }
 
-    // °ø°İ ÆÇÁ¤ ÇÔ¼ö
+    // ê³µê²© íŒì • í•¨ìˆ˜
     public void PlayerAttack()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, 0.3f, groundMask);
@@ -718,7 +761,7 @@ public class PlayerController : MovementController, IHitBox
         }
     }
 
-    // ÇÃ·¹ÀÌ¾îÀÇ Å©±â¸¦ ÀÔ·Â¹ŞÀº »çÀÌÁî·Î º¯°æ, º¯°æ¿Ï·áÈÄ ÀÔ·Â ¹ŞÀº ¸í·ÉÀÌ ÀÖ´Ù¸é Ã³¸®
+    // í”Œë ˆì´ì–´ì˜ í¬ê¸°ë¥¼ ì…ë ¥ë°›ì€ ì‚¬ì´ì¦ˆë¡œ ë³€ê²½, ë³€ê²½ì™„ë£Œí›„ ì…ë ¥ ë°›ì€ ëª…ë ¹ì´ ìˆë‹¤ë©´ ì²˜ë¦¬
     public void PlayerSizeChange(float ChangeRate, UnityAction e = null)
     {
         // 
@@ -728,7 +771,7 @@ public class PlayerController : MovementController, IHitBox
     }
 
 
-    // ÇØ¸Ó °ø°İ½Ã ¹ßµ¿
+    // í•´ë¨¸ ê³µê²©ì‹œ ë°œë™
     public void HammerSmash(float Time)
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, 0.3f, groundMask);
@@ -746,13 +789,13 @@ public class PlayerController : MovementController, IHitBox
 
     }
 
-    // ½Çµå°¡ ÆÄ±« µÉ °æ¿ì ¹ßµ¿ÇÏ´Â ÇÔ¼ö = ±âº»°ª true
+    // ì‹¤ë“œê°€ íŒŒê´´ ë  ê²½ìš° ë°œë™í•˜ëŠ” í•¨ìˆ˜ = ê¸°ë³¸ê°’ true
     public void ShieldCrashed(bool isCrash = true)
     {
-        // ½Çµå Á¾·á & ½ºÅÏ
+        // ì‹¤ë“œ ì¢…ë£Œ & ìŠ¤í„´
         isShield = false;
 
-        // Áö¼Ó½Ã°£ Á¾·á·Î ÀÎÇÑ ¼Ò¸ê½Ã
+        // ì§€ì†ì‹œê°„ ì¢…ë£Œë¡œ ì¸í•œ ì†Œë©¸ì‹œ
         if (!isCrash)
         {
             CurShield = 0.0f;
@@ -805,13 +848,13 @@ public class PlayerController : MovementController, IHitBox
 
     #endregion
 
-    #region µ¥ÀÌÅÍÀÎÃâ&¼öÁ¤
+    #region ë°ì´í„°ì¸ì¶œ&ìˆ˜ì •
 
     public HitScanner.Team GetEnemyTeam()
     {
         return (HitScanner.Team)((int)myTeam * -1);
     }
-    // isSet True = ÇØ´ç°ªÀ¸·Î ¼³Á¤ , False = ÇØ´ç°ª¸¸Å­ Áõ°¡
+    // isSet True = í•´ë‹¹ê°’ìœ¼ë¡œ ì„¤ì • , False = í•´ë‹¹ê°’ë§Œí¼ ì¦ê°€
     public void SetHp(float Value,bool isSet)
     {
         if (Value > MaxHP)
@@ -831,7 +874,7 @@ public class PlayerController : MovementController, IHitBox
 
     #endregion
 
-    #region ½ÂÆĞµ¿ÀÛ
+    #region ìŠ¹íŒ¨ë™ì‘
 
     public void WinAction()
     {

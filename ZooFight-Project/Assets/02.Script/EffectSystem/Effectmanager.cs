@@ -42,7 +42,7 @@ public class Effectmanager : Singleton<Effectmanager>
     public List<GameObject> effectObj;
     public List<GameObject> activeEffectObjects;    // 실행된 오브젝트
 
-    private void Awake()
+    protected override void Awake()
     {
         effectPlayers = new List<EffectPlayer>();  // 초기화
         for (int i = 0; i < effectObj.Count; i++)

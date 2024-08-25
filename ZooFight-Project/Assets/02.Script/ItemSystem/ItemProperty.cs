@@ -36,6 +36,7 @@ public class ItemProperty : MonoBehaviour
     protected List<GameObject> _targets = new();
     public List<GameObject> Targets = new();
 
+
     public bool isTarget = false;
 
 

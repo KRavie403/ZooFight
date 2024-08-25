@@ -50,6 +50,8 @@ public class Item_StaminaDrink : Items
 
         float duringTime = 0;
 
+
+
         while (duringTime < Value2)
         {
             duringTime += Time.deltaTime;
@@ -57,7 +59,11 @@ public class Item_StaminaDrink : Items
             myPlayer.CurSP += Time.deltaTime * (Value1 / Value2);
 
             yield return null;
+
         }
+
+
+
     }
 
 

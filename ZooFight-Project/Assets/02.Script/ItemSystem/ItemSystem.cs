@@ -5,46 +5,46 @@ using UnityEngine.Events;
 
 public enum ItemCode
 {
-    // 0   ~  99 Àü¹æ¹ß»çÇü
+    // 0   ~  99 ì „ë°©ë°œì‚¬í˜•
     Bomb = 0,
     BananaTrap,
 
-    // 100 ~ 199 ÀÚÃ¼¹öÇÁÇü
+    // 100 ~ 199 ìì²´ë²„í”„í˜•
     GuardDrink = 100,
     PowerDrink,
 
 
-    // 200 ~ 299 Àû´ëÀÛ¿ëÇü
+    // 200 ~ 299 ì ëŒ€ì‘ìš©í˜•
     BlockChangeScroll = 200,
     CurseScroll,
     SpiderBomb,
     InkBomb,
 
 
-    // 300 ~ 399 Âø¿ëÀåºñÇü
+    // 300 ~ 399 ì°©ìš©ì¥ë¹„í˜•
     ToyHammer = 300,
 
 
 }
 
-// »óÅÂÀÌ»ó °­µµ°¡ ³ôÀ»¼ö·Ï & µî±ŞÀÌ ³ôÀ»¼ö·Ï ³ôÀº¼ıÀÚ
+// ìƒíƒœì´ìƒ ê°•ë„ê°€ ë†’ì„ìˆ˜ë¡ & ë“±ê¸‰ì´ ë†’ì„ìˆ˜ë¡ ë†’ì€ìˆ«ì
 public enum StatusCode
 {
-    // 0 = ±âº»»óÅÂ 1 ~ 9 ÀÌµ¿¹æÇØ°è¿­
+    // 0 = ê¸°ë³¸ìƒíƒœ 1 ~ 9 ì´ë™ë°©í•´ê³„ì—´
     Normal = 0,
-    Slow,       // ÀÌµ¿¼Óµµ °¨¼Ò
-    //Minimal,    // »çÀÌÁî °¨¼Ò (ÀÌ¼Ó,°ø¼Ó,Á¡ÇÁ·Â °¨¼Ò)
-    //Cripple,    // °ø°İ¼Óµµ °¨¼Ò
-    // 10 ~ 19  ÇÏ±Ş »óÅÂ ÀÌ»ó
-    Blind = 10, // ½Ã¾ß °¨¼Ò
-    Bind,       // ¼Ó¹Ú
-    //Weak,       // ºí·° Àâ±â ºÒ°¡
-    //Silence,    // ¾ÆÀÌÅÛ »ç¿ë ºÒ°¡
-    // 20 ~ 29  Áß±Ş »óÅÂ ÀÌ»ó
-    Stun,       // ±âÀı 
+    Slow,       // ì´ë™ì†ë„ ê°ì†Œ
+    //Minimal,    // ì‚¬ì´ì¦ˆ ê°ì†Œ (ì´ì†,ê³µì†,ì í”„ë ¥ ê°ì†Œ)
+    //Cripple,    // ê³µê²©ì†ë„ ê°ì†Œ
+    // 10 ~ 19  í•˜ê¸‰ ìƒíƒœ ì´ìƒ
+    Blind = 10, // ì‹œì•¼ ê°ì†Œ
+    Bind,       // ì†ë°•
+    //Weak,       // ë¸”ëŸ­ ì¡ê¸° ë¶ˆê°€
+    //Silence,    // ì•„ì´í…œ ì‚¬ìš© ë¶ˆê°€
+    // 20 ~ 29  ì¤‘ê¸‰ ìƒíƒœ ì´ìƒ
+    Stun,       // ê¸°ì ˆ 
 
 
-    // 30 ~ 39  »ó±Ş »óÅÂ ÀÌ»ó
+    // 30 ~ 39  ìƒê¸‰ ìƒíƒœ ì´ìƒ
     AirBone
 }
 
@@ -57,11 +57,11 @@ public class ItemSystem : Singleton<ItemSystem>
 
 
     public Dictionary<ItemCode, Items> ItemKeys = new Dictionary<ItemCode, Items>();
-    // Á¤¸®¿¹Á¤
+    // ì •ë¦¬ì˜ˆì •
     public List<GameObject> ItemList = new List<GameObject>();
 
 
-    // ¾ÆÀÌÅÛ ³»ºÎÁ¤º¸ ¿øÇü
+    // ì•„ì´í…œ ë‚´ë¶€ì •ë³´ ì›í˜•
     public List<Items> ItemBase = new List<Items>();
 
 
@@ -101,6 +101,7 @@ public class ItemSystem : Singleton<ItemSystem>
 
     public void AddRequest(PlayerController player)
     {
+
     }
     public void ResetRequest()
     {
@@ -114,13 +115,13 @@ public class ItemSystem : Singleton<ItemSystem>
 
     public Items RandomItemSelect()
     {
-        // Å×½ºÆ®¿ë °íÁ¤Ãâ·Â
-        return ItemBase[0];// »èÁ¦¿¹Á¤
+        // í…ŒìŠ¤íŠ¸ìš© ê³ ì •ì¶œë ¥
+        return ItemBase[1];// ì‚­ì œì˜ˆì •
         return ItemBase[Random.Range(0, ItemList.Count)];
 
     }
 
-    // ·£´ı ¾ÆÀÌÅÛÀ» ¿ÀºêÁ§Æ® Ç®¿¡¼­ °¡Á®¿Í¼­ ÀÔ·Â¹ŞÀº Ä³¸¯ÅÍ¿¡°Ô ³Ö¾îÁÖ±â
+    // ëœë¤ ì•„ì´í…œì„ ì˜¤ë¸Œì íŠ¸ í’€ì—ì„œ ê°€ì ¸ì™€ì„œ ì…ë ¥ë°›ì€ ìºë¦­í„°ì—ê²Œ ë„£ì–´ì£¼ê¸°
     public Items GiveItem(PlayerController player,Items item)
     {
         if (player.curItems != null) return null;

@@ -3,7 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Å¸°İÀ» ¹Ş´Â ´ë»óÀÌ °¡Áö°íÀÖ´Â ÀÎÅÍÆäÀÌ½º
+public enum EntityType
+{
+    Player,
+    Block,
+    Wall,
+    Ground,
+    TypeCount
+}
+
+// íƒ€ê²©ì„ ë°›ëŠ” ëŒ€ìƒì´ ê°€ì§€ê³ ìˆëŠ” ì¸í„°í˜ì´ìŠ¤
 interface IHitBox 
 {
     Component myHitBox 
@@ -16,23 +25,25 @@ interface IHitBox
         get; 
     }
 
-    // È÷Æ®¹Ú½º¸¦ °¡Áø ¿ÀºêÁ§Æ®°¡ Å¸°İÆÇÁ¤ÀÌ ³µÀ»¶§ ÇØ´ç ÄÄÆ÷³ÍÆ® Àü´Ş
+    // íˆíŠ¸ë°•ìŠ¤ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ê°€ íƒ€ê²©íŒì •ì´ ë‚¬ì„ë•Œ í•´ë‹¹ ì»´í¬ë„ŒíŠ¸ ì „ë‹¬
     public void HitAction(Component comp);
+
+
 
 }
 
-// Å¸°İÀ» ÁÖ´Â °´Ã¤°¡ °¡Áö°í ÀÕ´Â Å¬·¡½º
+// íƒ€ê²©ì„ ì£¼ëŠ” ê°ì±„ê°€ ê°€ì§€ê³  ì‡ëŠ” í´ë˜ìŠ¤
 public class HitScanner : MonoBehaviour
 {
     public enum Team { RedTeam = -1,NotSetting,BlueTeam,AllTarget}
 
-    // Å¸°İ ´ë»ó
+    // íƒ€ê²© ëŒ€ìƒ
     Team targetTeam = Team.NotSetting;
 
-    // Ãæµ¹ °¡´É ¿ÀºêÁ§Æ® ·¹ÀÌ¾î
+    // ì¶©ëŒ ê°€ëŠ¥ ì˜¤ë¸Œì íŠ¸ ë ˆì´ì–´
     public LayerMask hitMask;
 
-    // »ç¿ëÀÚÀÇ ÄÄÆ÷³ÍÆ®
+    // ì‚¬ìš©ìì˜ ì»´í¬ë„ŒíŠ¸
     public Component UserComponent;
 
 
@@ -42,7 +53,7 @@ public class HitScanner : MonoBehaviour
     bool isActive = false;
     float ScanRange = 0.2f;
 
-    // µ¥¹ÌÁö°ª
+    // ë°ë¯¸ì§€ê°’
     public float MyDamage = 0.0f ;
 
     public void SetMyTeam(Team team)
@@ -70,7 +81,7 @@ public class HitScanner : MonoBehaviour
 
     }
 
-    // »ç¿ë °´Ã¼(¾ÆÀÌÅÛ or Åõ»çÃ¼? or ´Ù¸¥ ¹«¾ğ°¡) ¿Í ´ë»ó ÆÀ ÁÖÀÔ
+    // ì‚¬ìš© ê°ì²´(ì•„ì´í…œ or íˆ¬ì‚¬ì²´? or ë‹¤ë¥¸ ë¬´ì–¸ê°€) ì™€ ëŒ€ìƒ íŒ€ ì£¼ì…
     public void Initiate(Component comp,Team TargetTeam)
     {
         if(comp.GetComponent<Component>() != null)
@@ -92,11 +103,11 @@ public class HitScanner : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // »ç¿ë ½ÃÀÛ½Ã
+        // ì‚¬ìš© ì‹œì‘ì‹œ
         if(isActive)
         {
             Debug.Log("HitScanStart");
-            // ´ë»óÀÇ È÷Æ®¹Ú½º°¡ ¾ø´Ù¸é Á¾·á
+            // ëŒ€ìƒì˜ íˆíŠ¸ë°•ìŠ¤ê°€ ì—†ë‹¤ë©´ ì¢…ë£Œ
             if (other.gameObject.GetComponent<IHitBox>() == null) return;
             else
             {
@@ -140,7 +151,7 @@ public class HitScanner : MonoBehaviour
                 }
 
             }
-            // ½ºÄµÇÏ±â
+            // ìŠ¤ìº”í•˜ê¸°
             //Scan(ScanRange);
 
             //Targets.Add(other.gameObject);
@@ -178,7 +189,7 @@ public class HitScanner : MonoBehaviour
     }
 
 
-    // Å½»ö ÁöÁ¤ ´ë»óÀ» Å½»ö
+    // íƒìƒ‰ ì§€ì • ëŒ€ìƒì„ íƒìƒ‰
     public void Scan(float Range)
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, Range);
