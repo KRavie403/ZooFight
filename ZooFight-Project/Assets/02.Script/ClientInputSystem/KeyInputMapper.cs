@@ -14,7 +14,7 @@ public enum KeyAction
     Jump,Attack,Selectskill,Usingskill,Grab,
     Menu,Run,
     ItemCreate,
-    // ¸Ê¿­±â = M
+    // ë§µì—´ê¸° = M
     KeyCount
 }
 
@@ -81,6 +81,9 @@ public class KeyInputMapper : MonoBehaviour
 
     }
 
-
+    public void TargetKeySetting(KeyAction KeyType,KeyCode keyCode) 
+    {
+        KeySetting.keys[KeyType] = keyCode;
+    }
 
 }

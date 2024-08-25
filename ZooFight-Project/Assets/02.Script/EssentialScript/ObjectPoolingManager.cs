@@ -7,9 +7,9 @@ public struct PoolObjectData
 {
     public GameObject prefab;
 
-    [Tooltip("poolCount´Â ÃÖ¼Ò 1°³ ÀÌ»ó ¼³Á¤")]
+    [Tooltip("poolCountëŠ” ìµœì†Œ 1ê°œ ì´ìƒ ì„¤ì •")]
     public int poolCount;
-    [Header("ÇØ´ç ¿ÀºêÁ§Æ® ¼³¸í")]
+    [Header("í•´ë‹¹ ì˜¤ë¸Œì íŠ¸ ì„¤ëª…")]
     public string explan;
 }
 
@@ -24,8 +24,11 @@ public class ObjectPoolingManager : MonoBehaviour
     [SerializeField] private List<PoolObjectData> ObjectPoolList = new List<PoolObjectData>();
     [SerializeField] private List<PoolObjectData> npcList= new List<PoolObjectData>();
 
-    private Dictionary<string, Transform> poolParentDic = new Dictionary<string, Transform>();                  // °¢°¢ Ç®¸µµéÀÇ ºÎ¸ğ
-    private Dictionary<string, PoolObjectData> instantiateObject = new Dictionary<string, PoolObjectData>();    // Ç®¸µÀ¸·Î »ı¼ºµÈ ¿ÀºêÁ§Æ®
+    [SerializeField] private List<PoolObjectData> EffectPools = new List<PoolObjectData>();
+
+
+    private Dictionary<string, Transform> poolParentDic = new Dictionary<string, Transform>();                  // ê°ê° í’€ë§ë“¤ì˜ ë¶€ëª¨
+    private Dictionary<string, PoolObjectData> instantiateObject = new Dictionary<string, PoolObjectData>();    // í’€ë§ìœ¼ë¡œ ìƒì„±ëœ ì˜¤ë¸Œì íŠ¸
 
     private void Awake()
     {
@@ -40,15 +43,23 @@ public class ObjectPoolingManager : MonoBehaviour
         }
         else
         {
-            Destroy(this.gameObject);   // ¿ÀºêÁ§Æ® Ç®¸µ Áßº¹ ¹æÁö
+            Destroy(this.gameObject);   // ì˜¤ë¸Œì íŠ¸ í’€ë§ ì¤‘ë³µ ë°©ì§€
         }
 
         MakeDir("Using");
-        Pool(playerPreset);   // ÃÊ±â Ç®¸µ¿¡ µé¾î°¡ÀÖ´Â ¿ÀºêÁ§Æ® Ç®¸µ
-        Pool(ItemPools);   // ÃÊ±â Ç®¸µ¿¡ µé¾î°¡ÀÖ´Â ¿ÀºêÁ§Æ® Ç®¸µ
-        Pool(ObjectPoolList);   // ÃÊ±â Ç®¸µ¿¡ µé¾î°¡ÀÖ´Â ¿ÀºêÁ§Æ® Ç®¸µ
+        Pool(playerPreset);   // ì´ˆê¸° í’€ë§ì— ë“¤ì–´ê°€ìˆëŠ” ì˜¤ë¸Œì íŠ¸ í’€ë§
+        Pool(ItemPools);   // ì´ˆê¸° í’€ë§ì— ë“¤ì–´ê°€ìˆëŠ” ì˜¤ë¸Œì íŠ¸ í’€ë§
+        Pool(ObjectPoolList);   // ì´ˆê¸° í’€ë§ì— ë“¤ì–´ê°€ìˆëŠ” ì˜¤ë¸Œì íŠ¸ í’€ë§
         Pool(npcList);
     }
+
+    #region Set
+    public void EffectPoolSet(List<PoolObjectData> pool)
+    {
+        EffectPools = pool;
+    }
+    #endregion
+
 
     #region Instantiate
     public void Pool(List<PoolObjectData> _poolObjectList)
@@ -87,7 +98,7 @@ public class ObjectPoolingManager : MonoBehaviour
         }
     }
 
-    /// <summary> ¿ÀºêÁ§Æ®¸¦ ¹İÈ¯ÇÏ°Å³ª »ı¼ºÇÒ ºÎ¸ğ¸¦ »ı¼º </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ë¥¼ ë°˜í™˜í•˜ê±°ë‚˜ ìƒì„±í•  ë¶€ëª¨ë¥¼ ìƒì„± </summary>
     void MakeDir(string _name)
     {
         GameObject newDir = new GameObject(_name);
@@ -95,7 +106,7 @@ public class ObjectPoolingManager : MonoBehaviour
         poolParentDic[_name] = newDir.transform;
     }
 
-    /// <summary> ¿ÀºêÁ§Æ®¸¦ °¹¼ö ¸¸Å­ »ı¼ºÇÏ°í ¸¶Áö¸· »ı¼ºµÈ ¿ÀºêÁ§Æ®¸¦ ¹İÈ¯ÇÕ´Ï´Ù </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ë¥¼ ê°¯ìˆ˜ ë§Œí¼ ìƒì„±í•˜ê³  ë§ˆì§€ë§‰ ìƒì„±ëœ ì˜¤ë¸Œì íŠ¸ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤ </summary>
     GameObject InstantiatePool(GameObject _prefab, Transform _parent, int _count)
     {
         if (_count <= 0)
@@ -118,7 +129,7 @@ public class ObjectPoolingManager : MonoBehaviour
 
     #region  Get
 
-    /// <summary> ¿ÀºêÁ§Æ® ºÒ·¯¿À±â </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ ë¶ˆëŸ¬ì˜¤ê¸° </summary>
     public GameObject GetObject(string _id, Transform _parent = null, bool _enable = true)
     {
         if (poolParentDic.ContainsKey(_id) == false)
@@ -146,11 +157,11 @@ public class ObjectPoolingManager : MonoBehaviour
             }
         }
 
-        // ºÎÁ·ÇÑ °æ¿ì Ãß°¡ »ı¼º ÈÄ ÇÏ³ª¸¦ ¹İÈ¯ÇØ Áİ´Ï´Ù.
+        // ë¶€ì¡±í•œ ê²½ìš° ì¶”ê°€ ìƒì„± í›„ í•˜ë‚˜ë¥¼ ë°˜í™˜í•´ ì¤ë‹ˆë‹¤.
         return InstantiatePool(instantiateObject[_id].prefab, poolParentDic[_id], instantiateObject[_id].poolCount);
     }
 
-    /// <summary> ¿ÀºêÁ§Æ®ÀÇ Æ÷Áö¼Ç°ú ·ÎÅ×ÀÌ¼ÇÀ» ¼³Á¤ÇÏ°í ¹İÈ¯ÇÕ´Ï´Ù. </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ì˜ í¬ì§€ì…˜ê³¼ ë¡œí…Œì´ì…˜ì„ ì„¤ì •í•˜ê³  ë°˜í™˜í•©ë‹ˆë‹¤. </summary>
     public GameObject GetObject(string _id, Vector3 _position, Quaternion _rotation, Transform _parent = null, bool _enable = true)
     {
         GameObject rtnObject = GetObject(_id, _parent, false);
@@ -159,13 +170,13 @@ public class ObjectPoolingManager : MonoBehaviour
         return rtnObject;
     }
 
-    /// <summary> ¿ÀºêÁ§Æ®ÀÇ Æ÷Áö¼Ç°ú ·ÎÅ×ÀÌ¼ÇÀ» ¼³Á¤ÇÏ°í Æ¯Á¤ Å¸ÀÔÀÇ ÄÁÆÛ³ÍÆ®¸¦ ¹İÈ¯ÇÕ´Ï´Ù </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ì˜ í¬ì§€ì…˜ê³¼ ë¡œí…Œì´ì…˜ì„ ì„¤ì •í•˜ê³  íŠ¹ì • íƒ€ì…ì˜ ì»¨í¼ë„ŒíŠ¸ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤ </summary>
     public T GetObject<T>(string _id, Vector3 _position, Quaternion _rotation, Transform _parent = null, bool _enable = true)
     {
         return GetObject(_id, _position, _rotation, _parent, _enable).GetComponent<T>();
     }
 
-    /// <summary> ¿ÀºêÁ§Æ®ÀÇ Æ÷Áö¼Ç°ú ·ÎÅ×ÀÌ¼ÇÀ» ¼³Á¤ÇÏ°í _rtnTimeµÚ ÀÚµ¿ ¸®ÅÏµË´Ï´Ù. </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ì˜ í¬ì§€ì…˜ê³¼ ë¡œí…Œì´ì…˜ì„ ì„¤ì •í•˜ê³  _rtnTimeë’¤ ìë™ ë¦¬í„´ë©ë‹ˆë‹¤. </summary>
     public GameObject GetObject(string _id, Vector3 _position, Quaternion _rotation, float _rtnTime, Transform _parent = null, bool _enable = true)
     {
         GameObject rtnObject = GetObject(_id, _position, _rotation, _parent, _enable);
@@ -173,13 +184,13 @@ public class ObjectPoolingManager : MonoBehaviour
         return rtnObject;
     }
 
-    /// <summary> ¿ÀºêÁ§Æ®ÀÇ Æ÷Áö¼Ç°ú ·ÎÅ×ÀÌ¼ÇÀ» ¼³Á¤ÇÏ°í _rtnTimeµÚ ÀÚµ¿ ¹İÈ¯ ¹× ÄÁÆÛ³ÍÆ® ¹İÈ¯ </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ì˜ í¬ì§€ì…˜ê³¼ ë¡œí…Œì´ì…˜ì„ ì„¤ì •í•˜ê³  _rtnTimeë’¤ ìë™ ë°˜í™˜ ë° ì»¨í¼ë„ŒíŠ¸ ë°˜í™˜ </summary>
     public T GetObject<T>(string _id, Vector3 _position, Quaternion _rotation, float _rtnTime, Transform _parent = null, bool _enable = true)
     {
         return GetObject(_id, _position, _rotation, _parent, _enable).GetComponent<T>();
     }
 
-    /// <summary> ¿ÀºêÁ§Æ®ÀÇ Æ÷Áö¼Ç°ú ·ÎÅ×ÀÌ¼Ç ¹× ½ºÄÉÀÏ ¼³Á¤ÇÏ°í ¹İÈ¯ÇÕ´Ï´Ù. </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ì˜ í¬ì§€ì…˜ê³¼ ë¡œí…Œì´ì…˜ ë° ìŠ¤ì¼€ì¼ ì„¤ì •í•˜ê³  ë°˜í™˜í•©ë‹ˆë‹¤. </summary>
     public GameObject GetObject(string _id, Vector3 _position, Quaternion _rotation, Vector3 _scale, Transform _parent = null, bool _enable = true)
     {
         GameObject rtnObject = GetObject(_id, _parent, false);
@@ -189,13 +200,13 @@ public class ObjectPoolingManager : MonoBehaviour
         return rtnObject;
     }
 
-    /// <summary> ¿ÀºêÁ§Æ®ÀÇ Æ÷Áö¼Ç°ú ·ÎÅ×ÀÌ¼Ç ¹× ½ºÄÉÀÏ ¼³Á¤ ¹× ÄÁÆÛ³ÍÆ® ¹İÈ¯ </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ì˜ í¬ì§€ì…˜ê³¼ ë¡œí…Œì´ì…˜ ë° ìŠ¤ì¼€ì¼ ì„¤ì • ë° ì»¨í¼ë„ŒíŠ¸ ë°˜í™˜ </summary>
     public T GetObject<T>(string _id, Vector3 _position, Quaternion _rotation, Vector3 _scale, Transform _parent = null, bool _enable = true)
     {
         return GetObject(_id, _position, _rotation, _scale, _parent, _enable).GetComponent<T>();
     }
 
-    /// <summary> ¿ÀºêÁ§Æ®ÀÇ Æ÷Áö¼Ç°ú ·ÎÅ×ÀÌ¼Ç ¹× ½ºÄÉÀÏ ¼³Á¤ ¹× ÀÏÁ¤½Ã°£ µÚ ÀÚµ¿ ¸®ÅÏ </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ì˜ í¬ì§€ì…˜ê³¼ ë¡œí…Œì´ì…˜ ë° ìŠ¤ì¼€ì¼ ì„¤ì • ë° ì¼ì •ì‹œê°„ ë’¤ ìë™ ë¦¬í„´ </summary>
     public GameObject GetObject(string _id, Vector3 _position, Quaternion _rotation, Vector3 _scale, float _rtnTime, Transform _parent = null, bool _enable = true)
     {
         GameObject rtnObject = GetObject(_id, _position, _rotation, _scale, _parent, _enable);
@@ -203,13 +214,13 @@ public class ObjectPoolingManager : MonoBehaviour
         return rtnObject;
     }
 
-    /// <summary> ¿ÀºêÁ§Æ®ÀÇ Æ÷Áö¼Ç°ú ·ÎÅ×ÀÌ¼Ç ¹× ½ºÄÉÀÏ ¼³Á¤ ¹× ÀÏÁ¤½Ã°£ µÚ ÀÚµ¿ ¸®ÅÏ ¹× Æ¯Á¤ ÄÁÆÛ³Ê´Â ¹İÈ¯ </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ì˜ í¬ì§€ì…˜ê³¼ ë¡œí…Œì´ì…˜ ë° ìŠ¤ì¼€ì¼ ì„¤ì • ë° ì¼ì •ì‹œê°„ ë’¤ ìë™ ë¦¬í„´ ë° íŠ¹ì • ì»¨í¼ë„ˆëŠ” ë°˜í™˜ </summary>
     public T GetObject<T>(string _id, Vector3 _position, Quaternion _rotation, Vector3 _scale, float _rtnTime, Transform _parent = null, bool _enable = true)
     {
         return GetObject(_id, _position, _rotation, _scale, _rtnTime, _parent, _enable).GetComponent<T>();
     }
 
-    /// <summary> ¿ÀºêÁ§Æ®ÀÇ Æ÷Áö¼Ç°ú ·ÎÅ×ÀÌ¼Ç ¹× ½ºÄÉÀÏ ¼³Á¤ ¹× ¿ÀºêÁ§Æ®°¡ ºñÈ°¼ºÈ­ µÉ °æ¿ì ÀÚµ¿ ¸®ÅÏ </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ì˜ í¬ì§€ì…˜ê³¼ ë¡œí…Œì´ì…˜ ë° ìŠ¤ì¼€ì¼ ì„¤ì • ë° ì˜¤ë¸Œì íŠ¸ê°€ ë¹„í™œì„±í™” ë  ê²½ìš° ìë™ ë¦¬í„´ </summary>
     public GameObject GetObjectToAutoReturn(string _id, Vector3 _position, Quaternion _rotation, Vector3 _scale, Transform _parent = null, bool _enable = true)
     {
         GameObject rtnObject = GetObject(_id, _position, _rotation, _scale, _parent, _enable);
@@ -217,13 +228,13 @@ public class ObjectPoolingManager : MonoBehaviour
         return rtnObject;
     }
 
-    /// <summary> ¿ÀºêÁ§Æ®ÀÇ Æ÷Áö¼Ç°ú ·ÎÅ×ÀÌ¼Ç ¹× ½ºÄÉÀÏ ¼³Á¤ ¹× ¿ÀºêÁ§Æ®°¡ ºñÈ°¼ºÈ­ µÉ °æ¿ì ÀÚµ¿ ¸®ÅÏ ½ÇÇà ¹× ÄÁÆÛ³ÍÆ® ¹İÈ¯ </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ì˜ í¬ì§€ì…˜ê³¼ ë¡œí…Œì´ì…˜ ë° ìŠ¤ì¼€ì¼ ì„¤ì • ë° ì˜¤ë¸Œì íŠ¸ê°€ ë¹„í™œì„±í™” ë  ê²½ìš° ìë™ ë¦¬í„´ ì‹¤í–‰ ë° ì»¨í¼ë„ŒíŠ¸ ë°˜í™˜ </summary>
     public T GetObjectToAutoReturn<T>(string _id, Vector3 _position, Quaternion _rotation, Vector3 _scale, Transform _parent = null, bool _enable = true)
     {
         return GetObjectToAutoReturn(_id, _position, _rotation, _scale, _parent, _enable).GetComponent<T>();
     }
 
-    /// <summary> ÀÏÁ¤ ½Ã°£µÚ ¿ÀºêÁ§Æ® ¹İÈ¯ </summary>
+    /// <summary> ì¼ì • ì‹œê°„ë’¤ ì˜¤ë¸Œì íŠ¸ ë°˜í™˜ </summary>
     public GameObject GetObject(string _id, float _rtnTime, Transform _parent = null, bool _enable = true)
     {
         GameObject rtnObject = GetObject(_id, _parent, _enable);
@@ -231,13 +242,13 @@ public class ObjectPoolingManager : MonoBehaviour
         return rtnObject;
     }
 
-    /// <summary> ÄÄÆÛ³ÍÆ® ¹İÈ¯ </summary>
+    /// <summary> ì»´í¼ë„ŒíŠ¸ ë°˜í™˜ </summary>
     public T GetObject<T>(string _id, float _rtnTime, Transform _parent = null, bool _enable = true)
     {
         return GetObject(_id, _rtnTime, _parent, _enable).GetComponent<T>();
     }
 
-    /// <summary> ¿ÀºêÁ§Æ® Æ÷Áö¼Ç°ú, ·ÎÅ×ÀÌ¼Ç ¹× ºÎ¸ğ¸¦ ¼³Á¤ ¹× ÀÚµ¿ ¸®ÅÏ ½ÇÇà </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ í¬ì§€ì…˜ê³¼, ë¡œí…Œì´ì…˜ ë° ë¶€ëª¨ë¥¼ ì„¤ì • ë° ìë™ ë¦¬í„´ ì‹¤í–‰ </summary>
     public GameObject GetObjectToAutoReturn(string _id, Vector3 _position, Quaternion _rotation, Transform _parent = null, bool _enable = true)
     {
         GameObject rtnObject = GetObject(_id, _position, _rotation, _parent, _enable);
@@ -245,14 +256,14 @@ public class ObjectPoolingManager : MonoBehaviour
         return rtnObject;
     }
 
-    /// <summary> ¿ÀºêÁ§Æ® Æ÷Áö¼Ç°ú, ·ÎÅ×ÀÌ¼Ç ¹× ºÎ¸ğ¸¦ ¼³Á¤ ¹× ÀÚµ¿ ¸®ÅÏ ½ÇÇà ¹× Æ¯Á¤ ÄÁÆÛ³ÍÆ® ¹İÈ¯ </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ í¬ì§€ì…˜ê³¼, ë¡œí…Œì´ì…˜ ë° ë¶€ëª¨ë¥¼ ì„¤ì • ë° ìë™ ë¦¬í„´ ì‹¤í–‰ ë° íŠ¹ì • ì»¨í¼ë„ŒíŠ¸ ë°˜í™˜ </summary>
 
     public T GetObjectToAutoReturn<T>(string _id, Vector3 _position, Quaternion _rotation, Transform _parent = null, bool _enable = true)
     {
         return GetObjectToAutoReturn(_id, _position, _rotation, _parent, _enable).GetComponent<T>();
     }
 
-    /// <summary> ºÎ¸ğ ¼³Á¤ ¹× ¿ÀºêÁ§Æ® ºñÈ°¼ºÈ­½Ã ÀÚµ¿ ¸®ÅÏ </summary>
+    /// <summary> ë¶€ëª¨ ì„¤ì • ë° ì˜¤ë¸Œì íŠ¸ ë¹„í™œì„±í™”ì‹œ ìë™ ë¦¬í„´ </summary>
     public GameObject GetObjectToAutoReturn(string _id, Transform _parent = null, bool _enable = true)
     {
         GameObject rtnObject = GetObject(_id, _parent, _enable);
@@ -260,7 +271,7 @@ public class ObjectPoolingManager : MonoBehaviour
         return rtnObject;
     }
 
-    /// <summary> Æ¯Á¤ ÄÁÆÛ³ÍÆ® ¹İÈ¯ </summary>
+    /// <summary> íŠ¹ì • ì»¨í¼ë„ŒíŠ¸ ë°˜í™˜ </summary>
     public T GetObjectToAutoReturn<T>(string _id, Transform _parent = null, bool _enable = true)
     {
         return GetObjectToAutoReturn(_id, _parent, _enable).GetComponent<T>();
@@ -270,7 +281,7 @@ public class ObjectPoolingManager : MonoBehaviour
 
     #region Return
 
-    /// <summary> ¿ÀºêÁ§Æ® ¸®ÅÏ </summary>
+    /// <summary> ì˜¤ë¸Œì íŠ¸ ë¦¬í„´ </summary>
     public void ReturnObject(GameObject _object)
     {
         if (_object == null)

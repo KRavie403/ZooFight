@@ -31,6 +31,7 @@ public class Item_Bomb : Items
 
     public HitScanner myHitScanner;
 
+    bool isGroundCrash = false;
 
     protected override void Awake()
     {
@@ -76,7 +77,7 @@ public class Item_Bomb : Items
             });
         //myPlayer.SetState()
         float duringTime = 0;
-        myHitScanner.SetScanActive(true);
+        //myHitScanner.SetScanActive(true);
 
 
 
@@ -147,15 +148,23 @@ public class Item_Bomb : Items
 
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.layer == LayerMask.GetMask("Ground"))
+        {
+
+        }
+    }
 
 
     // 대상을 넉백시키는 함수 - Transform , 밀려날 거리 , 속도 입력받기
-    public void PushOut(Transform transform , float Dist , float Speed)
+    public void PushOut(Transform[] transform , float Dist , float Speed)
     {
+
         StartCoroutine(PushedOut(transform, Dist, Speed));
     }
 
-    public IEnumerator PushedOut(Transform transform , float Dist , float Speed)
+    public IEnumerator PushedOut(Transform[] transform , float Dist , float Speed)
     {
         float duringTime = 0;
 

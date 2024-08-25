@@ -68,6 +68,7 @@ public class Item_GuardDrink : Items
         myPlayer.GetShield(Value1);
 
         // 실드 이펙트 생성
+        myEffect.EffectPlayAll(0, myPlayer.transform);
 
         // 실드 사운드 출력
 
@@ -95,7 +96,6 @@ public class Item_GuardDrink : Items
 
     public void StartShield()
     {
-
     }
     public void EndShield()
     {

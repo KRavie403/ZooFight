@@ -28,6 +28,9 @@ public class Item_BlockChangeScroll : Items
     //public GameObject enemyBlockObj;
     public BlockObject enemyBlock;
 
+    Vector3 effectDirBase = new Vector3(-90, 0, 0);
+
+
     protected override void Awake()
     {
         base.Awake();
@@ -133,16 +136,10 @@ public class Item_BlockChangeScroll : Items
         //Transform pos = 
         myEffect.transform.SetParent(null);
 
-        for (int i = 0; i < 5; i++)
-        {
-            myEffect.EffectPlay(i, 0, myBlock.transform, Quaternion.identity, true);
-        }
-        for (int i = 5; i < 10; i++)
-        {
-            myEffect.EffectPlay(i, 0, enemyBlock.transform, Quaternion.identity, true);
-        }
+        myEffect.EffectPlayAll(0, 0, myBlock.transform,Quaternion.Euler(effectDirBase));
+        myEffect.EffectPlayAll(1, 0, enemyBlock.transform,Quaternion.Euler(effectDirBase));
         
-
+        
     }
 
     public IEnumerator ScrollActive()
@@ -169,13 +166,10 @@ public class Item_BlockChangeScroll : Items
         // 블럭교환 실행
         while (duringTime < Value2)
         {
-            duringTime += Time.deltaTime;   
+            duringTime += Time.deltaTime;
 
             yield return null;
         }
-
-
-
 
     }
 
