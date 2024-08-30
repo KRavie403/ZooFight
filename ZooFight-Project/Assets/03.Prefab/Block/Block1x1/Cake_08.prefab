@@ -72,6 +72,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cake_08
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2029f0582e336d34b83f47bcae76e6e5, type: 3}
+      propertyPath: m_TagString
+      value: Block
+      objectReference: {fileID: 0}
     - target: {fileID: 3816654056258493912, guid: 2029f0582e336d34b83f47bcae76e6e5, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

@@ -5,18 +5,14 @@ using UnityEngine.Rendering;
 
 public class MinimapMovement : MonoBehaviour
 {
-    public float moveSpeed = 59;
+    private float moveSpeed = 45f;
     private float boundary = 20f;
 
-    public float boundaryXMin = 114;
-    public float boundaryXMax = 352;
-    public float boundaryYMin = 48;
-    public float boundaryYMax = 278;
+    private float boundaryXMin = 81f;
+    private float boundaryXMax = 269f;
+    private float boundaryYMin = 36;
+    private float boundaryYMax = 213;
 
-    private void Start()
-    {
-        transform.localPosition = Vector3.zero;
-    }
 
     void Update()
     {
