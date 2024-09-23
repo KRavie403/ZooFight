@@ -48,9 +48,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2855554873634954497, guid: fd6a9348e48acad478a20680761a35a8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: fd6a9348e48acad478a20680761a35a8, type: 3}
       propertyPath: m_Name
       value: Cake_05
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fd6a9348e48acad478a20680761a35a8, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: fd6a9348e48acad478a20680761a35a8, type: 3}
       propertyPath: m_TagString
@@ -60,6 +68,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 9230bcab1ff739f48b9ddb37dfe2d33c, type: 2}
+    - target: {fileID: 6159819195323411483, guid: fd6a9348e48acad478a20680761a35a8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6631305073947799647, guid: fd6a9348e48acad478a20680761a35a8, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

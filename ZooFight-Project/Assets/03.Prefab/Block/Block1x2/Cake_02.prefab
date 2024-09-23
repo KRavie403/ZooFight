@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4631785997500203906, guid: f73561a71478de247bf4e8098f031ad3, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -2402149079752226618, guid: f73561a71478de247bf4e8098f031ad3, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -73,6 +77,10 @@ PrefabInstance:
       value: Cake_02
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f73561a71478de247bf4e8098f031ad3, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f73561a71478de247bf4e8098f031ad3, type: 3}
       propertyPath: m_TagString
       value: Block
       objectReference: {fileID: 0}
@@ -80,10 +88,22 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: dbb89b632ea06c7439a5f57064611c92, type: 2}
+    - target: {fileID: 5008493454458762010, guid: f73561a71478de247bf4e8098f031ad3, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5998919603419447379, guid: f73561a71478de247bf4e8098f031ad3, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6503101708035814068, guid: f73561a71478de247bf4e8098f031ad3, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: dbb89b632ea06c7439a5f57064611c92, type: 2}
+    - target: {fileID: 8144394004440419581, guid: f73561a71478de247bf4e8098f031ad3, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8835409689826365435, guid: f73561a71478de247bf4e8098f031ad3, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

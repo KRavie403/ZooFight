@@ -72,9 +72,17 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3ce3a822d47d1f24c894603c42c31a77, type: 2}
+    - target: {fileID: 252082471611378692, guid: e735d220df33f0644bbaca0ab757d53b, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e735d220df33f0644bbaca0ab757d53b, type: 3}
       propertyPath: m_Name
       value: Cake_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e735d220df33f0644bbaca0ab757d53b, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e735d220df33f0644bbaca0ab757d53b, type: 3}
       propertyPath: m_TagString
@@ -84,6 +92,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3ce3a822d47d1f24c894603c42c31a77, type: 2}
+    - target: {fileID: 7138559298804693648, guid: e735d220df33f0644bbaca0ab757d53b, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
