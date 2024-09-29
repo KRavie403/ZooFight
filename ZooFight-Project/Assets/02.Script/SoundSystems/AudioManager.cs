@@ -9,6 +9,7 @@ public class AudioManager : Singleton<AudioManager>
 
     public Slider masterVolumeSlider;
     public Slider soundEffectVolumeSlider;
+    public Slider musicVolumeSlider;
 
     [Header("---------- Audio Source ----------")]
     [SerializeField] AudioSource BGMSource;
@@ -29,10 +30,12 @@ public class AudioManager : Singleton<AudioManager>
         // 저장된 볼륨 설정 로드
         masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
         soundEffectVolumeSlider.value = PlayerPrefs.GetFloat("SoundEffectVolume", 1f);
+        musicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume", 1f);
 
         // 슬라이더 값 변경 시 호출될 메서드 추가
         masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
         soundEffectVolumeSlider.onValueChanged.AddListener(SetSoundEffectVolume);
+        musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
     }
 
     private void OnEnable()
@@ -95,9 +98,20 @@ public class AudioManager : Singleton<AudioManager>
     private void SetMasterVolume(float volume)
     {
         // 마스터 볼륨 설정
-        AudioListener.volume = volume;
-        PlayerPrefs.SetFloat("MasterVolume", volume); // 설정 저장
-    }
+        if (BGMSource != null)
+        {
+            AudioListener.volume = volume;
+            PlayerPrefs.SetFloat("MasterVolume", volume); // 설정 저장
+        }
+
+        // SFX 볼륨 설정
+        if (SFXSource != null)
+        {
+            SFXSource.volume = volume;
+            PlayerPrefs.SetFloat("SoundEffectVolume", volume); // 설정 저장
+        }
+    } 
+
 
     private void SetSoundEffectVolume(float volume)
     {
@@ -107,5 +121,11 @@ public class AudioManager : Singleton<AudioManager>
             SFXSource.volume = volume;
             PlayerPrefs.SetFloat("SoundEffectVolume", volume); // 설정 저장
         }
+    }
+    private void SetMusicVolume(float volume)
+    {
+        // 마스터 볼륨 설정
+        AudioListener.volume = volume;
+        PlayerPrefs.SetFloat("MasterVolume", volume); // 설정 저장
     }
 }
