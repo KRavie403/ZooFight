@@ -44499,6 +44499,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   masterVolumeSlider: {fileID: 53913859}
   soundEffectVolumeSlider: {fileID: 13912334}
+  musicVolumeSlider: {fileID: 2119036749}
   BGMSource: {fileID: 1695335920}
   SFXSource: {fileID: 1782634048}
   bgm:
@@ -47181,7 +47182,19 @@ MonoBehaviour:
   m_Value: 0.8
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2127187962
 GameObject:
   m_ObjectHideFlags: 0
