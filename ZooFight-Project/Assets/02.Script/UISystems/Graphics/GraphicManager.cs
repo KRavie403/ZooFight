@@ -9,7 +9,6 @@ public class GraphicManager : Singleton<GraphicManager>
     [SerializeField] private TMP_Text graphicsCardName;
     [SerializeField] private TMP_Dropdown displayModeDropdown;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
-    [SerializeField] private Slider _contrastSlider;
     [SerializeField] private Slider _brightnessSlider;
     [SerializeField] private Image _overLay;
     [SerializeField] private GameObject _resolution;
@@ -41,7 +40,6 @@ public class GraphicManager : Singleton<GraphicManager>
     {
         DisplayDropboxOptionChange();
         AdjustBrightness();
-        AdjustContrast();
 
         if ( SceneManager.sceneCountInBuildSettings == 0)
             ResolutionDropboxOptionChange();
@@ -125,20 +123,20 @@ public class GraphicManager : Singleton<GraphicManager>
             case 0:     //  창 모드
                 screenMode = FullScreenMode.Windowed;
                 _resolution.SetActive(true);
-                _videoSettingsRect.sizeDelta = new Vector2(_videoSettingsRect.sizeDelta.x, 490);
+                _videoSettingsRect.sizeDelta = new Vector2(_videoSettingsRect.sizeDelta.x, 400);
                 _videoSettingsRect.anchoredPosition = new Vector2(_videoSettingsRect.anchoredPosition.x, 0);
                 break;
             case 1:     // 전체 화면
                 screenMode = FullScreenMode.FullScreenWindow;
                 _resolution.SetActive(false);
-                _videoSettingsRect.sizeDelta = new Vector2(_videoSettingsRect.sizeDelta.x, 400);
+                _videoSettingsRect.sizeDelta = new Vector2(_videoSettingsRect.sizeDelta.x, 310);
                 _videoSettingsRect.anchoredPosition = new Vector2(_videoSettingsRect.anchoredPosition.x, 20);
                 break;
             case 2:     // 테두리 없는 창 모드
                 screenMode = FullScreenMode.Windowed;
                 _resolution.SetActive(true);
                 SetBorderlessWindowedMode();
-                _videoSettingsRect.sizeDelta = new Vector2(_videoSettingsRect.sizeDelta.x, 490);
+                _videoSettingsRect.sizeDelta = new Vector2(_videoSettingsRect.sizeDelta.x, 400);
                 _videoSettingsRect.anchoredPosition = new Vector2(_videoSettingsRect.anchoredPosition.x, 0);
                 break;
             default:
@@ -168,12 +166,6 @@ public class GraphicManager : Singleton<GraphicManager>
         _overLay.color = new Color(_overLay.color.r, _overLay.color.g, _overLay.color.b, 0.5f - _brightnessSlider.value * 0.5f);
     }
 
-    public void AdjustContrast()
-    {
-        // 화면 대비 조절
-        float contrastValue = _contrastSlider.value * 0.5f;
-        _overLay.color = new Color(contrastValue, contrastValue, contrastValue, _overLay.color.a);
-    }
 
     void SetBorderlessWindowedMode()
     {
