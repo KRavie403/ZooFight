@@ -20,6 +20,12 @@ public class MainMenuManager : MonoBehaviour
     public GameObject exitBtn;
     private bool _isESC = true;
 
+    // 캐릭터 선택
+    public GameObject switchBtn;
+    public GameObject selectBtn;
+    public GameObject[] arrawBtns;
+    private bool _isSelect = true;
+
 
     // 매칭 이미지
     [SerializeField] private GameObject _matchingUI;
@@ -33,6 +39,9 @@ public class MainMenuManager : MonoBehaviour
     private void Start()
     {
         _matchingUI.SetActive(false);
+        switchBtn.SetActive(true);
+        selectBtn.SetActive(false);
+        foreach (var btn in arrawBtns) btn.SetActive(false);
         settingsBtn.onClick.AddListener(OnSettingsButtonClick);
     }
 
@@ -74,6 +83,20 @@ public class MainMenuManager : MonoBehaviour
 #else
                                 Application.Quit();     // 어플리케이션 종료
 #endif
+    }
+
+    public void ClickSwitch()
+    {
+        switchBtn.SetActive(false);
+        selectBtn.SetActive(true);
+        foreach (var btn in arrawBtns) btn.SetActive(true);
+    }
+
+    public void ClickSelect()
+    {
+        switchBtn.SetActive(true);
+        selectBtn.SetActive(false);
+        foreach (var btn in arrawBtns) btn.SetActive(false);
     }
 
     private async UniTaskVoid StartMatchmakingTimer()
