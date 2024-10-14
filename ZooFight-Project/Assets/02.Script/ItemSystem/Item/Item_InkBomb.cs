@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ¾ÆÀÌÅÛ¸í : ¸Ô¹°ÆøÅº
-/// Value 1 ½Ã¾ß ¹æÇØ Á¤µµ
-/// Value 2 È¿°ú Áö¼Ó ½Ã°£
-/// Value 3 È¿°ú Àû¿ë ¹üÀ§
-/// Value 4 ÆøÅº ¼Óµµ
-/// Value 5 »ç°Å¸®
+/// ì•„ì´í…œëª… : ë¨¹ë¬¼í­íƒ„
+/// Value 1 ì‹œì•¼ ë°©í•´ ì •ë„
+/// Value 2 íš¨ê³¼ ì§€ì† ì‹œê°„
+/// Value 3 íš¨ê³¼ ì ìš© ë²”ìœ„
+/// Value 4 í­íƒ„ ì†ë„
+/// Value 5 ì‚¬ê±°ë¦¬
 /// </summary>
 
 public class Item_InkBomb : Items
@@ -18,8 +18,16 @@ public class Item_InkBomb : Items
 
     }
 
+    [SerializeField]
+    EffectPlayer myEffect;
+    [SerializeField]
+    GameObject NonActiveObj;
+    [SerializeField]
+    GameObject ActivedObj;
+
     public HitScanner HitScanner;
 
+    bool isGroundCrash = false;
 
     bool isItemActive = false;
 
@@ -38,30 +46,40 @@ public class Item_InkBomb : Items
         base.Update();
     }
 
-    public void BombShoot(Vector3 Pos)
+
+
+    public override void Initate(List<float> Values, PlayerController player)
     {
-        // 
-        ItemAction = BombActive(Pos);
-        //StartCoroutine(BombActive(Pos));
+        base.Initate(Values, player);
+
     }
 
-    public IEnumerator BombActive(Vector3 Pos)
+    protected override IEnumerator ItemActions()
     {
-        // ¹ß»çÁöÁ¡ È®Á¤
+        yield return base.ItemActions();
 
-        // ¹°Ã¼ ÀÌµ¿±ËÀû ÁØºñ
+        float duringTime = 0.0f;
 
-        // ÆøÅº ÀÌÆåÆ® ÁØºñ
-        BombEffectSetting();
-        // ÆøÅº »ç¿îµå ÁØºñ
-        BombSoundSetting();
-        //
+        bool isActive = false;
 
-        while (!isItemActive)
+        while (duringTime < Value2)
         {
-            yield return null;
+
+            if (isActive)
+            {
+                duringTime += Time.deltaTime;
+            }
+
+            if(Targets.Count != 0)
+            {
+
+            }
+
+
         }
     }
+
+
 
     void BombEffectSetting()
     {

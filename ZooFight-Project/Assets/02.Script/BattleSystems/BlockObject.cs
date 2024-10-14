@@ -38,7 +38,7 @@ public class BlockObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // ¿ÀºêÁ§Æ®°¡ »ı¼ºµÉ¶§ ÀÌ¹Ì Á¸ÀçÇÏ´Â ºí·°ÀÌ ÀÖÀ¸¸é »èÁ¦
+        // ì˜¤ë¸Œì íŠ¸ê°€ ìƒì„±ë ë•Œ ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ë¸”ëŸ­ì´ ìˆìœ¼ë©´ ì‚­ì œ
         if(Gamemanager.Inst.GetTeamBlock(myTeam) != null)
         {
             if(Gamemanager.Inst.GetTeamBlock(myTeam) != this)
@@ -79,10 +79,10 @@ public class BlockObject : MonoBehaviour
         }
     }
 
-    #region Àâ±â°ü·Ã
+    #region ì¡ê¸°ê´€ë ¨
     public void Grab(PlayerController player)
     {
-        // ºí·°±³È¯ µ¿ÀÛ Áß Àâ±â ºÒ°¡´É
+        // ë¸”ëŸ­êµí™˜ ë™ì‘ ì¤‘ ì¡ê¸° ë¶ˆê°€ëŠ¥
         if(isChangeActive)
         {
             DeGrab(player);
@@ -114,10 +114,10 @@ public class BlockObject : MonoBehaviour
     }
     #endregion
 
-    #region ºí·° ±³È¯ °ü·Ã
+    #region ë¸”ëŸ­ êµí™˜ ê´€ë ¨
     public void ChangeBlockTeam()
     {
-        // ºí·°ÀÇ ÆÀÀ» º¯°æ
+        // ë¸”ëŸ­ì˜ íŒ€ì„ ë³€ê²½
         switch (myTeam) 
         {
             case HitScanner.Team.RedTeam:
@@ -162,7 +162,7 @@ public class BlockObject : MonoBehaviour
 
     #endregion
 
-    #region ºí·°ÀÌµ¿°ü·Ã
+    #region ë¸”ëŸ­ì´ë™ê´€ë ¨
     IEnumerator BlockMove()
     {
         Vector3 curdir = Vector3.zero;
@@ -191,7 +191,7 @@ public class BlockObject : MonoBehaviour
 
     }
 
-    // ÁøÇà °¡´É ¹æÇâ °áÁ¤ÇÔ¼ö
+    // ì§„í–‰ ê°€ëŠ¥ ë°©í–¥ ê²°ì •í•¨ìˆ˜ - ëª©í‘œ ë°©í–¥ , í˜„ì¬ ì „ë°©
     public Vector2 DistSelect(Vector3 pos,Vector3 curForward)
     {
         if(pos == Vector3.zero) return Vector2.zero;
@@ -244,7 +244,7 @@ public class BlockObject : MonoBehaviour
 
     #endregion
 
-    #region ½Â¸®ÆÇÁ¤°ü·Ã
+    #region ìŠ¹ë¦¬íŒì •ê´€ë ¨
 
     public void VictoryDecide(HitScanner.Team BeaconTeam)
     {
@@ -252,7 +252,7 @@ public class BlockObject : MonoBehaviour
 
         if(myTeam == BeaconTeam)
         {
-            // ½Â¸®½Ã µ¿ÀÛÇÒ°Í ½ÇÇà
+            // ìŠ¹ë¦¬ì‹œ ë™ì‘í• ê²ƒ ì‹¤í–‰
 
             Debug.Log($"{myTeam} Victory!!");
         }

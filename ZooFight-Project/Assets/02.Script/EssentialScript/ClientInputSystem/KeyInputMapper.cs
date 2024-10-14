@@ -10,9 +10,9 @@ using System.Linq;
 
 public enum KeyAction
 {
-    Forward = 0, Backward, Left, Right,
-    Jump, Attack, Selectskill, Usingskill, Grab,
-    Menu, Run,
+    Forward=0,Backward,Left,Right,
+    Jump,Attack,Selectskill,Usingskill,Grab,
+    Menu,Run,
     ItemCreate,
     // 맵열기 = M
     KeyCount
@@ -81,7 +81,7 @@ public class KeyInputMapper : MonoBehaviour
 
     }
 
-    public void TargetKeySetting(KeyAction KeyType, KeyCode keyCode)
+    public void TargetKeySetting(KeyAction KeyType,KeyCode keyCode) 
     {
         KeySetting.keys[KeyType] = keyCode;
     }

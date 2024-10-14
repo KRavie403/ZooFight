@@ -13,6 +13,7 @@ using UnityEngine;
 /// 300 ~ 399 BGM 관련 사운드
 /// 추후 확장가능
 /// </summary>
+/// 
 public enum SoundCode
 {
     MainBgm =0,CharacterMove,CharacterJump,CharacterDameged , CharacterAttack,

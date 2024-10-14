@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ¾ÆÀÌÅÛ¸í : ÆøÅº
-/// Value 1 µ¥¹ÌÁö
-/// Value 2 
-/// Value 3 Æø¹ß¹üÀ§
-/// Value 4 ÆøÅº ¼Óµµ
-/// Value 5 »ç°Å¸®
+/// ì•„ì´í…œëª… : í­íƒ„
+/// Value 1 ë°ë¯¸ì§€
+/// Value 2 í­íƒ„ ìœ ì§€ ì‹œê°„
+/// Value 3 í­ë°œë²”ìœ„
+/// Value 4 í­íƒ„ ì†ë„
+/// Value 5 ì‚¬ê±°ë¦¬
+/// ìºë¦­í„°ë§Œ ë°€ë ¤ë‚¨ ë¸”ëŸ­ì€ ë°€ë ¤ë‚˜ì§€ì•ŠìŒ
 /// </summary>
 
 
@@ -30,6 +31,7 @@ public class Item_Bomb : Items
 
     public HitScanner myHitScanner;
 
+    bool isGroundCrash = false;
 
     protected override void Awake()
     {
@@ -50,10 +52,11 @@ public class Item_Bomb : Items
     }
     public void BombSetting(Vector3 pos)
     {
-        ItemAction = BombActive(pos);
-
+        //ItemAction = BombActive(pos);
+        ItemAction = ItemActions();
     }
 
+    bool isDone = false;
     protected override IEnumerator ItemActions()
     {
         yield return base.ItemActions();
@@ -62,7 +65,7 @@ public class Item_Bomb : Items
         bool isMoveEnd = false;
 
         //transform.localPosition = Vector3.zero;
-        // Æ¯Á¤ °æ·Î·Î ÀÌµ¿ ½ÃÀÛ
+        // íŠ¹ì • ê²½ë¡œë¡œ ì´ë™ ì‹œì‘
         BattleSystems.Inst.routeMaker.RouteKeys[RouteTypes.Arc].
             GetComponent<IRoute>().RouteStart(transform, dir, Value5, Value4, () =>
             {
@@ -74,32 +77,41 @@ public class Item_Bomb : Items
             });
         //myPlayer.SetState()
         float duringTime = 0;
-        myHitScanner.SetScanActive(true);
-        // ¹Ù³ª³ª Áö¼Ó½Ã°£µ¿¾È µ¿ÀÛ
-        while (duringTime < Value2)
-        {
+        //myHitScanner.SetScanActive(true);
 
-            // ´øÁö´Âµ¿¾È Áö¼Ó½Ã°£ °¨¼Ò X
+
+
+        while (!isDone)
+        {
+            // ìœ ì§€ì‹œê°„ ì´ˆê³¼ì‹œ ì‚¬ìš© ì¢…ë£Œ
+            if(duringTime >= Value2)
+            {
+                isDone = true;
+                continue;
+            }
+
+            // ìœ ì§€ì‹œê°„ ì²´í¬
+            duringTime += Time.deltaTime;
+
+
             if (!isMoveEnd)
             {
                 yield return null;
                 continue;
             }
 
-            // À¯Áö½Ã°£ Ã¼Å©
-            duringTime += Time.deltaTime;
 
-
-            // µ¿ÀÛ°¨Áö½Ã È¿°úÀû¿ë ¹× ÀÌÆåÆ® , »ç¿îµå Ãâ·Â
-            if (Targets != null)
+            // ë™ì‘ê°ì§€ì‹œ íš¨ê³¼ì ìš© ë° ì´í™íŠ¸ , ì‚¬ìš´ë“œ ì¶œë ¥
+            if (Targets.Count != 0) 
             {
-                // Å¸°ÙÀÌ ÀâÈ÷¸é µ¿ÀÛ½ÃÅ°°í ÅÍÆ®¸²
+                // íƒ€ê²Ÿì´ ì¡íˆë©´ ë™ì‘ì‹œí‚¤ê³  í„°íŠ¸ë¦¼
 
 
-                // duringTime = Value2;
+
+                isDone = false;
             }
 
-            // ¹ßµ¿½Ã ¿ÀºêÁ§Æ® ÀÛµ¿ ºÒ´ÉÃ³¸®
+            // ë°œë™ì‹œ ì˜¤ë¸Œì íŠ¸ ì‘ë™ ë¶ˆëŠ¥ì²˜ë¦¬
 
             if (isItemUse)
             {
@@ -112,22 +124,62 @@ public class Item_Bomb : Items
             }
             yield return null;
         }
+
         myHitScanner.SetScanActive(false);
-        // »ç¿ëÀÌ ³¡³ª¸é ¿ÀºêÁ§Æ® ¹İÈ¯
+
+        // ì‚¬ìš©ì´ ëë‚˜ë©´ ì˜¤ë¸Œì íŠ¸ ë°˜í™˜
+        Debug.Log($"{this} ActiveEnd");
+        isDone = false;
         ReturnItem();
     }
 
-    
-
-    public IEnumerator BombActive(Vector3 pos)
+    public void BombExplosionEffect()
     {
 
-        while (true)
+        myEffect.EffectPlayAll();
+
+
+    }
+
+    public void BombExplosionSound() 
+    {
+
+
+
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.layer == LayerMask.GetMask("Ground"))
         {
+
+        }
+    }
+
+
+    // ëŒ€ìƒì„ ë„‰ë°±ì‹œí‚¤ëŠ” í•¨ìˆ˜ - Transform , ë°€ë ¤ë‚  ê±°ë¦¬ , ì†ë„ ì…ë ¥ë°›ê¸°
+    public void PushOut(Transform[] transform , float Dist , float Speed)
+    {
+
+        StartCoroutine(PushedOut(transform, Dist, Speed));
+    }
+
+    public IEnumerator PushedOut(Transform[] transform , float Dist , float Speed)
+    {
+        float duringTime = 0;
+
+        while (duringTime < Dist / Speed) 
+        { 
+            duringTime += Time.deltaTime;
+
 
 
             yield return null;
         }
+
     }
+
+
+
 
 }

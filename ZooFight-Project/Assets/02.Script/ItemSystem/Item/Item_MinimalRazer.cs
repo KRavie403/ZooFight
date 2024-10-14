@@ -4,12 +4,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
-/// ¾ÆÀÌÅÛ¸í : ¼ÒÇüÈ­ ±¤¼±
-/// Value 1 È¿°ú Áö¼Ó ½Ã°£
-/// Value 2 »çÃâ½Ã°£
-/// Value 3 ·¹ÀÌÀú ±æÀÌ
-/// Value 4 »çÃâ¼Óµµ
-/// Value 5 ·¹ÀÌÀú »ç°Å¸®
+/// ì•„ì´í…œëª… : ì†Œí˜•í™” ê´‘ì„ 
+/// Value 1 íš¨ê³¼ ì§€ì† ì‹œê°„
+/// Value 2 ì‚¬ì¶œì‹œê°„
+/// Value 3 ë ˆì´ì € ê¸¸ì´
+/// Value 4 ì‚¬ì¶œì†ë„
+/// Value 5 ë ˆì´ì € ì‚¬ê±°ë¦¬
 /// </summary>
 
 
@@ -21,7 +21,7 @@ public class Item_MinimalRazer : Items
     }
 
     public EffectPlayer effectPlayer;
-    // ¹æÇâÅ×½ºÆ®¿ë
+    // ë°©í–¥í…ŒìŠ¤íŠ¸ìš©
     public GameObject Test1;
 
     public GameObject RazerGunObj;
@@ -39,23 +39,23 @@ public class Item_MinimalRazer : Items
     {
         base.Awake();
         //Effectmanager.Inst.CreateEffectObj(effectPlayer, transform);\
-        // È÷Æ®½ºÄ³³Ê »ı¼º
+        // íˆíŠ¸ìŠ¤ìºë„ˆ ìƒì„±
         if (GetComponent<HitScanner>() != null)
         {
             myHitScanner = GetComponent<HitScanner>();
 
-            // Å×½ºÆ® ±¸°£ ½ÃÀÛ
+            // í…ŒìŠ¤íŠ¸ êµ¬ê°„ ì‹œì‘
             if(myHitScanner == null )
             {
                 gameObject.AddComponent<HitScanner>();
             }
-            // Å×½ºÆ® ±¸°£ Á¾·á
+            // í…ŒìŠ¤íŠ¸ êµ¬ê°„ ì¢…ë£Œ
 
             myHitScanner.enabled = false;
         }
         else
         {
-            // ¹Ì½ÇÇà »óÅÂ·Î »ı¼º
+            // ë¯¸ì‹¤í–‰ ìƒíƒœë¡œ ìƒì„±
             myHitScanner = transform.AddComponent<HitScanner>();
             myHitScanner.enabled = false;
         }
@@ -89,8 +89,8 @@ public class Item_MinimalRazer : Items
 
         List<GameObject> curTargets = new List<GameObject>();
 
-
-        // ¹ßµ¿½Ã È÷Æ®½ºÄ³³Ê °¡µ¿
+        effectPlayer.EffectPlayAll();
+        // ë°œë™ì‹œ íˆíŠ¸ìŠ¤ìºë„ˆ ê°€ë™
         myHitScanner.SetScanActive(true);
 
         while (duringTime < Value2)
@@ -98,7 +98,7 @@ public class Item_MinimalRazer : Items
             duringTime += Time.deltaTime;
 
 
-            // Å¸°Ù °ËÃâÀÌ µÌÀ» °æ¿ì 
+            // íƒ€ê²Ÿ ê²€ì¶œì´ ë«ì„ ê²½ìš° 
             if(Targets != null)
             {
                 foreach (GameObject T in Targets)
@@ -114,7 +114,7 @@ public class Item_MinimalRazer : Items
             }
         }
 
-        // »ç¿ë Á¾·á½Ã Å©±â ¿ø»óº¹±¸
+        // ì‚¬ìš© ì¢…ë£Œì‹œ í¬ê¸° ì›ìƒë³µêµ¬
         foreach (GameObject T in curTargets)
         {
             T.GetComponent<PlayerController>().PlayerSizeChange(1.0f);
@@ -125,44 +125,20 @@ public class Item_MinimalRazer : Items
 
     }
 
-
-    public IEnumerator RazerShooting(Vector3 pos)
-    {
-        Vector3 temp = pos - myPlayer.transform.position;
-        // »çÃâ¹æÇâ ¼³Á¤
-        Vector3 dir = Vector3.Normalize(pos - myPlayer.transform.position) * Value3;
-
-
-
-        // ÀÌÆåÆ® ¹ßµ¿»óÅÂ ¼³Á¤ - ÇÔ¼öÈ­ ¿¹Á¤
-        RazerEffectSetting();
-
-        // »ç¿îµå Àç»ı»óÅÂ ¼³Á¤ - ÇÔ¼öÈ­ ¿¹Á¤
-        RazerSoundSetting();
-
-        //effectPlayer.myEffect[1].main.startLifetime;
-
-        // »çÃâ½Ã°£µ¿¾È µ¿ÀÛ
-        while (effectPlayer.myEffect[1].main.duration < Value4)
-        {
-
-            yield return null;
-        }
-
-    }
+    
     
     public void RazerEffectSetting()
     {
-        // 1¹øÀÌÆåÆ® °£´Ü½ÇÇà
+        // 1ë²ˆì´í™íŠ¸ ê°„ë‹¨ì‹¤í–‰
 
-        // 2¹øÀÌÆåÆ® »çÃâ°Å¸®¸¸Å­ ½ÇÇà
+        // 2ë²ˆì´í™íŠ¸ ì‚¬ì¶œê±°ë¦¬ë§Œí¼ ì‹¤í–‰
 
     }
 
     public void RazerSoundSetting()
     {
         //Soundmanager.Inst.SoundPool.
-        // »çÃâ »ç¿îµå Àç»ı
+        // ì‚¬ì¶œ ì‚¬ìš´ë“œ ì¬ìƒ
     }
 
     public void RazerShoot()
