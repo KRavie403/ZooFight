@@ -5,8 +5,7 @@ using UnityEngine;
 public class CharacterSelection : MonoBehaviour
 {
     public GameObject[] SelectBtn1 = new GameObject[2];
-    public GameObject[] SelectBtn2 = new GameObject[2];
-    public GameObject[] SelectBtn3 = new GameObject[2];
+    // 게임 시작 버튼 누르면 비활성화
 
     public int curUser;
 
@@ -21,8 +20,6 @@ public class CharacterSelection : MonoBehaviour
     {
         // 모든 버튼을 비활성화
         SetButtonsActive(SelectBtn1, false);
-        SetButtonsActive(SelectBtn2, false);
-        SetButtonsActive(SelectBtn3, false);
 
         // 현재 유저에 따라 특정 버튼 활성화
         switch (curUser)
@@ -30,11 +27,6 @@ public class CharacterSelection : MonoBehaviour
             case 0:
                 SetButtonsActive(SelectBtn1, true);
                 break;
-            case 1:
-                SetButtonsActive(SelectBtn2, true);
-                break;
-            case 2:
-                SetButtonsActive(SelectBtn3, true);
                 break;
             default:
                 break;

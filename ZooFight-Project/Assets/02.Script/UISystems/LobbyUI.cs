@@ -28,6 +28,7 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private float remainingTime = 20f;
     [SerializeField] private float readyTime = 10f;
+    [SerializeField] private bool _loadCall = true;
 
 
     private void Start()
@@ -92,7 +93,12 @@ public class LobbyUI : MonoBehaviour
         }
         else
         {
-            OnLoadScene().Forget();
+            if (_loadCall)
+            {
+                LoadScene.Inst.OnStartGameButtonClicked();
+                _loadCall = false;
+            }
+            //OnLoadScene().Forget();
         }
         timerText.text = $"{Mathf.CeilToInt(remainingTime):00}";
     }
