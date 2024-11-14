@@ -12,29 +12,29 @@ public class Anim_Character : MonoBehaviour
         myPlayer = transform.parent.GetComponent<PlayerController>();
     }
 
-    #region ÀÌµ¿ ¸ğ¼Ç ÇÔ¼ö
+    #region ì´ë™ ëª¨ì…˜ í•¨ìˆ˜
 
     public void MoveAction()
     {
-        // ???
+        // ???0
     }
     public void MoveStartAction()
     {
-        // ¼­¹ö·Î ÀÌµ¿ ½ÃÀÛ Àü¼Û
+        // ì„œë²„ë¡œ ì´ë™ ì‹œì‘ ì „ì†¡
     }
     public void MoveEndAction()
     {
-        // ¼­¹ö·Î ÀÌµ¿ Á¾·á Àü¼Û
+        // ì„œë²„ë¡œ ì´ë™ ì¢…ë£Œ ì „ì†¡
     }
 
 
     #endregion
 
 
-    #region °ø°İ¸ğ¼Ç ÇÔ¼ö
+    #region ê³µê²©ëª¨ì…˜ í•¨ìˆ˜
     public void AttackAction()
     {
-        // °ø°İ ¾×¼Ç µ¿ÀÛ
+        // ê³µê²© ì•¡ì…˜ ë™ì‘
         myPlayer.PlayerAttack();
     }
 
@@ -67,7 +67,7 @@ public class Anim_Character : MonoBehaviour
 
     #endregion
 
-    #region Á¡ÇÁ¸ğ¼Ç ÇÔ¼ö
+    #region ì í”„ëª¨ì…˜ í•¨ìˆ˜
     public void JumpAction()
     {
 
@@ -82,7 +82,7 @@ public class Anim_Character : MonoBehaviour
     }
     #endregion
 
-    #region ¾ÆÀÌÅÛ»ç¿ë¸ğ¼Ç ÇÔ¼ö
+    #region ì•„ì´í…œì‚¬ìš©ëª¨ì…˜ í•¨ìˆ˜
 
     public void ItemUseAction()
     {
@@ -115,7 +115,7 @@ public class Anim_Character : MonoBehaviour
 
     }
 
-    // Å¸°İ´ë»ó ÃßÃâ
+    // íƒ€ê²©ëŒ€ìƒ ì¶”ì¶œ
     public void ItemHitAction()
     {
         //myPlayer.AttackPoint
@@ -123,7 +123,7 @@ public class Anim_Character : MonoBehaviour
 
     #endregion
 
-    #region ½ÂÆĞ¸ğ¼ÇÇÔ¼ö
+    #region ìŠ¹íŒ¨ëª¨ì…˜í•¨ìˆ˜
 
     public void WinActionEnd()
     {

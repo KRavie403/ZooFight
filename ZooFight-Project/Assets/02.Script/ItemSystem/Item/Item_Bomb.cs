@@ -11,8 +11,6 @@ using UnityEngine;
 /// Value 5 사거리
 /// 캐릭터만 밀려남 블럭은 밀려나지않음
 /// </summary>
-
-
 public class Item_Bomb : Items
 {
     public Item_Bomb(PlayerController player) : base(player)
@@ -31,17 +29,19 @@ public class Item_Bomb : Items
 
     public HitScanner myHitScanner;
 
+    
     bool isGroundCrash = false;
 
     protected override void Awake()
     {
         base.Awake();
 
+        //GetComponent<Rigidbody>().useGravity = false;
     }
 
     protected override void Start()
     {
-        base.Start();
+        base.Start(); 
 
     }
 
@@ -56,11 +56,17 @@ public class Item_Bomb : Items
         ItemAction = ItemActions();
     }
 
+
+
     bool isDone = false;
+
     protected override IEnumerator ItemActions()
     {
         yield return base.ItemActions();
         transform.SetParent(null);
+
+        myEffect = Effectmanager.Inst.effectPool.GetEffectObject<EffectPlayer>(EffectCode.E_BombExplose, Value2, null, false);
+
 
         bool isMoveEnd = false;
 
@@ -71,7 +77,7 @@ public class Item_Bomb : Items
             {
                 //NonActiveObj.SetActive(false);
                 //ActivedObj.SetActive(true);
-                myHitScanner.Initiate(this, myPlayer.GetEnemyTeam());
+                //myHitScanner.Initiate(this, myPlayer.GetEnemyTeam());
                 isMoveEnd = true;
                 myPlayer.ItemUseEnd();
             });
@@ -105,8 +111,8 @@ public class Item_Bomb : Items
             if (Targets.Count != 0) 
             {
                 // 타겟이 잡히면 동작시키고 터트림
-
-
+                BombExplosionEffect();
+                Debug.Log("BombStart");
 
                 isDone = false;
             }
@@ -125,7 +131,7 @@ public class Item_Bomb : Items
             yield return null;
         }
 
-        myHitScanner.SetScanActive(false);
+        //myHitScanner.SetScanActive(false);
 
         // 사용이 끝나면 오브젝트 반환
         Debug.Log($"{this} ActiveEnd");
@@ -136,8 +142,7 @@ public class Item_Bomb : Items
     public void BombExplosionEffect()
     {
 
-        myEffect.EffectPlayAll();
-
+        myEffect.EffectPlayAll(0,transform);
 
     }
 
@@ -150,9 +155,16 @@ public class Item_Bomb : Items
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("GroundCollision");
         if(collision.gameObject.layer == LayerMask.GetMask("Ground"))
         {
-
+            Collider[] carshed = Physics.OverlapSphere(transform.position, Value3);
+            
+            foreach(Collider collider in carshed)
+            {
+                Debug.Log(collider.gameObject.name);
+                Targets.Add(collider.gameObject);
+            } 
         }
     }
 

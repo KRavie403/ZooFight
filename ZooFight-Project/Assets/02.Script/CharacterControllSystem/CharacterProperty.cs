@@ -93,8 +93,8 @@ public class CharacterProperty : MonoBehaviour
         {
             if (_anim == null)
             {
-                _anim = GetComponent<Animator>(); //ÀÚ±âÀÚ½ÅÀÇ °ÍºÎÅÍ Ã£¾Æº½.
-                if (_anim == null) //¾øÀ¸¸é ÀÚ½ÄÀÇ ÄÄÆ÷³ÍÆ®¸¦ °¡Á®¿È.
+                _anim = GetComponent<Animator>(); //ìê¸°ìì‹ ì˜ ê²ƒë¶€í„° ì°¾ì•„ë´„.
+                if (_anim == null) //ì—†ìœ¼ë©´ ìì‹ì˜ ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì ¸ì˜´.
                 {
                     _anim = GetComponentInChildren<Animator>();
                 }
@@ -104,19 +104,6 @@ public class CharacterProperty : MonoBehaviour
     }
 
 
-
-
-    private void Awake()
-    {
-        
-    }
-
-
-    // Start is called before the first frame update
-    private void Start()
-    {
-        
-    }
 
 
 

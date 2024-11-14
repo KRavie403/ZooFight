@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -18,9 +17,10 @@ public class EffectPool : MonoBehaviour
     #region Create
     [SerializeField] private List<PoolObjectData> EffectPools = new List<PoolObjectData>();
 
-    private void Awake()
+    private void Start()
     {
         ObjectPoolingManager.instance.EffectPoolSet(EffectPools);
+        ObjectPoolingManager.instance.Pool(EffectPools);
     }
 
     #endregion 
@@ -161,7 +161,8 @@ public class EffectPool : MonoBehaviour
     #endregion
 
 
-    #region 기존코드
+    //신규코드 안정화시 삭제예정
+    #region 기존코드 
 
     // 주어진 'EffectCode'에 해당하는 'EffectPlayer'을 찾아 오브젝트를 반환
     public GameObject GetClones(EffectCode effectCode)
@@ -223,6 +224,7 @@ public class EffectPool : MonoBehaviour
         }
         return null;
     }
-    #endregion
+    #endregion 
+
 
 }

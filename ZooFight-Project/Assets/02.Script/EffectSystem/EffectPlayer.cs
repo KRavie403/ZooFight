@@ -29,6 +29,11 @@ public class EffectPlayer : MonoBehaviour , IEffect
 
     EffectCode IEffect.EffectCode => myEffectCode;
 
+    private void Awake()
+    {
+        //gameObject.name = myEffectCode.ToString();
+    }
+
     // Update is called once per frame
     void Update()
     {

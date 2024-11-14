@@ -81,7 +81,7 @@ public class Items : ItemProperty , IItems , IEffect
 
     
 
-    // Á¤º¸ÁÖÀÔÀÌ ÇÊ¿äÇÒ¶§
+    // ì •ë³´ì£¼ì…ì´ í•„ìš”í• ë•Œ
     public virtual void Initate(List<float> Values,PlayerController player)
     {
         if (Values == null) return;
@@ -103,16 +103,16 @@ public class Items : ItemProperty , IItems , IEffect
     }
 
 
-    // »ç¿ëÀÚ Àü´Ş
+    // ì‚¬ìš©ì ì „ë‹¬
     public virtual void ItemUse()
     {
-        // ¿ÀºêÁ§Æ®°¡ ²¨Á®ÀÕ´Ù¸é
+        // ì˜¤ë¸Œì íŠ¸ê°€ êº¼ì ¸ì‡ë‹¤ë©´
         if (!gameObject.activeSelf)
         {
 
         }
 
-        // ÀÜ¿© ÀÛ¾÷ÀÌ ÀÖ´ÂÁö È®ÀÎ ÈÄ Á¾·á
+        // ì”ì—¬ ì‘ì—…ì´ ìˆëŠ”ì§€ í™•ì¸ í›„ ì¢…ë£Œ
         if (ItemAction != null)
         {
             StopCoroutine(ItemAction);
@@ -127,7 +127,7 @@ public class Items : ItemProperty , IItems , IEffect
         isTarget = true;
     }
 
-    // ¾ÆÀÌÅÛÀ» ¿ÀºêÁ§Æ® Ç®¿¡ ¹İ³³ÇÒ¶§
+    // ì•„ì´í…œì„ ì˜¤ë¸Œì íŠ¸ í’€ì— ë°˜ë‚©í• ë•Œ
     public virtual void ReturnItem()
     {
         //myPlayer = null;
@@ -137,7 +137,7 @@ public class Items : ItemProperty , IItems , IEffect
         ObjectPoolingManager.instance.ReturnObject(gameObject);
     }
 
-    // ¾ÆÀÌÅÛÀÇ µ¿ÀÛÀÌ Á¾·áµÉ¶§
+    // ì•„ì´í…œì˜ ë™ì‘ì´ ì¢…ë£Œë ë•Œ
     public virtual void ItemEnd()
     {
         isItemUseEnd = true;
@@ -149,7 +149,7 @@ public class Items : ItemProperty , IItems , IEffect
         ItemAction = null;
         StopAllCoroutines();
         dir = Vector3.zero;
-        Targets = null;
+        Targets.Clear();
         Debug.Log($"{myPlayer} , {ItemAction} , {dir} , {Targets} ");
         GetComponent<HitScanner>()?.Reset();
     }
@@ -158,10 +158,10 @@ public class Items : ItemProperty , IItems , IEffect
     {
         Debug.Log($"{gameObject.name} ItemStandby");
 
-        // »ç¿ë ½ÃÀÛÀü Á¤º¸°»½Å
+        // ì‚¬ìš© ì‹œì‘ì „ ì •ë³´ê°±ì‹ 
         while (!isItemUse)
         {
-            // ¾î¶² ¾ÆÀÌÅÛÀÌµç »ç¿ë¹æÇâÀº Ä³¸¯ÅÍÀÇ Àü¹æ
+            // ì–´ë–¤ ì•„ì´í…œì´ë“  ì‚¬ìš©ë°©í–¥ì€ ìºë¦­í„°ì˜ ì „ë°©
             SetDir(myPlayer.transform.forward);
 
 
@@ -169,7 +169,7 @@ public class Items : ItemProperty , IItems , IEffect
         }
 
         Debug.Log($"{gameObject.name} Activate");
-        // »ó¼Ó¹Ş´Â ¾ÆÀÌÅÛÀÌ »ç¿ëÁß µ¿ÀÛ ÀÛ¼º
+        // ìƒì†ë°›ëŠ” ì•„ì´í…œì´ ì‚¬ìš©ì¤‘ ë™ì‘ ì‘ì„±
         // 
     }
 
