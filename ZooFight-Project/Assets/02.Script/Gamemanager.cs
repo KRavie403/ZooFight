@@ -6,27 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// 생성된 게임 룸의 정보
-/// </summary>
-struct GameInfo
-{
 
-    public int GameId;
-
-    public PlayerInfo[] PlayerInfo;
-    public bool isHost;
-    public float PlayTIme;
-
-    public SessionId SessionId;
-
-    /// <summary>
-    /// Key = PlayerKey , PlayerInfo = Info
-    /// 게임 내 플레이어들의 키값과 컨트롤러를 연결
-    /// </summary>
-    public Dictionary<int, PlayerInfo> PlayerInfos;
-
-}
 
 
 // 게임매니저가 두가지의 업데이트를 담당함

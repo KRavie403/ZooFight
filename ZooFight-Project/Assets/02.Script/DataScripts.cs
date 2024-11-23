@@ -1,3 +1,4 @@
+using BackEnd.Tcp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,6 +6,31 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+
+#region 게임 
+
+/// <summary>
+/// 생성된 게임 룸의 정보
+/// </summary>
+struct GameInfo
+{
+
+    public int GameId;
+
+    public PlayerInfo[] PlayerInfo;
+    public bool isHost;
+    public float PlayTIme;
+
+    public SessionId SessionId;
+
+    /// <summary>
+    /// Key = PlayerKey , PlayerInfo = Info
+    /// 게임 내 플레이어들의 키값과 컨트롤러를 연결
+    /// </summary>
+    public Dictionary<int, PlayerInfo> PlayerInfos;
+
+}
+
 
 /// <summary>
 /// 사용자의 아이덴티티
@@ -81,3 +107,5 @@ struct CharacterData
 
 
 }
+
+#endregion
