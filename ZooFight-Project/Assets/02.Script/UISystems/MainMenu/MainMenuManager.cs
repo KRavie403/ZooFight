@@ -16,10 +16,15 @@ public class MainMenuManager : MonoBehaviour
     // 설정
     public Button settingsBtn;
 
-
     // 게임 종료
     public GameObject exitBtn;
     private bool _isESC = true;
+
+    // 캐릭터 선택
+    public GameObject switchBtn;
+    public GameObject selectBtn;
+    public GameObject[] arrawBtns;
+    private bool _isSelect = true;
 
 
     // 매칭 이미지
@@ -34,6 +39,9 @@ public class MainMenuManager : MonoBehaviour
     private void Start()
     {
         _matchingUI.SetActive(false);
+        switchBtn.SetActive(true);
+        selectBtn.SetActive(false);
+        foreach (var btn in arrawBtns) btn.SetActive(false);
         settingsBtn.onClick.AddListener(OnSettingsButtonClick);
     }
 
@@ -63,7 +71,9 @@ public class MainMenuManager : MonoBehaviour
     {
         //_matchingUI.SetActive(true);
         //StartMatchmakingTimer().Forget();
-        SceneManager.LoadScene("LobbyScene");
+
+        // 로딩 씬을 비동기적으로 로드하고, 이후 게임 씬을 로드
+        LoadLoadingScene().Forget();
     }
 
     public void ClickExit()
@@ -73,6 +83,20 @@ public class MainMenuManager : MonoBehaviour
 #else
                                 Application.Quit();     // 어플리케이션 종료
 #endif
+    }
+
+    public void ClickSwitch()
+    {
+        switchBtn.SetActive(false);
+        selectBtn.SetActive(true);
+        foreach (var btn in arrawBtns) btn.SetActive(true);
+    }
+
+    public void ClickSelect()
+    {
+        switchBtn.SetActive(true);
+        selectBtn.SetActive(false);
+        foreach (var btn in arrawBtns) btn.SetActive(false);
     }
 
     private async UniTaskVoid StartMatchmakingTimer()
@@ -114,5 +138,44 @@ public class MainMenuManager : MonoBehaviour
     public void LoadLoadingImg()
     {
         _anim.SetBool("IsRotating", true);
+    }
+
+
+    private async UniTask LoadLoadingScene()
+    {
+        // 현재 로딩 씬이 이미 로드되어 있는 경우 언로드
+        if (SceneManager.GetSceneByName("LoadingScene").isLoaded)
+        {
+            await SceneManager.UnloadSceneAsync("LoadingScene");
+        }
+
+        // 로딩 씬을 비동기적으로 로드
+        AsyncOperation loadingSceneOp = SceneManager.LoadSceneAsync("LoadingScene");
+        loadingSceneOp.allowSceneActivation = true; // 씬 활성화를 제어
+
+        // 로딩 씬이 로드될 때까지 기다림
+        while (!loadingSceneOp.isDone)
+        {
+            await UniTask.Yield(); // 프레임마다 대기하여 로딩 진행 상황을 체크
+        }
+
+        // 게임 씬을 비동기적으로 로드
+        await LoadGameSceneAsync();
+    }
+
+    private async UniTask LoadGameSceneAsync()
+    {
+        AsyncOperation op = SceneManager.LoadSceneAsync("GameScene");
+        op.allowSceneActivation = false;
+
+        while (!op.isDone)
+        {
+            await UniTask.Yield();
+            if (op.progress >= 0.9f)
+            {
+                op.allowSceneActivation = true;
+                return;
+            }
+        }
     }
 }

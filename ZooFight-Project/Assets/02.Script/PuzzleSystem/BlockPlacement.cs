@@ -62,9 +62,7 @@ public class BlockPlacement : MonoBehaviour
         mapCoordinates[FindMapCoordinatesKey(mapCoordinates, pinkBlockPosition)] = new Vector3(0, 0, 0);
         mapCoordinates[FindMapCoordinatesKey(mapCoordinates, blueBlockPosition)] = new Vector3(0, 0, 0);
         MarkPositionAsOccupied(blockCount++, pinkBlockPosition);
-        Debug.Log("blockCount: " + blockCount);
         MarkPositionAsOccupied(blockCount++, blueBlockPosition);
-        Debug.Log("blockCount: " + blockCount);
         //// 랜덤으로 캐릭터 배치
         //for (int i = 0; i < receivedSpawnUsers.Count; i++)
         //{
@@ -140,7 +138,6 @@ public class BlockPlacement : MonoBehaviour
                 }
                 blockCount++;
                 maxCount = 0;
-                Debug.Log("blockCount: " + blockCount);
             }
         }
         SaveMapData();

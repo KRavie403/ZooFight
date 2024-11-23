@@ -9,6 +9,7 @@ public class AudioManager : Singleton<AudioManager>
 
     public Slider masterVolumeSlider;
     public Slider soundEffectVolumeSlider;
+    public Slider musicVolumeSlider;
 
     [Header("---------- Audio Source ----------")]
     [SerializeField] AudioSource BGMSource;
@@ -28,11 +29,13 @@ public class AudioManager : Singleton<AudioManager>
 
         // 저장된 볼륨 설정 로드
         masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
-        soundEffectVolumeSlider.value = PlayerPrefs.GetFloat("SoundEffectVolume", 1f);
+        soundEffectVolumeSlider.value = PlayerPrefs.GetFloat("SoundEffectVolume", 0.7f);
+        musicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume", 0.7f);
 
         // 슬라이더 값 변경 시 호출될 메서드 추가
         masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
         soundEffectVolumeSlider.onValueChanged.AddListener(SetSoundEffectVolume);
+        musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
     }
 
     private void OnEnable()
@@ -69,7 +72,7 @@ public class AudioManager : Singleton<AudioManager>
     public void PlayUIEffect(int index)
     {
         // UI 사운드를 설정
-        if (index >= 0 && index < sfxUI.Length)
+        if (index >= 0 && index < sfxUI.Length-1)
         {
             SFXSource.PlayOneShot(sfxUI[index]);
         }
@@ -78,6 +81,19 @@ public class AudioManager : Singleton<AudioManager>
             Debug.LogWarning("UI 사운드 이펙트가 범위를 벗어남: " + index);
         }
     }
+
+    //public void PlayMatchingUIEffect(int index)
+    //{
+    //    // UI 사운드를 설정
+    //    if (index >= 0 && index < sfxUI.Length)
+    //    {
+    //        SFXSource.PlayOneShot(sfxUI[index]);
+    //    }
+    //    else
+    //    {
+    //        Debug.LogWarning("UI 사운드 이펙트가 범위를 벗어남: " + index);
+    //    }
+    //}
 
     private AudioClip GetClipForScene(string sceneName, AudioClip[] clips)
     {
@@ -97,7 +113,8 @@ public class AudioManager : Singleton<AudioManager>
         // 마스터 볼륨 설정
         AudioListener.volume = volume;
         PlayerPrefs.SetFloat("MasterVolume", volume); // 설정 저장
-    }
+    } 
+
 
     private void SetSoundEffectVolume(float volume)
     {
@@ -106,6 +123,15 @@ public class AudioManager : Singleton<AudioManager>
         {
             SFXSource.volume = volume;
             PlayerPrefs.SetFloat("SoundEffectVolume", volume); // 설정 저장
+        }
+    }
+    private void SetMusicVolume(float volume)
+    {
+        // Music 볼륨 설정
+        if (BGMSource != null)
+        {
+            BGMSource.volume = volume;
+            PlayerPrefs.SetFloat("MusicVolume", volume); // 설정 저장
         }
     }
 }

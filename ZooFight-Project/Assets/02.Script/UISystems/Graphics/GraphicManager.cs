@@ -4,14 +4,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GraphicManager : MonoBehaviour/*Singleton<GraphicManager>*/
+public class GraphicManager : Singleton<GraphicManager>
 {
     [SerializeField] private TMP_Text graphicsCardName;
     [SerializeField] private TMP_Dropdown displayModeDropdown;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
-    [SerializeField] private Slider _contrastSlider;
     [SerializeField] private Slider _brightnessSlider;
     [SerializeField] private Image _overLay;
+    [SerializeField] private GameObject _resolution;
+    [SerializeField] private RectTransform _videoSettingsRect;
 
     //List<Resolution> displayModes = new List<Resolution>();
     List<Resolution> resolutions = new List<Resolution>();
@@ -25,7 +26,8 @@ public class GraphicManager : MonoBehaviour/*Singleton<GraphicManager>*/
         GraphicsCardInfo();
         InitDisplayMode();
         InitResolution();
-        displayModeDropdown.value = 1;  // ÀüÃ¼È­¸é default
+        displayModeDropdown.value = 1;  // default = ì „ì²´í™”ë©´
+        _resolution.SetActive(true);
         resolutionDropdown.value = resolutions.Count - 1;
         ResolutionDropboxOptionChange();
     }
@@ -36,13 +38,17 @@ public class GraphicManager : MonoBehaviour/*Singleton<GraphicManager>*/
     }
     private void Update()
     {
-        if( SceneManager.sceneCountInBuildSettings == 0)
+        DisplayDropboxOptionChange();
+        AdjustBrightness();
+
+        if ( SceneManager.sceneCountInBuildSettings == 0)
             ResolutionDropboxOptionChange();
     }
 
-    // ±×·¡ÇÈ Ä«µå Á¤º¸
     private void GraphicsCardInfo()
     {
+        // ê·¸ë˜í”½ ì¹´ë“œ ì •ë³´
+
         string GCName = SystemInfo.graphicsDeviceName;
         if(graphicsCardName != null)
         {
@@ -50,30 +56,36 @@ public class GraphicManager : MonoBehaviour/*Singleton<GraphicManager>*/
         }
         else
         {
-            Debug.LogError("TMP_Text ÄÄÆ÷³ÍÆ®°¡ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
-            graphicsCardName.text = "±×·¡ÇÈ Ä«µå Á¤º¸¸¦ ºÒ·¯¿Ã ¼ö ¾ø½À´Ï´Ù.";
+#if UNITY_EDITOR || DEBUG
+            Debug.LogError("TMP_Text ì»´í¬ë„ŒíŠ¸ê°€ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
+#endif
+            graphicsCardName.text = "ê·¸ë˜í”½ ì¹´ë“œ ì •ë³´ë¥¼ ë¶ˆëŸ¬ì˜¬ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.";
         }
     }
 
-    // µğ½ºÇÃ·¹ÀÌ ¸ğµå ¼³Á¤
+
     private void InitDisplayMode()
     {
+        // ë””ìŠ¤í”Œë ˆì´ ëª¨ë“œ ì„¤ì •
+
         displayModeDropdown.options.Clear();
 
-        displayModeDropdown.options.Add(new TMP_Dropdown.OptionData("Ã¢ ¸ğµå"));
-        displayModeDropdown.options.Add(new TMP_Dropdown.OptionData("ÀüÃ¼ È­¸é"));
-        displayModeDropdown.options.Add(new TMP_Dropdown.OptionData("Å×µÎ¸® ¾ø´Â Ã¢ ¸ğµå"));
+        displayModeDropdown.options.Add(new TMP_Dropdown.OptionData("ì°½ ëª¨ë“œ"));
+        displayModeDropdown.options.Add(new TMP_Dropdown.OptionData("ì „ì²´ í™”ë©´"));
+        displayModeDropdown.options.Add(new TMP_Dropdown.OptionData("í…Œë‘ë¦¬ ì—†ëŠ” ì°½ ëª¨ë“œ"));
 
         displayModeDropdown.RefreshShownValue();
     }
 
-    // ÇØ»óµµ Á¶Àı
+
     private void InitResolution()
     {
+        // í•´ìƒë„ ì„¤ì •
+
         resolutions.AddRange(Screen.resolutions);
         //for (int i = 0; i < Screen.resolutions.Length; i++)
         //{
-        //    // 60Hz´Â ¿Ö ¾È µÇÁö
+        //    // 60HzëŠ” ì™œ ì•ˆ ë˜ì§€
         //    if (Screen.resolutions[i].refreshRateRatio.value == 90)
         //    {
         //        resolutions.Add(Screen.resolutions[i]);
@@ -82,19 +94,19 @@ public class GraphicManager : MonoBehaviour/*Singleton<GraphicManager>*/
         //resolutions.AddRange(Screen.resolutions);
         resolutionDropdown.options.Clear();
 
-        int optionNum = 0; //Ã³À½¿¡ dropµÈ °ª ÃÊ±âÈ­
+        int optionNum = 0; //ì²˜ìŒì— dropëœ ê°’ ì´ˆê¸°í™”
         foreach (Resolution value in resolutions)
         {
             Debug.Log(value.width + "x" + value.height + " " + value.refreshRateRatio);
             TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData();
-            option.text = value.ToString(); //ÇØ»óµµ°ª ³Ö¾îÁÜ
-            resolutionDropdown.options.Add(option);//option Ãß°¡
+            option.text = value.ToString(); //í•´ìƒë„ê°’ ë„£ì–´ì¤Œ
+            resolutionDropdown.options.Add(option);//option ì¶”ê°€
 
-            //if (value.width == Screen.width && value.height == Screen.height) //ÇöÀç ÇØ»óµµÀÇ ³Êºñ´Â Screen.width ³ôÀÌ´Â Screen.height¸¦ »ç¿ëÇØ¼­ ¾Ë ¼ö ÀÖÀ½
+            //if (value.width == Screen.width && value.height == Screen.height) //í˜„ì¬ í•´ìƒë„ì˜ ë„ˆë¹„ëŠ” Screen.width ë†’ì´ëŠ” Screen.heightë¥¼ ì‚¬ìš©í•´ì„œ ì•Œ ìˆ˜ ìˆìŒ
             //{
             //    resolutionDropdown.value = optionNum;
             //}
-            if (optionNum == resolutions.Count - 1) // resolutions ¸®½ºÆ®ÀÇ ¸¶Áö¸· °ªÀÌ¸é
+            if (optionNum == resolutions.Count - 1) // resolutions ë¦¬ìŠ¤íŠ¸ì˜ ë§ˆì§€ë§‰ ê°’ì¼ ë•Œ
             {
                 resolutionDropdown.value = optionNum;
             }
@@ -108,15 +120,24 @@ public class GraphicManager : MonoBehaviour/*Singleton<GraphicManager>*/
     {
         switch (displayModeDropdown.value)
         {
-            case 0:     //  Ã¢ ¸ğµå
+            case 0:     //  ì°½ ëª¨ë“œ
                 screenMode = FullScreenMode.Windowed;
+                _resolution.SetActive(true);
+                _videoSettingsRect.sizeDelta = new Vector2(_videoSettingsRect.sizeDelta.x, 400);
+                _videoSettingsRect.anchoredPosition = new Vector2(_videoSettingsRect.anchoredPosition.x, 0);
                 break;
-            case 1:     // ÀüÃ¼ È­¸é
+            case 1:     // ì „ì²´ í™”ë©´
                 screenMode = FullScreenMode.FullScreenWindow;
+                _resolution.SetActive(false);
+                _videoSettingsRect.sizeDelta = new Vector2(_videoSettingsRect.sizeDelta.x, 310);
+                _videoSettingsRect.anchoredPosition = new Vector2(_videoSettingsRect.anchoredPosition.x, 20);
                 break;
-            case 2:     // Å×µÎ¸® ¾ø´Â Ã¢ ¸ğµå
+            case 2:     // í…Œë‘ë¦¬ ì—†ëŠ” ì°½ ëª¨ë“œ
                 screenMode = FullScreenMode.Windowed;
+                _resolution.SetActive(true);
                 SetBorderlessWindowedMode();
+                _videoSettingsRect.sizeDelta = new Vector2(_videoSettingsRect.sizeDelta.x, 400);
+                _videoSettingsRect.anchoredPosition = new Vector2(_videoSettingsRect.anchoredPosition.x, 0);
                 break;
             default:
                 break;
@@ -138,22 +159,17 @@ public class GraphicManager : MonoBehaviour/*Singleton<GraphicManager>*/
                                               screenMode);
         }
     }
-    //public void ResolutionDropboxOption()
-    //{
-    //    curResolutionDropDownVal = resolutionDropdown.value - 1;
-    //}
 
-    public void DarkOverlay()
+    public void AdjustBrightness()
     {
-        _overLay.color = new Color(0, 0, 0, 1.0f - _brightnessSlider.value);
-        //var tempColor = _overLay.color;
-        //tempColor.a = _brightnessSlider.value;
-        //_overLay.color = tempColor;
+        // í™”ë©´ ë°ê¸° ì¡°ì ˆ
+        _overLay.color = new Color(_overLay.color.r, _overLay.color.g, _overLay.color.b, 0.5f - _brightnessSlider.value * 0.5f);
     }
 
-    // Å×µÎ¸® ¾ø´Â Ã¢ ¸ğµå
+
     void SetBorderlessWindowedMode()
     {
+        // í…Œë‘ë¦¬ ì—†ëŠ” ì°½ ëª¨ë“œ
         if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
         {
             var hwnd = GetActiveWindow();
@@ -161,7 +177,7 @@ public class GraphicManager : MonoBehaviour/*Singleton<GraphicManager>*/
         }
     }
 
-    // Windows API ÇÔ¼öµéÀ» ¼±¾ğ
+    // Windows API í•¨ìˆ˜ë“¤ì„ ì„ ì–¸
     [System.Runtime.InteropServices.DllImport("user32.dll")]
     static extern int GetWindowLong(System.IntPtr hWnd, int nIndex);
 

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class KeyController : MonoBehaviour
+public class KeyController : Singleton<KeyController>
 {
     public Button[] keyButtons;
     public KeySettingDecoder InputSettingDecoder;
+    //public KeySettingDecoder InputSettingDecoder;
+    public GameObject[] keyBindingPopup; // 0: 기본 팝업, 1: 키 변경 완료 팝업, 2: 중복 경고 팝업
 
     private KeyAction currentKeyAction;
     private bool isListeningForKey = false; // 키 입력 대기 중인지 여부
@@ -28,6 +30,14 @@ public class KeyController : MonoBehaviour
     {
         if (isListeningForKey)
         {
+            // ESC 키 처리: 팝업창 닫기 및 대기 해제
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                keyBindingPopup[0].SetActive(false); // 키 변경 팝업 비활성화
+                isListeningForKey = false;
+                return;
+            }
+
             // 모든 키코드를 검사하여 어떤 키가 눌렸는지 확인
             foreach (KeyCode keyCode in System.Enum.GetValues(typeof(KeyCode)))
             {
@@ -37,6 +47,8 @@ public class KeyController : MonoBehaviour
                     if (IsKeyCodeAlreadyAssigned(keyCode))
                     {
                         Debug.LogWarning($"{keyCode} 키는 이미 할당된 키입니다.");
+                        keyBindingPopup[0].SetActive(false); // 기존 팝업 닫기
+                        keyBindingPopup[2].SetActive(true); // 중복 경고 팝업 활성화
                         return;
                     }
 
@@ -46,6 +58,10 @@ public class KeyController : MonoBehaviour
 
                     // 변경된 키 저장
                     SaveKeySetting(currentKeyAction, keyCode);
+
+                    // 팝업 처리: 키 변경 완료 팝업 활성화
+                    keyBindingPopup[0].SetActive(false); // 기존 팝업 닫기
+                    keyBindingPopup[1].SetActive(true); // 키 변경 완료 팝업 활성화
 
                     isListeningForKey = false;
                     break;
@@ -58,7 +74,10 @@ public class KeyController : MonoBehaviour
     {
         currentKeyAction = action;
         isListeningForKey = true;
+        keyBindingPopup[0].SetActive(true); // 키 변경 대기 팝업 활성화
+#if DEBUG || UNITY_EDITOR
         Debug.Log($"{action}을 설정하기 위해 아무 키나 눌러주세요.");
+#endif
     }
 
     private void SaveKeySetting(KeyAction action, KeyCode keyCode)
@@ -76,7 +95,10 @@ public class KeyController : MonoBehaviour
         {
             if (entry.Value == keyCode)
             {
-                return true; // 중복된 키코드가 존재
+                // 중복된 키가 있을 경우 기존 키를 비움
+                KeySetting.keys[entry.Key] = KeyCode.None;
+                keyButtons[(int)entry.Key].GetComponentInChildren<Text>().text = "None";
+                return true;
             }
         }
         return false; // 중복된 키코드가 없음
@@ -86,7 +108,6 @@ public class KeyController : MonoBehaviour
     {
         if (InputSettingDecoder != null)
         {
-            //InputSettingDecoder.LoadSaveKeys(); // 저장된 키 설정을 로드
             InputSettingDecoder.SavedCodeDecode(InputSettingDecoder.SavedKeyCodes);
 
             // 저장된 키 값을 UI에 반영

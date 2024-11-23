@@ -5,20 +5,22 @@ using UnityEngine.Rendering;
 
 public class MinimapMovement : MonoBehaviour
 {
-    public float moveSpeed = 59;
+    private float moveSpeed = 45f;
     private float boundary = 20f;
 
-    public float boundaryXMin = 114;
-    public float boundaryXMax = 352;
-    public float boundaryYMin = 48;
-    public float boundaryYMax = 278;
+    private float boundaryXMin = 81f;
+    private float boundaryXMax = 269f;
+    private float boundaryYMin = 36;
+    private float boundaryYMax = 213;
 
-    private void Start()
+
+    private void Update()
     {
-        transform.localPosition = Vector3.zero;
+        MinimapHandler();
+        HandleKeyboardInput();
     }
 
-    void Update()
+    public void MinimapHandler()
     {
         // 마우스 위치 감지
         Vector2 mousePos = Input.mousePosition;
@@ -37,6 +39,43 @@ public class MinimapMovement : MonoBehaviour
             targetPosition += Vector3.down * moveSpeed * Time.deltaTime;
         else if (mousePos.y > Screen.height - boundary)
             targetPosition += Vector3.up * moveSpeed * Time.deltaTime;
+
+        // 경계값을 넘어가지 않도록 목표 위치 제한
+        targetPosition.x = Mathf.Clamp(targetPosition.x, boundaryXMin + boundary, boundaryXMax - boundary);
+        targetPosition.y = Mathf.Clamp(targetPosition.y, boundaryYMin + boundary, boundaryYMax - boundary);
+
+        // 부드러운 이동을 위해 Lerp 사용
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed);
+    }
+
+    private void HandleKeyboardInput()
+    {
+        // 키보드 입력 감지
+        float horizontal = 0;
+        float vertical = 0;
+
+        // 화살표 키 입력
+        if (Input.GetKey(KeyCode.LeftArrow))
+            horizontal -= 1;
+        if (Input.GetKey(KeyCode.RightArrow))
+            horizontal += 1;
+        if (Input.GetKey(KeyCode.UpArrow))
+            vertical += 1;
+        if (Input.GetKey(KeyCode.DownArrow))
+            vertical -= 1;
+
+        // WASD 키 입력
+        if (Input.GetKey(KeyCode.A))
+            horizontal -= 1;
+        if (Input.GetKey(KeyCode.D))
+            horizontal += 1;
+        if (Input.GetKey(KeyCode.W))
+            vertical += 1;
+        if (Input.GetKey(KeyCode.S))
+            vertical -= 1;
+
+        Vector3 moveDirection = new Vector3(horizontal, vertical, 0).normalized;
+        Vector3 targetPosition = transform.position + moveDirection * moveSpeed * Time.deltaTime;
 
         // 경계값을 넘어가지 않도록 목표 위치 제한
         targetPosition.x = Mathf.Clamp(targetPosition.x, boundaryXMin + boundary, boundaryXMax - boundary);
