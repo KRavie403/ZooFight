@@ -6,88 +6,83 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
-/// <summary>
-/// 캐릭터의 상세정보
-/// 캐릭터 컨트롤러의 정보
-/// 캐릭터 현재상태 , 캐릭터의 진행상태
-/// </summary>
-struct PlayerInfo
-{
+///// <summary>
+///// 캐릭터의 상세정보
+///// 고정된 데이터
+///// </summary>
+//struct PlayerInfo
+//{
     
 
-    // 서버에서 호출
-    public string PlayerName;
-    public int PlayerId;
+//    // 서버에서 호출
+//    public string PlayerName;
+//    public int PlayerId;
 
-    public string PlayerIP;
-    public PlayerStatus playerBase;
-
-
-    // 호스트가 호출
-    public PlayerController myController;
-    public MovementInfo movementInfo;
-    public Transform myPlayerPos;
-    public HitScanner.Team Team;
+//    public string PlayerIP;
+//    public CharacterData playerBase;
 
 
-    public PlayerController.pState curState
-    {
-        get => myController.GetState();
-    }
-}
+//    // 호스트가 호출
+//    public PlayerController myController;
+//    public SeverData movementInfo;
+//    public Transform myPlayerPos;
+//    public HitScanner.Team Team;
 
 
-/// <summary>
-/// 플레이어의 이동에 관한 정보
-/// 목표 지점 , 회전 , 캐릭터 상태 , 
-/// </summary>
-struct MovementInfo
-{
-    // 캐릭터의 목표지점
-    public Vector3 dirPos;
-    public bool isDynamic;
-
-    // 캐릭터의 목표회전값
-    public quaternion dirRot;
-
-    // 캐릭터의 상태변화값
-    public PlayerController.pState dirState;
-
-}
-
-/// <summary>
-/// 플레이어 스테이터스값
-/// 체력 , 스테미너 , 실드량 , 이동속도 , 보유아이템
-/// </summary>
-struct PlayerStatus
-{
-    public int ModelId;
+//    public PlayerController.pState curState
+//    {
+//        get => myController.GetState();
+//    }
+//}
 
 
-    public float MaxHp;
-    public float curHp;
+///// <summary>
+///// 게임 외적으로 서버와 교환할 정보
+/////  
+///// </summary>
+//struct SeverData
+//{
+//    // 캐릭터의 목표지점
+//    public Vector3 dirPos;
+//    public bool isDynamic;
 
-    public float MaxStamina;
-    public float curStamina;
+//    // 캐릭터의 목표회전값
+//    public quaternion dirRot;
 
-    public float MaxSp;
-    public float CurSp;
-    public bool isShield;
+//    // 캐릭터의 상태변화값
+//    public PlayerController.pState dirState;
 
-    // 기본이속
-    public float BaseSpeed;
-    // 달리기 가속 비율
-    public float curSpeedRate;
-    public float curSpeed
-    {
-        get
-        {
-            return BaseSpeed * curSpeedRate;
-        }
-    }
-    public ItemCode curItem;
+//}
 
-}
+///// <summary>
+///// 게임 내부에서 호스트와 교환할 정보
+///// 
+///// </summary>
+//struct CharacterData
+//{
+//    public int ModelId;
+
+//    public float curHp;
+
+//    public float curStamina;
+
+//    public float CurSp;
+//    public bool isShield;
+
+//    // 기본이속
+//    public float BaseSpeed;
+//    // 달리기 가속 비율
+//    public float curSpeedRate;
+//    public float curSpeed
+//    {
+//        get
+//        {
+//            return BaseSpeed * curSpeedRate;
+//        }
+//    }
+//    public ItemCode curItem;
+
+//}
 
 
 
@@ -396,6 +391,10 @@ public class PlayerController : MovementController, IHitBox
     /// <param name="e"></param>
     public void PlayerMove(Vector3 Pos, Vector3 Rot, bool isStatic, UnityAction e = null)
     {
+        if (isDenial)
+        {
+            return;
+        }
         if (isStatic)
         {
             StaticMove(Pos, Rot,e);
@@ -423,6 +422,10 @@ public class PlayerController : MovementController, IHitBox
             return;
         }
 
+        // 목표방향으로 회전 -> 지정거리 이동
+        transform.forward = Rot;
+        transform.Translate(Pos);
+
     }
 
     /// <summary>
@@ -435,7 +438,7 @@ public class PlayerController : MovementController, IHitBox
     {
         if (transform.position == Pos)
         {
-
+            return;
         }
 
         transform.position = Pos;
