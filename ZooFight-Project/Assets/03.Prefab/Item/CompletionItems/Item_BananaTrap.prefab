@@ -85,8 +85,8 @@ MonoBehaviour:
   Value4: 0
   Value5: 0
   myCode: 1
-  effectCode: 100
-  soundCode: 0
+  effectCode: 103
+  soundCode: 100
   myPrefab: {fileID: 9091358806984954437}
   Targets: []
   isTarget: 0
@@ -94,9 +94,9 @@ MonoBehaviour:
   InputCount: 0
   dir: {x: 0, y: 0, z: 0}
   ItemEffect: 0
-  myEffect: {fileID: 0}
   NonActiveObj: {fileID: 6738735083283184989}
   ActivedObj: {fileID: 1119810086636074631}
+  myEffect: {fileID: 0}
   myHitScanner: {fileID: 0}
 --- !u!135 &2948924129698286627
 SphereCollider:

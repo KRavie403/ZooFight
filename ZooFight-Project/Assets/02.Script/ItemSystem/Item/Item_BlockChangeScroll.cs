@@ -19,22 +19,25 @@ public class Item_BlockChangeScroll : Items
     [SerializeField]
     EffectPlayer myEffect;
     bool isEffectPlay = false;
+    EffectCode myEffectCode = EffectCode.E_BlockChangeScroll;
+
     [SerializeField]
     SoundSpeaker mySound;
     bool isSoundPlay = false;   
+
 
     //public GameObject myBlockObj;
     public BlockObject myBlock;
     //public GameObject enemyBlockObj;
     public BlockObject enemyBlock;
 
-    Vector3 effectDirBase = new Vector3(-90, 0, 0);
 
 
     protected override void Awake()
     {
         base.Awake();
 
+        myEffectCode = EffectCode.E_BlockChangeScroll;
         myCode = ItemCode.BlockChangeScroll;
     }
 
@@ -63,6 +66,11 @@ public class Item_BlockChangeScroll : Items
     protected override IEnumerator ItemActions()
     {
         yield return base.ItemActions();
+
+        Debug.Log(EffectCode.E_BlockChangeScroll.ToString());
+        // 정지 상태의 이펙트를 인출해오기
+        myEffect = Effectmanager.Inst.effectPool.GetEffectObject<EffectPlayer>(EffectCode.E_BlockChangeScroll, Value2, null, false);
+
 
         float duringTime = 0;
         // 아군 , 상대편 블럭정보 가져오기
@@ -112,7 +120,6 @@ public class Item_BlockChangeScroll : Items
                 yield return base.ItemActions();
             }
 
-            yield return null;
         }
 
         Debug.Log($"{this} ActiveEnd");
@@ -124,8 +131,16 @@ public class Item_BlockChangeScroll : Items
     {
         myBlock = null;
         enemyBlock = null;
-        myEffect.gameObject.SetActive(false);
-        myEffect.transform.SetParent(transform, false);
+
+        // 교체 예정 
+        //myEffect.gameObject.SetActive(false);
+        //myEffect.transform.SetParent(transform, false);
+
+        ObjectPoolingManager.instance.ReturnObject(myEffect.gameObject);
+
+        // 교체 코드
+        myEffect = null;
+
         base.ReturnItem();
     }
 
@@ -133,11 +148,10 @@ public class Item_BlockChangeScroll : Items
     {
         myEffect.gameObject.SetActive(true);
 
-        //Transform pos = 
-        myEffect.transform.SetParent(null);
+        // 기본이 최상위노드로 인출되게 변경 예정이라 삭제 예정
 
-        myEffect.EffectPlayAll(0, 0, myBlock.transform,Quaternion.Euler(effectDirBase));
-        myEffect.EffectPlayAll(1, 0, enemyBlock.transform,Quaternion.Euler(effectDirBase));
+        myEffect.EffectPlayAll(0, 0, myBlock.transform);
+        myEffect.EffectPlayAll(1, 0, enemyBlock.transform);
         
         
     }

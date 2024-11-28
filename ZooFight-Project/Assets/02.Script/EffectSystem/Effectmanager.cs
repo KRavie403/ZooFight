@@ -13,13 +13,13 @@ using UnityEngine;
 /// </summary>
 public enum EffectCode
 {
-    CharacterWalk = 0, CharacterRun, CharacterJump, CharacterAttack, CharacterDamaged,
-    GuardDrink = 100, StaminaDrink, PowerDrink, 
-    BananaTrap,
-    Bomb, SpiderBomb, InkBomb,
-    ToyHammer, WhippingMachine, MinimalRazer,
-    CurseScroll, BlockChangeScroll,
-    ButtonClick = 200,
+    E_CharacterWalk = 0, E_CharacterRun, E_CharacterJump, E_CharacterAttack, E_CharacterDamaged,
+    E_GuardDrink = 100, E_StaminaDrink, E_PowerDrink, 
+    E_BananaTrap,
+    E_BombExplose, E_SpiderBomb, E_InkBomb,
+    E_ToyHammer, E_WhippingMachine, E_MinimalRazer,
+    E_CurseScroll, E_BlockChangeScroll,
+    E_ButtonClick = 200,
     CodeCount
 }
 
@@ -63,7 +63,7 @@ public class Effectmanager : Singleton<Effectmanager>
             //}
         }
 
-        effectPool = GetComponent<EffectPool>();
+        effectPool = GetComponentInChildren<EffectPool>();
 
     }
 

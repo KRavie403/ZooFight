@@ -1,3 +1,4 @@
+using BackEnd.Tcp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,9 +6,12 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// °ÔÀÓ¸Å´ÏÀú°¡ µÎ°¡ÁöÀÇ ¾÷µ¥ÀÌÆ®¸¦ ´ã´çÇÔ
-// 1.ÇÁ·¹ÀÓ°£°İÀÇ ¾÷µ¥ÀÌÆ®
-// 2.Æú¸µ·¹ÀÌÆ® °£°İÀÇ ¾÷µ¥ÀÌÆ®
+
+
+
+// ê²Œì„ë§¤ë‹ˆì €ê°€ ë‘ê°€ì§€ì˜ ì—…ë°ì´íŠ¸ë¥¼ ë‹´ë‹¹í•¨
+// 1.í”„ë ˆì„ê°„ê²©ì˜ ì—…ë°ì´íŠ¸
+// 2.í´ë§ë ˆì´íŠ¸ ê°„ê²©ì˜ ì—…ë°ì´íŠ¸
 public class Gamemanager : MonoBehaviour
 {
 
@@ -43,15 +47,15 @@ public class Gamemanager : MonoBehaviour
     private GameState gameState;
     #endregion
 
-    #region ¿ùµå¸Å´ÏÀú·Î ÀÌ°üÇÒ Á¤º¸
-    // ÇöÀç ÇÃ·¹ÀÌÁßÀÎ Ä³¸¯ÅÍÀÇ Á¤º¸
+    #region ì›”ë“œë§¤ë‹ˆì €ë¡œ ì´ê´€í•  ì •ë³´
+    // í˜„ì¬ í”Œë ˆì´ì¤‘ì¸ ìºë¦­í„°ì˜ ì •ë³´
     public PlayerController currentPlayer;
     public int CharacterID = -1;
 
     public bool IsGameEnd = false;
     public HitScanner.Team VictoryTeam = HitScanner.Team.NotSetting;
 
-    // ÆÀ¸â¹ö <Id,ÄÄÆ÷³ÍÆ®> Á¶ÇÕ 
+    // íŒ€ë©¤ë²„ <Id,ì»´í¬ë„ŒíŠ¸> ì¡°í•© 
     public int MaxTeamMember = 1;
     public List<int> RedTeamId;
     public Dictionary<int,PlayerController> RedTeamPlayers;
@@ -68,8 +72,8 @@ public class Gamemanager : MonoBehaviour
     {
         if (inst == null)
         {
-            inst = FindObjectOfType<Gamemanager>();     // °ÔÀÓ ½ÃÀÛ ½Ã ÀÚ±â ÀÚ½ÅÀ» ´ãÀ½
-            Debug.LogError("GameManager ÀÎ½ºÅÏ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            inst = FindObjectOfType<Gamemanager>();     // ê²Œì„ ì‹œì‘ ì‹œ ìê¸° ìì‹ ì„ ë‹´ìŒ
+            Debug.LogError("GameManager ì¸ìŠ¤í„´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         if(inst != this)
         {
@@ -79,7 +83,7 @@ public class Gamemanager : MonoBehaviour
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
 
-        DontDestroyOnLoad(this.gameObject);         // ¾À ÀüÈ¯¿¡ ¿µÇâÀ» ¹ŞÁö ¾Ê°Ô ¸¸µë
+        DontDestroyOnLoad(this.gameObject);         // ì”¬ ì „í™˜ì— ì˜í–¥ì„ ë°›ì§€ ì•Šê²Œ ë§Œë“¬
     }
 
 
@@ -123,9 +127,9 @@ public class Gamemanager : MonoBehaviour
     }
 
 
-    #region  Á¤º¸ÀÎÃâ
+    #region  ì •ë³´ì¸ì¶œ
 
-    // °¢ ÆÀ¿ø ¸ñ·Ï
+    // ê° íŒ€ì› ëª©ë¡
     public Dictionary<int,PlayerController> GetTeam(HitScanner.Team team)
     {
         switch (team)
@@ -154,7 +158,7 @@ public class Gamemanager : MonoBehaviour
         }
     }
 
-    // ½ÂÆĞÆÀ ÆÀ¿ø id°ª
+    // ìŠ¹íŒ¨íŒ€ íŒ€ì› idê°’
     public List<int> GetWinnerTeamId()
     {
         switch (VictoryTeam)
@@ -183,7 +187,7 @@ public class Gamemanager : MonoBehaviour
                 return null;
         }
     }
-    // ÁöÁ¤ÆÀ ÆÀ¿ø id°ª
+    // ì§€ì •íŒ€ íŒ€ì› idê°’
     public List<int> GetTeamId(HitScanner.Team team)
     {
         switch (team)
@@ -198,7 +202,24 @@ public class Gamemanager : MonoBehaviour
                 return null;
         }
     }
-    // ÁöÁ¤ ÆÀ ºí·°
+
+    public PlayerController PlayerIdToGetPlayerController(int playerId)
+    {
+        if (BlueTeamPlayers.ContainsKey(playerId))
+        {
+            return BlueTeamPlayers[playerId];
+        }
+        else if(RedTeamPlayers.ContainsKey(playerId)) 
+        { 
+            return RedTeamPlayers[playerId];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    // ì§€ì • íŒ€ ë¸”ëŸ­
     public BlockObject GetTeamBlock(HitScanner.Team team)
     {
         switch (team)
@@ -258,5 +279,7 @@ public class Gamemanager : MonoBehaviour
         }
     }
     #endregion
+
+
 
 }

@@ -20,22 +20,32 @@ public class Item_BananaTrap : Items
         
     }
 
-
-    [SerializeField]
-    EffectPlayer myEffect;
+    //
     [SerializeField]
     GameObject NonActiveObj;
     [SerializeField]
     GameObject ActivedObj;
 
+
+    EffectCode myEffectCode = EffectCode.E_BananaTrap;
+
+    [SerializeField]
+    EffectPlayer myEffect;
+
+
     public HitScanner myHitScanner;
     
-    
+    // 혼란 가중으로 인한 재작성중
 
     protected override void Awake()
     {
         base.Awake();
 
+        //신규코드
+        //신버전에서는 히트스캐너 미사용
+        myCode = ItemCode.BananaTrap;
+
+        //기존코드
         // 히트스캐너 생성
         if(GetComponent<HitScanner>() != null )
         {
@@ -57,6 +67,7 @@ public class Item_BananaTrap : Items
     protected override void Start()
     {
         base.Start();
+
         
         Transform[] objs = GetComponentsInChildren<Transform>();
         foreach( Transform obj in objs )
@@ -91,6 +102,7 @@ public class Item_BananaTrap : Items
     public override void Initate(List<float> Values, PlayerController player)
     {
         base.Initate(Values, player);
+
 
         myHitScanner.Initiate(this, myPlayer.GetEnemyTeam());
     }
@@ -151,23 +163,23 @@ public class Item_BananaTrap : Items
 
 
             // 동작감지시 효과적용 및 이펙트 , 사운드 출력
-            if(Targets.Count != 0)
+            if (Targets.Count != 0)
             {
                 // 타겟이 잡히면 동작시키고 터트림
                 foreach (var target in Targets)
                 {
-                    if(target.GetComponent<PlayerController>() != null)
+                    if (target.GetComponent<PlayerController>() != null)
                     {
                         // 대상이 이동중이면 진행하던 방향으로 일정시간 미끄러짐
                         // 대상이 정지중일경우 랜덤방향으로 미끄러짐
-                        if(target.GetComponent<PlayerController>().GetIsmoving())
+                        if (target.GetComponent<PlayerController>().GetIsmoving())
                         {
-                            target.GetComponent<PlayerController>().Slide(target.transform.forward,Value3,Value1);
+                            target.GetComponent<PlayerController>().Slide(target.transform.forward, Value3, Value1);
                             Debug.Log("ForwardSlide");
                         }
                         else
                         {
-                            Vector3 rndDir = new Vector3(Random.Range(-1.0f,1.0f), 0,Random.Range(-1.0f,1.0f));
+                            Vector3 rndDir = new Vector3(Random.Range(-1.0f, 1.0f), 0, Random.Range(-1.0f, 1.0f));
                             target.GetComponent<PlayerController>().Slide(rndDir, Value3, Value1);
                             Debug.Log("RandomSlide");
                         }
@@ -177,6 +189,7 @@ public class Item_BananaTrap : Items
                 }
                 Debug.Log("HitEnd");
                 //
+                break;
                 duringTime += Value2;
             }
 
@@ -200,6 +213,33 @@ public class Item_BananaTrap : Items
 
     }
 
+
+    private void OnCollisionEnter(Collision collision)
+    {
+     
+        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        if(player != null)
+        {
+            Targets.Add(player.gameObject);
+
+
+            //// 대상이 이동중이면 진행하던 방향으로 일정시간 미끄러짐
+            //// 대상이 정지중일경우 랜덤방향으로 미끄러짐
+            //if (player.GetIsmoving())
+            //{
+            //    player.Slide(collision.transform.forward, Value3, Value1);
+            //    Debug.Log("ForwardSlide");
+            //}
+            //else
+            //{
+            //    Vector3 rndDir = new Vector3(Random.Range(-1.0f, 1.0f), 0, Random.Range(-1.0f, 1.0f));
+            //    player.Slide(rndDir, Value3, Value1);
+            //    Debug.Log("RandomSlide");
+            //}
+            //Debug.Log("BananaHit");
+            //Debug.Log(collision.gameObject.name);
+        }
+    }
 
 
 }

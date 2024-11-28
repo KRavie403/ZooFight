@@ -1,13 +1,95 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
+///// <summary>
+///// 캐릭터의 상세정보
+///// 고정된 데이터
+///// </summary>
+//struct PlayerInfo
+//{
+    
+
+//    // 서버에서 호출
+//    public string PlayerName;
+//    public int PlayerId;
+
+//    public string PlayerIP;
+//    public CharacterData playerBase;
+
+
+//    // 호스트가 호출
+//    public PlayerController myController;
+//    public SeverData movementInfo;
+//    public Transform myPlayerPos;
+//    public HitScanner.Team Team;
+
+
+//    public PlayerController.pState curState
+//    {
+//        get => myController.GetState();
+//    }
+//}
+
+
+///// <summary>
+///// 게임 외적으로 서버와 교환할 정보
+/////  
+///// </summary>
+//struct SeverData
+//{
+//    // 캐릭터의 목표지점
+//    public Vector3 dirPos;
+//    public bool isDynamic;
+
+//    // 캐릭터의 목표회전값
+//    public quaternion dirRot;
+
+//    // 캐릭터의 상태변화값
+//    public PlayerController.pState dirState;
+
+//}
+
+///// <summary>
+///// 게임 내부에서 호스트와 교환할 정보
+///// 
+///// </summary>
+//struct CharacterData
+//{
+//    public int ModelId;
+
+//    public float curHp;
+
+//    public float curStamina;
+
+//    public float CurSp;
+//    public bool isShield;
+
+//    // 기본이속
+//    public float BaseSpeed;
+//    // 달리기 가속 비율
+//    public float curSpeedRate;
+//    public float curSpeed
+//    {
+//        get
+//        {
+//            return BaseSpeed * curSpeedRate;
+//        }
+//    }
+//    public ItemCode curItem;
+
+//}
+
+
+
+
 public class PlayerController : MovementController, IHitBox
 {
-
+    
     #region 참조 변수 목록
     public enum pState
     {
@@ -62,6 +144,8 @@ public class PlayerController : MovementController, IHitBox
     [Range(-1.0f, 1.0f)]
     public float AxisX, AxisY = 0;
     public Vector3 DenialPos = Vector3.zero;
+    public Vector3 Dir => Vector3.right * AxisX + Vector3.forward * AxisY;
+    
 
     public CharacterCamera TargetCamera;
     public LayerMask groundMask;
@@ -194,8 +278,9 @@ public class PlayerController : MovementController, IHitBox
 
     #region 정보 폴링
 
-
-    // 현재 이 캐릭터의 상태정보 전송
+    /// <summary>
+    /// 현재 이 캐릭터의 상태정보 전송
+    /// </summary>
     public void StatusPolling()
     {
 
@@ -292,13 +377,84 @@ public class PlayerController : MovementController, IHitBox
         }
 
 
-        //if (AxisY != 0)
-        //{
-        //    if (PlayerSM.CurrentState != p_States[pState.Move])
-        //        PlayerSM.ChangeState(p_States[pState.Move]);
-        //}
 
     }
+
+    #region 이동관련 신규코드
+
+    /// <summary>
+    /// 플레이어의 이동을 진행 하는 함수
+    /// </summary>
+    /// <param name="Pos">목표 방향 or 좌표</param>
+    /// <param name="Rot">오브젝트의 전방 설정</param>
+    /// <param name="isStatic">동적,정적이동을 결정</param>
+    /// <param name="e"></param>
+    public void PlayerMove(Vector3 Pos, Vector3 Rot, bool isStatic, UnityAction e = null)
+    {
+        if (isDenial)
+        {
+            return;
+        }
+        if (isStatic)
+        {
+            StaticMove(Pos, Rot,e);
+        }
+        else
+        {
+            DynamicMove(Pos, Rot,e);
+        }
+    }
+
+    /// <summary>
+    /// 동적 이동을 진행하는 함수
+    /// </summary>
+    /// <param name="Pos">목표 방향</param>
+    /// <param name="Rot">오브젝트의 전방설정</param>
+    /// <param name="e">이동 종료후 작업</param>
+    public void DynamicMove(Vector3 Pos, Vector3 Rot, UnityAction e = null)
+    {
+        if(Pos == Vector3.zero)
+        {
+            myAnim.SetBool("IsMoving", false);
+            myAnim.SetBool("IsRunning", false);
+            myAnim.SetFloat("MoveAxisX", 0);
+            myAnim.SetFloat("MoveAxisY", 0);
+            return;
+        }
+
+        // 목표방향으로 회전 -> 지정거리 이동
+        transform.forward = Rot;
+        transform.Translate(Pos);
+
+    }
+
+    /// <summary>
+    /// 정적 이동을 진행하는 함수
+    /// </summary>
+    /// <param name="Pos">목표 좌표</param>
+    /// <param name="Rot">오브젝트의 전방 설정</param>
+    /// <param name="e">이동 종료후 작업</param>
+    public void StaticMove(Vector3 Pos, Vector3 Rot, UnityAction e = null)
+    {
+        if (transform.position == Pos)
+        {
+            return;
+        }
+
+        transform.position = Pos;
+
+        transform.forward = Rot;
+
+        myAnim.SetBool("IsMoving", false);
+        myAnim.SetBool("IsRunning", false);
+        myAnim.SetFloat("MoveAxisX", 0);
+        myAnim.SetFloat("MoveAxisY", 0);
+
+        DenialPos = Vector3.zero;
+    }
+
+    #endregion
+
 
     public void CurAxisMove()
     {
@@ -374,15 +530,23 @@ public class PlayerController : MovementController, IHitBox
 
     public void Slide(Vector3 dir, float dist, float Speed, UnityAction e = null)
     {
-        
-        StartCoroutine(CharacterSlide(dir, dist, Speed, e));    
+        StartCoroutine(CharacterSlide(dir, dist, Speed, e));   
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dir">밀려나는 방향</param>
+    /// <param name="Dist">밀려나는 거리</param>
+    /// <param name="Speed">밀려나는 속도</param>
+    /// <param name="e">행동종료후 동작</param>
+    /// <returns></returns>
     public IEnumerator CharacterSlide(Vector3 dir, float Dist,float Speed, UnityAction e = null)
     {
         float duringTime = 0.0f;
 
         myAnim.SetBool("IsSlide", true);
+        
         myAnim.SetTrigger("Sliding");
         while (duringTime < Dist/Speed)
         {
@@ -391,15 +555,20 @@ public class PlayerController : MovementController, IHitBox
             
             yield return null;
         }
-
-        myAnim.SetBool("isSlide", false);
+        
+        myAnim.SetBool("IsSlide", false);
 
         e?.Invoke();
     }
 
-    // 패킷 데이터용 이동 함수 -- 목표 좌표를 인자로받음
+    /// <summary>
+    /// 패킷 데이터용 이동 함수
+    /// </summary>
+    /// <param name="dir">목표 좌표</param>
     public void MoveToPos(Vector3 dir)
     {
+        
+
         // 현재 위치 그대로 이동하면 미동작
         if (dir == transform.position) return;
 
@@ -457,6 +626,7 @@ public class PlayerController : MovementController, IHitBox
             isJump = true;
         }
     }
+
     public void SetisJump(bool IsJump)
     {
         isJump = IsJump;
@@ -497,7 +667,6 @@ public class PlayerController : MovementController, IHitBox
 
             yield return null;
         }
-
 
         isDenial = false;   
     }
@@ -870,6 +1039,11 @@ public class PlayerController : MovementController, IHitBox
     public void SetState(pState state)
     {
         State = state;
+    }
+
+    public pState GetState()
+    {
+        return State;
     }
 
     #endregion
