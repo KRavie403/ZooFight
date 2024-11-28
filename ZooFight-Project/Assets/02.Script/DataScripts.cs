@@ -12,22 +12,20 @@ using UnityEngine.Events;
 /// <summary>
 /// 생성된 게임 룸의 정보
 /// </summary>
-struct GameInfo
+public struct GameInfo
 {
 
     public int GameId;
 
-    public PlayerInfo[] PlayerInfo;
+    public CharacterData[] PlayerInfo;
+    public int myPlayerNum;
+
+
     public bool isHost;
     public float PlayTIme;
 
     public SessionId SessionId;
 
-    /// <summary>
-    /// Key = PlayerKey , PlayerInfo = Info
-    /// 게임 내 플레이어들의 키값과 컨트롤러를 연결
-    /// </summary>
-    public Dictionary<int, PlayerInfo> PlayerInfos;
 
 }
 
@@ -36,7 +34,7 @@ struct GameInfo
 /// 사용자의 아이덴티티
 /// 유저의 이름 , ip  등 고유정보를 가짐
 /// </summary>
-struct PlayerInfo
+public struct PlayerInfo
 {
 
     public string PlayerName;
@@ -45,29 +43,39 @@ struct PlayerInfo
     public string PlayerIP;
     public bool isSeverConnect;
 
+    /// <summary>
+    /// 생성된 게임 내의 플레이어 번호
+    /// -1 = 게임밖 , 0 = 호스트 , 1 ~ N = 플레이어 넘버
+    /// </summary>
+    public int PlayerNum;
 
 }
 
 
 /// <summary>
 /// 게임 외적으로 서버와 교환할 정보
-///  
+/// 호스트 -> 서버 전송
 /// </summary>
-struct SeverData
+public struct SeverData 
 {
-    public PlayerInfo myPlayer;
+    //public PlayerInfo myPlayer;
 
-
-
+    public PlayerInfo[] GamePlayerList;
+  
 }
+
+
+
 
 /// <summary>
 /// 게임 내부에서 호스트와 교환할 정보
 /// 
 /// </summary>
-struct CharacterData
-{
+public struct CharacterData 
+{ 
     public PlayerInfo myPlayer;
+
+    
 
     public int ModelId;
 
@@ -80,32 +88,68 @@ struct CharacterData
     public float curStamina;
 
     public float CurSp;
-
     public bool isShield;
-    public bool IsMoving;
+
+
+    public bool isGameStart;
     public bool isSuperArmor;
-    public bool IsRunning;
-    public bool isJump;
     public bool isAbleMove;
     public bool isCrashed;
     public bool isKeyReverse;
     public bool isGrab;
     public bool isDenial;
 
-    // 달리기 가속 비율
-    public float curSpeedRate;
-
     public ItemCode curItem;
 
+    public bool isMoving;
+    public bool isRunning;
+    public bool isJump;
 
+
+    
     // 캐릭터의 목표지점
     public Vector3 dirPos;
     public bool isDynamic;
-
     // 캐릭터의 목표회전값
     public quaternion dirRot;
 
 
 }
+
+public struct ItemData
+{
+    public ItemCode itemCode;
+
+    /// <summary>
+    /// 아이템의 목적지
+    /// Zero = 비 이동형 아이템
+    /// </summary>
+    public Vector3 dirPos;
+    public HitScanner.Team curTeam;
+
+}
+
+
+
+#region 블럭 데이터
+
+public struct TeamBlockData
+{
+    public NormalBlockdata curData;    
+
+    public HitScanner.Team curTeam;
+
+}
+
+public struct NormalBlockdata
+{
+    public Vector3 curPos;
+
+    public bool isMoving;
+    public Vector3 dirPos;
+}
+
+#endregion
+
 
 #endregion
