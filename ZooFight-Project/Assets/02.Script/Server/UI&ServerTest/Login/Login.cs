@@ -49,7 +49,11 @@ public class Login : LoginBase
 
             if (callback.IsSuccess())
             {
-                SetMessage($"{inputFieldID.text}님 환영합니다.");
+                Backend.BMember.GetUserInfo(nickNameCallback =>
+                {
+                    string nickname = nickNameCallback.GetReturnValuetoJSON()["row"]["nickname"].ToString();
+                    SetMessage($"{nickname}님 환영합니다.");
+                });
                 OnLoadGameScene().Forget();
             }
             else
@@ -113,7 +117,7 @@ public class Login : LoginBase
 
             if (loadSceneAsync.progress >= 0.9f)
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(2));
+                await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
 
                 loadSceneAsync.allowSceneActivation = true;
             }

@@ -41,9 +41,9 @@ public class RegisterAccount : LoginBase
     {
         ResetUI(imageNickname);
 
-        if (isFieldDataEmpty(imageNickname, inputFieldNickName.text, "´Ğ³×ÀÓ")) return;
+        if (isFieldDataEmpty(imageNickname, inputFieldNickName.text, "ë‹‰ë„¤ì„")) return;
         //btnNicknameAccept.interactable = false;
-        SetMessage("´Ğ³×ÀÓ È®ÀÎ Áß . . . ");
+        SetMessage("ë‹‰ë„¤ì„ í™•ì¸ ì¤‘ . . . ");
 
         NicknameAccept();
     }
@@ -57,7 +57,7 @@ public class RegisterAccount : LoginBase
             if (callback.IsSuccess())
             {
                 //nickNameAccept = true;
-                SetMessage("»ç¿ë°¡´ÉÇÑ ´Ğ³×ÀÓÀÔ´Ï´Ù.");
+                SetMessage("ì‚¬ìš©ê°€ëŠ¥í•œ ë‹‰ë„¤ì„ì…ë‹ˆë‹¤.");
                 return;
             }
             else
@@ -66,10 +66,10 @@ public class RegisterAccount : LoginBase
                 switch (int.Parse(callback.GetStatusCode()))
                 {
                     case 400:
-                        message = "´Ğ³×ÀÓÀÌ ºñ¾îÀÖ°Å³ª 20ÀÚ ÀÌ»óÀÌ°Å³ª ¾Õ/µÚ °ø¹éÀÌ ÀÖ½À´Ï´Ù.";
+                        message = "ë‹‰ë„¤ì„ì´ ë¹„ì–´ìˆê±°ë‚˜ 20ì ì´ìƒì´ê±°ë‚˜ ì•/ë’¤ ê³µë°±ì´ ìˆìŠµë‹ˆë‹¤.";
                         break;
                     case 409:
-                        message = "ÀÌ¹Ì Á¸ÀçÇÏ´Â ´Ğ³×ÀÓÀÔ´Ï´Ù.";
+                        message = "ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ë‹‰ë„¤ì„ì…ë‹ˆë‹¤.";
                         break;
                     default:
                         message = callback.GetMessage();
@@ -84,32 +84,32 @@ public class RegisterAccount : LoginBase
     {
         ResetUI(imageID, imagePW, imageConfirmPW, imageEmail, imageNickname);
 
-        if (isFieldDataEmpty(imageID, inputFieldID.text, "¾ÆÀÌµğ")) return;
-        if (isFieldDataEmpty(imagePW, inputFieldPW.text, "ºñ¹Ğ¹øÈ£")) return;
-        if (isFieldDataEmpty(imageConfirmPW, inputFieldConfirmPW.text, "ºñ¹Ğ¹øÈ£ È®ÀÎ")) return;
-        if (isFieldDataEmpty(imageEmail, inputFieldEmail.text, "ÀÌ¸ŞÀÏ")) return;
-        if (isFieldDataEmpty(imageNickname, inputFieldNickName.text, "´Ğ³×ÀÓ")) return;
+        if (isFieldDataEmpty(imageID, inputFieldID.text, "ì•„ì´ë””")) return;
+        if (isFieldDataEmpty(imagePW, inputFieldPW.text, "ë¹„ë°€ë²ˆí˜¸")) return;
+        if (isFieldDataEmpty(imageConfirmPW, inputFieldConfirmPW.text, "ë¹„ë°€ë²ˆí˜¸ í™•ì¸")) return;
+        if (isFieldDataEmpty(imageEmail, inputFieldEmail.text, "ì´ë©”ì¼")) return;
+        if (isFieldDataEmpty(imageNickname, inputFieldNickName.text, "ë‹‰ë„¤ì„")) return;
 
         //if (!nickNameAccept)
         //{
-        //    SetMessage("´Ğ³×ÀÓ È®ÀÎ ¹öÆ°À» ´­·¯ÁÖ¼¼¿ä.");
+        //    SetMessage("ë‹‰ë„¤ì„ í™•ì¸ ë²„íŠ¼ì„ ëˆŒëŸ¬ì£¼ì„¸ìš”.");
         //    return;
         //}
 
         if (!inputFieldPW.text.Equals(inputFieldConfirmPW.text))
         {
-            GuideForIncorrectlyEnteredData(imageConfirmPW, "ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.");
+            GuideForIncorrectlyEnteredData(imageConfirmPW, "ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
             return;
         }
 
         if (!inputFieldEmail.text.Contains("@"))
         {
-            GuideForIncorrectlyEnteredData(imageEmail, "¸ŞÀÏ Çü½ÄÀÌ Àß¸øµÇ¾ú½À´Ï´Ù.(ex. adress@xx.xx");
+            GuideForIncorrectlyEnteredData(imageEmail, "ë©”ì¼ í˜•ì‹ì´ ì˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤.(ex. adress@xx.xx");
             return;
         }
 
         btnRegisterAccount.interactable = false;
-        SetMessage("°èÁ¤ »ı¼ºÁßÀÔ´Ï´Ù. . .");
+        SetMessage("ê³„ì • ìƒì„±ì¤‘ì…ë‹ˆë‹¤. . .");
 
         CustomSignUp();
     }
@@ -126,10 +126,11 @@ public class RegisterAccount : LoginBase
                 {
                     if (callback.IsSuccess())
                     {
-                        SetMessage($"°èÁ¤ »ı¼º ¼º°ø. {inputFieldNickName.text}´Ô È¯¿µÇÕ´Ï´Ù.");
+                        SetMessage($"ê³„ì • ìƒì„± ì„±ê³µ. {inputFieldNickName.text}ë‹˜ í™˜ì˜í•©ë‹ˆë‹¤.");
                         Backend.BMember.UpdateNickname(inputFieldNickName.text);
 
-
+                        // ê³„ì • ìƒì„± ì„±ê³µ ì‹œ í•´ë‹¹ ê³„ì •ì˜ ê²Œì„ ì •ë³´ ìƒì„±
+                        BackendGameData.Inst.GameDataInsert();
                     }
                 });
             }
@@ -140,7 +141,7 @@ public class RegisterAccount : LoginBase
                  switch (int.Parse(callback.GetStatusCode()) )
                 {
                     case 409:
-                        message = "ÀÌ¹Ì Á¸ÀçÇÏ´Â ¾ÆÀÌµğÀÔ´Ï´Ù.";
+                        message = "ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ì•„ì´ë””ì…ë‹ˆë‹¤.";
                         break;
                     case 403:
                     case 401:
@@ -150,7 +151,7 @@ public class RegisterAccount : LoginBase
                         break;
                 }
 
-                if (message.Contains("¾ÆÀÌµğ"))
+                if (message.Contains("ì•„ì´ë””"))
                 {
                     GuideForIncorrectlyEnteredData(imageID, message);
                 }

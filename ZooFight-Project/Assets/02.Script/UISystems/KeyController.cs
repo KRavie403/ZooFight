@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class KeyController : Singleton<KeyController>
 {
@@ -15,10 +16,19 @@ public class KeyController : Singleton<KeyController>
 
     private void Start()
     {
+#if DEBUG || UNITY_EDITOR
+        // KeySetting.keys 초기화가 완료되었는지 확인
+        if (KeySetting.keys == null || KeySetting.keys.Count == 0)
+        {
+            Debug.LogError("KeySetting.keys가 초기화되지 않았습니다.");
+            return;
+        }
+#endif
+
         for (int i = 0; i < keyButtons.Length; i++)
         {
             KeyAction action = (KeyAction)i;
-            keyButtons[i].GetComponentInChildren<Text>().text = KeySetting.keys[action].ToString();
+            keyButtons[i].GetComponentInChildren<TMP_Text>().text =KeySetting.keys[action].ToString();
             keyButtons[i].onClick.AddListener(() => OnKeyButtonClick(action));
         }
 
@@ -54,7 +64,7 @@ public class KeyController : Singleton<KeyController>
 
                     // 키 설정을 변경하고 UI 텍스트 업데이트
                     KeySetting.keys[currentKeyAction] = keyCode;
-                    keyButtons[(int)currentKeyAction].GetComponentInChildren<Text>().text = keyCode.ToString();
+                    keyButtons[(int)currentKeyAction].GetComponentInChildren<TMP_Text>().text = keyCode.ToString();
 
                     // 변경된 키 저장
                     SaveKeySetting(currentKeyAction, keyCode);
@@ -97,7 +107,7 @@ public class KeyController : Singleton<KeyController>
             {
                 // 중복된 키가 있을 경우 기존 키를 비움
                 KeySetting.keys[entry.Key] = KeyCode.None;
-                keyButtons[(int)entry.Key].GetComponentInChildren<Text>().text = "None";
+                keyButtons[(int)entry.Key].GetComponentInChildren<TMP_Text>().text = " ";
                 return true;
             }
         }
@@ -116,7 +126,7 @@ public class KeyController : Singleton<KeyController>
                 KeyAction action = (KeyAction)i;
                 KeyCode keyCode = (KeyCode)InputSettingDecoder.SavedKeyCodes[i];
                 KeySetting.keys[action] = keyCode;
-                keyButtons[i].GetComponentInChildren<Text>().text = keyCode.ToString();
+                keyButtons[i].GetComponentInChildren<TMP_Text>().text = keyCode.ToString();
             }
         }
 #if DEBUG

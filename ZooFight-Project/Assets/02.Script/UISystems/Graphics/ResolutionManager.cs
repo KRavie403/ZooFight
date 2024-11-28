@@ -18,21 +18,21 @@ public class ResolutionManager : MonoBehaviour
         InitResolution();
     }
 
-    // ÇØ»óµµ Á¶Àı
+    // í•´ìƒë„ ì¡°ì ˆ
     private void InitResolution()
     {
         resolutions.AddRange(Screen.resolutions);
         resolutionDropdown.options.Clear();
 
-        int optionNum = 0; //Ã³À½¿¡ dropµÈ °ª ÃÊ±âÈ­
+        int optionNum = 0; //ì²˜ìŒì— dropëœ ê°’ ì´ˆê¸°í™”
         foreach (Resolution item in resolutions)
         {
-            Debug.Log(item.width + "x" + item.height + " " + item.refreshRateRatio);
+            //Debug.Log(item.width + "x" + item.height + " " + item.refreshRateRatio);  //í•´ìƒë„ ì •ë³´
             TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData();
-            option.text = item.ToString(); //ÇØ»óµµ°ª ³Ö¾îÁÜ
-            resolutionDropdown.options.Add(option);//option Ãß°¡
+            option.text = item.ToString(); //í•´ìƒë„ê°’ ë„£ì–´ì¤Œ
+            resolutionDropdown.options.Add(option);//option ì¶”ê°€
 
-            if (item.width == Screen.width && item.height == Screen.height) //ÇöÀç ÇØ»óµµÀÇ ³Êºñ´Â Screen.width ³ôÀÌ´Â Screen.height¸¦ »ç¿ëÇØ¼­ ¾Ë ¼ö ÀÖÀ½
+            if (item.width == Screen.width && item.height == Screen.height) //í˜„ì¬ í•´ìƒë„ì˜ ë„ˆë¹„ëŠ” Screen.width ë†’ì´ëŠ” Screen.heightë¥¼ ì‚¬ìš©í•´ì„œ ì•Œ ìˆ˜ ìˆìŒ
             {
                 resolutionDropdown.value = optionNum;
             }

@@ -15,10 +15,12 @@ public class CharacterSwitcher : MonoBehaviour
 
     private void Awake()
     {
+        BackendGameData.Inst.onGameDataLoadEvent.AddListener(UpdateGameData);
         if (currentCharacter != null)
         {
             spawnPoint = currentCharacter.transform.position;
         }
+
     }
     private void Start()
     {
@@ -33,6 +35,10 @@ public class CharacterSwitcher : MonoBehaviour
     public void SelectCharacter()
     {
         //Gamemanaer.userCharacter = curIndex; // 캐릭터 번호 넘기기
+        BackendGameData.Inst.UserGameData.character = _curIndex;
+        BackendGameData.Inst.GameDataUpdate();
+
+        Debug.Log($"저장 후 캐릭터 번호: {BackendGameData.Inst.UserGameData.character}");
     }
 
     public void OnRightButtonClick()
@@ -70,5 +76,11 @@ public class CharacterSwitcher : MonoBehaviour
             // 처음 스폰할 때는 spawnPoint 사용
             currentCharacter = Instantiate(characterPrefabs[index], spawnPoint, Quaternion.identity);
         }
+    }
+
+    public void UpdateGameData()
+    {
+        _curIndex = BackendGameData.Inst.UserGameData.character;
+        Debug.Log($"업데이트 된 캐릭터 번호: {_curIndex}");
     }
 }

@@ -97,7 +97,7 @@ public class GraphicManager : Singleton<GraphicManager>
         int optionNum = 0; //처음에 drop된 값 초기화
         foreach (Resolution value in resolutions)
         {
-            Debug.Log(value.width + "x" + value.height + " " + value.refreshRateRatio);
+            //Debug.Log(value.width + "x" + value.height + " " + value.refreshRateRatio);
             TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData();
             option.text = value.ToString(); //해상도값 넣어줌
             resolutionDropdown.options.Add(option);//option 추가
