@@ -7,12 +7,12 @@ using static BackEnd.SendQueue;
 
 public class BackEndServerManager : MonoBehaviour
 {
-    private static BackEndServerManager instance;   // ÀÎ½ºÅÏ½º
-    public bool isLogin { get; private set; }   // ·Î±×ÀÎ ¿©ºÎ
+    private static BackEndServerManager instance;   // ì¸ìŠ¤í„´ìŠ¤
+    public bool isLogin { get; private set; }   // ë¡œê·¸ì¸ ì—¬ë¶€
 
-    private string tempNickName;                        // ¼³Á¤ÇÒ ´Ğ³×ÀÓ (id¿Í µ¿ÀÏ)
-    public string myNickName { get; private set; } = string.Empty;  // ·Î±×ÀÎÇÑ °èÁ¤ÀÇ ´Ğ³×ÀÓ
-    public string myIndate { get; private set; } = string.Empty;    // ·Î±×ÀÎÇÑ °èÁ¤ÀÇ inDate
+    private string tempNickName;                        // ì„¤ì •í•  ë‹‰ë„¤ì„ (idì™€ ë™ì¼)
+    public string myNickName { get; private set; } = string.Empty;  // ë¡œê·¸ì¸í•œ ê³„ì •ì˜ ë‹‰ë„¤ì„
+    public string myIndate { get; private set; } = string.Empty;    // ë¡œê·¸ì¸í•œ ê³„ì •ì˜ inDate
     private Action<bool, string> loginSuccessFunc = null;
 
     private const string BackendError = "statusCode : {0}\nErrorCode : {1}\nMessage : {2}";
@@ -33,7 +33,9 @@ public class BackEndServerManager : MonoBehaviour
     {
         if (instance == null)
         {
-            Debug.LogError("BackEndServerManager ÀÎ½ºÅÏ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+#if UNITY_EDITOR || DEBUG
+            Debug.LogError("BackEndServerManager ì¸ìŠ¤í„´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+#endif
             return null;
         }
 
@@ -44,15 +46,20 @@ public class BackEndServerManager : MonoBehaviour
     {
         isLogin = false;
 
-        var bro = Backend.Initialize(true);
+//        var bro = Backend.Initialize(true);
 
-        if (bro.IsSuccess())
-        {
-        }
-        else
-        {
-            Debug.LogError("µÚ³¡ ÃÊ±âÈ­ ½ÇÆĞ : " + bro);
-        }
+//        if (bro.IsSuccess())
+//        {
+//#if UNITY_EDITOR || DEBUG
+//            Debug.Log($"ë’¤ë ì´ˆê¸°í™” ì„±ê³µ : {bro} ");
+//#endif
+//        }
+//        else
+//        {
+//#if UNITY_EDITOR || DEBUG
+//            Debug.LogError($"ë’¤ë ì´ˆê¸°í™” ì‹¤íŒ¨ : {bro}");
+//#endif
+//        }
 
     }
 
@@ -71,17 +78,20 @@ public class BackEndServerManager : MonoBehaviour
 
         if (bro.IsSuccess())
         {
-            Debug.Log("ÃÊ±âÈ­ ¼º°ø : " + bro);
+#if UNITY_EDITOR || DEBUG
+            Debug.Log("ë’¤ë ì´ˆê¸°í™” ì„±ê³µ : " + bro);
+#endif
         }
         else
         {
-            Debug.LogError("ÃÊ±âÈ­ ½ÇÆĞ: " + bro);
+#if UNITY_EDITOR || DEBUG
+            Debug.LogError("ë’¤ë ì´ˆê¸°í™” ì‹¤íŒ¨: " + bro);
+#endif
         }
-
     }
 
 
-    // À¯Àú Á¤º¸ ºÒ·¯¿À±â »çÀüÀÛ¾÷
+    // ìœ ì € ì •ë³´ ë¶ˆëŸ¬ì˜¤ê¸° ì‚¬ì „ì‘ì—…
     private void OnPrevBackendAuthorized()
     {
         isLogin = true;
@@ -89,19 +99,19 @@ public class BackEndServerManager : MonoBehaviour
         OnBackendAuthorized();
     }
 
-    // ½ÇÁ¦ À¯Àú Á¤º¸ ºÒ·¯¿À±â
+    // ì‹¤ì œ ìœ ì € ì •ë³´ ë¶ˆëŸ¬ì˜¤ê¸°
     private void OnBackendAuthorized()
     {
         Enqueue(Backend.BMember.GetUserInfo, callback =>
         {
             if (!callback.IsSuccess())
             {
-                Debug.LogError("À¯Àú Á¤º¸ ºÒ·¯¿À±â ½ÇÆĞ\n" + callback);
+                Debug.LogError("ìœ ì € ì •ë³´ ë¶ˆëŸ¬ì˜¤ê¸° ì‹¤íŒ¨\n" + callback);
                 loginSuccessFunc(false, string.Format(BackendError,
                 callback.GetStatusCode(), callback.GetErrorCode(), callback.GetMessage()));
                 return;
             }
-            Debug.Log("À¯ÀúÁ¤º¸\n" + callback);
+            Debug.Log("ìœ ì €ì •ë³´\n" + callback);
 
             var info = callback.GetReturnValuetoJSON()["row"];
             if (info["nickname"] == null)

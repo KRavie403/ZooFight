@@ -40,6 +40,7 @@ public class KeyInputMapper : MonoBehaviour
         for (int i = 0; i < (int)KeyAction.KeyCount; i++)
         {
             KeySetting.keys.Add((KeyAction)i, defaultKeys[i]);
+            Debug.Log("keys" + KeySetting.keys);
         }
 
 

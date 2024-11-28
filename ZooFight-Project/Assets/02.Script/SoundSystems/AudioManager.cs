@@ -63,6 +63,7 @@ public class AudioManager : Singleton<AudioManager>
             BGMSource.Play();
         }
 #if DEBUG
+        else
         {
             Debug.LogWarning("해당 BGM 클립을 찾을 수 없음: " + sceneName);
         }
