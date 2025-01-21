@@ -13,7 +13,7 @@ using UnityEngine.Events;
 /// Value 5 투척 사거리
 /// </summary>
 
-public class Item_BananaTrap : Items
+public class Item_BananaTrap : Items , IHitScanner
 {
     public Item_BananaTrap(PlayerController player) : base(player) 
     {
@@ -32,9 +32,35 @@ public class Item_BananaTrap : Items
     [SerializeField]
     EffectPlayer myEffect;
 
-
+    public Component[] myTarget;
     public HitScanner myHitScanner;
-    
+    bool isHit = false;
+
+    #region 히트스캔 코드
+
+    Component IHitScanner.myComp => this as Component;
+
+    Component[] IHitScanner.myTargets
+    {
+        get => myTarget;
+    }
+
+    void IHitScanner.AddTarget(List<Component> target)
+    {
+        myTarget = target.ToArray();
+    }
+
+    void IHitScanner.Hit()
+    {
+        foreach (Component target in myTarget)
+        {
+            //target.GetComponent<IHitScanTarget>().myComp
+        }
+        isHit = true;
+    }
+
+    #endregion
+
     // 혼란 가중으로 인한 재작성중
 
     protected override void Awake()
@@ -42,7 +68,6 @@ public class Item_BananaTrap : Items
         base.Awake();
 
         //신규코드
-        //신버전에서는 히트스캐너 미사용
         myCode = ItemCode.BananaTrap;
 
         //기존코드
@@ -105,6 +130,7 @@ public class Item_BananaTrap : Items
 
 
         myHitScanner.Initiate(this, myPlayer.GetEnemyTeam());
+
     }
 
 
@@ -190,7 +216,7 @@ public class Item_BananaTrap : Items
                 Debug.Log("HitEnd");
                 //
                 break;
-                duringTime += Value2;
+                //duringTime += Value2;
             }
 
             // 발동시 오브젝트 작동 불능처리
@@ -216,28 +242,17 @@ public class Item_BananaTrap : Items
 
     private void OnCollisionEnter(Collision collision)
     {
-     
+
+        //HitScan.Inst.HitScans(this.gameObject, 0.1,PlayerController as Component ,ScanType.Shape);
+
+
+
         PlayerController player = collision.gameObject.GetComponent<PlayerController>();
         if(player != null)
         {
+
             Targets.Add(player.gameObject);
 
-
-            //// 대상이 이동중이면 진행하던 방향으로 일정시간 미끄러짐
-            //// 대상이 정지중일경우 랜덤방향으로 미끄러짐
-            //if (player.GetIsmoving())
-            //{
-            //    player.Slide(collision.transform.forward, Value3, Value1);
-            //    Debug.Log("ForwardSlide");
-            //}
-            //else
-            //{
-            //    Vector3 rndDir = new Vector3(Random.Range(-1.0f, 1.0f), 0, Random.Range(-1.0f, 1.0f));
-            //    player.Slide(rndDir, Value3, Value1);
-            //    Debug.Log("RandomSlide");
-            //}
-            //Debug.Log("BananaHit");
-            //Debug.Log(collision.gameObject.name);
         }
     }
 
