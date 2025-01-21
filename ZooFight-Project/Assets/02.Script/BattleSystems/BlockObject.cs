@@ -6,8 +6,8 @@ using UnityEngine;
 public class BlockObject : MonoBehaviour
 {
 
-    bool isGrab = false;
-    PlayerController myPlayer=null;
+    protected bool isGrab = false;
+    protected PlayerController myPlayer=null;
 
     public HitScanner.Team myTeam = HitScanner.Team.NotSetting;
 
@@ -19,24 +19,27 @@ public class BlockObject : MonoBehaviour
 
     public Vector2 curDir = Vector2.zero;
 
+//    int BlockId = -1;
 
-    [SerializeField]GameObject RedBlock;
-    [SerializeField] GameObject BlueBlock;
-    [SerializeField] GameObject[] DefaultBlock;
+    [SerializeField] protected GameObject RedBlock;
+    [SerializeField] protected GameObject BlueBlock;
+    [SerializeField] protected GameObject[] DefaultBlock;
 
-    Vector2[] JudgeVector = new Vector2[2] {new(1,1),new(-1,1) };
-    Vector3[] myDirs = new Vector3[5] {Vector3.zero , Vector3.forward, Vector3.left, Vector3.back, Vector3.right };
+    protected Vector2[] JudgeVector = new Vector2[2] {new(1,1),new(-1,1) };
+    protected Vector3[] myDirs = new Vector3[5] {Vector3.zero , Vector3.forward, Vector3.left, Vector3.back, Vector3.right };
+
+    NormalBlockdata myBlockData;    
 
     public bool isChangeActive = false;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         
 
     }
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         // 오브젝트가 생성될때 이미 존재하는 블럭이 있으면 삭제
         if(Gamemanager.Inst.GetTeamBlock(myTeam) != null)
@@ -57,7 +60,7 @@ public class BlockObject : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         
     }
@@ -79,6 +82,11 @@ public class BlockObject : MonoBehaviour
         }
     }
 
+    //public void IdInsert(int id)
+    //{
+    //    BlockId = id;
+    //}
+
     #region 잡기관련
     public void Grab(PlayerController player)
     {
@@ -93,7 +101,7 @@ public class BlockObject : MonoBehaviour
 
         myPlayer.grabPoint.curGrabBlock = this;
         myPlayer.isGrab = true;
-        isGrab = true;
+        myBlockData.isGrab = true;
         Debug.Log($"{player.name} Grab");
         StartCoroutine(BlockMove());
     }
@@ -109,7 +117,7 @@ public class BlockObject : MonoBehaviour
         Debug.Log($"{player.name} DeGrab");
 
         myPlayer = null;
-        isGrab=false;
+        myBlockData.isGrab = false;
 
     }
     #endregion
@@ -150,7 +158,10 @@ public class BlockObject : MonoBehaviour
             StopCoroutine (BlockMove());
 
             myPlayer = null;
-            isGrab = false;
+            myBlockData.isGrab = false;
+            myBlockData.isMoving = false;
+            myBlockData.dirPos = transform.position;
+            myBlockData.curPos = transform.position;
         }
         else
         {
@@ -169,13 +180,18 @@ public class BlockObject : MonoBehaviour
 
         Debug.Log("MoveStart");
 
-        while (isGrab)
+        while (myBlockData.isGrab)
         {
             if (myPlayer.GetIsmoving() == true)
             {
+                myBlockData.isMoving = true;
                 curdir.x = curDir.x;
                 curdir.z = curDir.y;
                 transform.position += curdir * Time.deltaTime * BlockMoveSpeed;
+            }
+            else
+            {
+                myBlockData.isMoving = false;
             }
             yield return null;
         }
