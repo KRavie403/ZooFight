@@ -3,7 +3,23 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BlockObject : MonoBehaviour
+interface IBlock
+{
+    public int blockNum { get; } // 블록 번호
+    public int type { get; }     // 블록 타입
+    public Vector3 position { get; } // 초기 위치
+
+    // 초기화 함수
+    public abstract void Initialize(int blockNum, int type, Vector3 position);
+
+
+    public abstract void SendPositionToServer();
+
+
+}
+
+
+public class BlockObject : MonoBehaviour , IBlock
 {
 
     protected bool isGrab = false;
@@ -15,11 +31,40 @@ public class BlockObject : MonoBehaviour
     {
         get => myPlayer.MoveSpeed;
     }
+
     public Transform myBlockObj;
 
     public Vector2 curDir = Vector2.zero;
 
-//    int BlockId = -1;
+    //    int BlockId = -1;
+
+    #region Blocks 인터페이스 관련
+
+    int blockNum;
+    int type;
+    Vector3 position;
+
+    int IBlock.blockNum => blockNum;
+
+    int IBlock.type => type;
+
+    Vector3 IBlock.position => position;    
+
+    public void Initialize(int blockNum, int type, Vector3 position)
+    {
+        this.blockNum = blockNum;
+        this.type = type;
+        this.position = position;
+
+        // 블록의 실제 위치를 설정
+        transform.position = position;
+    }
+    public void SendPositionToServer()
+    {
+
+    }
+
+    #endregion
 
     [SerializeField] protected GameObject RedBlock;
     [SerializeField] protected GameObject BlueBlock;
@@ -41,6 +86,7 @@ public class BlockObject : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void Start()
     {
+        
         // 오브젝트가 생성될때 이미 존재하는 블럭이 있으면 삭제
         if(Gamemanager.Inst.GetTeamBlock(myTeam) != null)
         {
@@ -273,6 +319,11 @@ public class BlockObject : MonoBehaviour
             Debug.Log($"{myTeam} Victory!!");
         }
 
+    }
+
+    void IBlock.Initialize(int blockNum, int type, Vector3 position)
+    {
+        throw new System.NotImplementedException();
     }
 
 
