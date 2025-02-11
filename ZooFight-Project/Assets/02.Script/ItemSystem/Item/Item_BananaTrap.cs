@@ -50,14 +50,14 @@ public class Item_BananaTrap : Items , IHitScanner
         myTarget = target.ToArray();
     }
 
-    void IHitScanner.Hit()
-    {
-        foreach (Component target in myTarget)
-        {
-            //target.GetComponent<IHitScanTarget>().myComp
-        }
-        isHit = true;
-    }
+    //void IHitScanner.Hit()
+    //{
+    //    foreach (Component target in myTarget)
+    //    {
+    //        //target.GetComponent<IHitScanTarget>().myComp
+    //    }
+    //    isHit = true;
+    //}
 
     #endregion
 
@@ -243,7 +243,7 @@ public class Item_BananaTrap : Items , IHitScanner
     private void OnCollisionEnter(Collision collision)
     {
 
-        //HitScan.Inst.HitScans(this.gameObject, 0.1,PlayerController as Component ,ScanType.Shape);
+        //HitScan.Inst.HitScans(this.gameObject, 0.1,PlayerController as Component ,ScanType.Sphere);
 
 
 

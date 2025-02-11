@@ -684,7 +684,9 @@ public class PlayerController : MovementController, IHitBox
         }
     }
 
-    // 현재 보유중인 아이템 사용
+    /// <summary>
+    /// 아이템 사용동작의 시작을 알리는 함수
+    /// </summary>
     public void ItemUse()
     {
         if(curItems != null)
@@ -697,6 +699,10 @@ public class PlayerController : MovementController, IHitBox
             }
         }
     }
+
+    /// <summary>
+    /// 아이템 사용동작이 끝남을 알리는 함수
+    /// </summary>
     public void ItemUseEnd()
     {
         if(PlayerSM.CurrentState == p_States[pState.ItemUse])
@@ -706,7 +712,9 @@ public class PlayerController : MovementController, IHitBox
         }
     }
 
-    // 아이템 지급받기
+    /// <summary>
+    /// 아이템을 지급받는 함수
+    /// </summary>
     public void GetItem()
     {
 
@@ -727,12 +735,17 @@ public class PlayerController : MovementController, IHitBox
     #region 판정관련
     [SerializeField] float RecoveryTime = 2.0f;
 
-    // 타격 판정 발생
+    /// <summary>
+    /// 플레이어가 직접적으로 공격할때
+    /// </summary>
+    /// <param name="comp"></param>
     void IHitBox.HitAction(Component comp)
     {
         //comp.GetComponent<myHitScanner>().MyDamage
-        //switch (comp.GetComponent<>)
+        //switch (comp.GetType())
         //{
+        //    case typeof(Item_BananaTrap):
+        //        break;
         //    default:
         //        break;
         //}

@@ -8,7 +8,7 @@ using UnityEngine;
 
 public enum ScanType
 {
-    Shape, //구체형
+    Sphere, //구체형
     Circle, //원형
 
     Square, //정사각형
@@ -21,8 +21,9 @@ public enum ScanTarget
     Player,
     Block,
     Item,
-    TypeCount
 
+    Test1,
+    TypeCount
 }
 
 interface IHitScanTarget
@@ -31,6 +32,13 @@ interface IHitScanTarget
     {
         get;
     }
+
+    public virtual void Hit()
+    {
+
+    }
+
+    int testcode { get; }
 }
 
 interface IHitScanner
@@ -54,7 +62,7 @@ interface IHitScanner
     {
 
     }
-    
+
 }
 
 /// <summary>
@@ -63,8 +71,26 @@ interface IHitScanner
 public class HitScan : Singleton<HitScan> 
 {
 
+    Component[] comps;
 
+    private void Update()
+    {
+        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("InputSpace");
 
+            comps = HitScans(this.gameObject, 2.0f, ScanTarget.Test1,ScanType.Sphere);
+
+            foreach (var comp in comps)
+            {
+                Debug.Log(comp.GetComponent<IHitScanTarget>().testcode);
+                comp.GetComponent<IHitScanTarget>().Hit();
+            }
+
+        }
+
+    }
 
     /// <summary>
     /// 
@@ -72,19 +98,19 @@ public class HitScan : Singleton<HitScan>
     /// <param name="obj"></param>
     /// <param name="type"></param>
     /// <returns></returns>
-    public Component[] HitScans(GameObject obj, float range, Component Targets, ScanType type)
+    public Component[] HitScans(GameObject obj, float range, ScanTarget targets, ScanType type)
     {
 
         switch (type)
         {
-            case ScanType.Shape:
-                return ScanShape(obj, range, Targets);
+            case ScanType.Sphere:
+                return ScanSphere(obj, range, GetTargets(targets));
             case ScanType.Circle:
                 break;
             case ScanType.Square:
                 break;
             case ScanType.Cube:
-                return ScanBox(obj, range, Targets);                
+                //return ScanBox(obj, range, Targets);                
             case ScanType.Type:
                 break;
             default:
@@ -96,7 +122,7 @@ public class HitScan : Singleton<HitScan>
     }
 
 
-    Component[] ScanShape(GameObject obj, float range, Component Targets)
+    Component[] ScanSphere(GameObject obj, float range, Type Targets)
     {
 
         List<Collider> objs = Physics.OverlapSphere(obj.transform.position, range).ToList();
@@ -104,9 +130,11 @@ public class HitScan : Singleton<HitScan>
 
         foreach (Collider collider in objs)
         {
+
+
             if(collider.GetComponent<IHitScanTarget>() != null)
             {
-                if(collider.GetComponent<IHitScanTarget>().myComp == Targets)
+                if(collider.GetComponent<IHitScanTarget>().myComp.GetType() == Targets)
                 {
                     Target.Add(collider.gameObject.GetComponent<IHitScanTarget>().myComp);
                 }
@@ -140,20 +168,25 @@ public class HitScan : Singleton<HitScan>
         return Target.ToArray();
     }
 
-    Component GetTargets(ScanTarget target)
+    public Component Test1<T>(T componets)
+    {
+        return null;
+
+    }
+
+    Type GetTargets(ScanTarget target)
     {
         switch (target)
         {
             case ScanTarget.Player:
-                PlayerController controller = new PlayerController();
-               // GetComponent
-                return controller;
+                return typeof(PlayerController);
             case ScanTarget.Block:
-                break;
+                return typeof(BlockObject);
             case ScanTarget.Item:
-                break;
+                return typeof(Items);
+            case ScanTarget.Test1:
+                return typeof(TypeTest);
             case ScanTarget.TypeCount:
-                break;
             default:
                 break;
         }
