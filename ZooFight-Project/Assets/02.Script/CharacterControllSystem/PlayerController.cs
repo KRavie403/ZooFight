@@ -6,83 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
-///// <summary>
-///// 캐릭터의 상세정보
-///// 고정된 데이터
-///// </summary>
-//struct PlayerInfo
-//{
-    
 
-//    // 서버에서 호출
-//    public string PlayerName;
-//    public int PlayerId;
-
-//    public string PlayerIP;
-//    public CharacterData playerBase;
-
-
-//    // 호스트가 호출
-//    public PlayerController myController;
-//    public SeverData movementInfo;
-//    public Transform myPlayerPos;
-//    public HitScanner.Team Team;
-
-
-//    public PlayerController.pState curState
-//    {
-//        get => myController.GetState();
-//    }
-//}
-
-
-///// <summary>
-///// 게임 외적으로 서버와 교환할 정보
-/////  
-///// </summary>
-//struct SeverData
-//{
-//    // 캐릭터의 목표지점
-//    public Vector3 dirPos;
-//    public bool isDynamic;
-
-//    // 캐릭터의 목표회전값
-//    public quaternion dirRot;
-
-//    // 캐릭터의 상태변화값
-//    public PlayerController.pState dirState;
-
-//}
-
-///// <summary>
-///// 게임 내부에서 호스트와 교환할 정보
-///// 
-///// </summary>
-//struct CharacterData
-//{
-//    public int ModelId;
-
-//    public float curHp;
-
-//    public float curStamina;
-
-//    public float CurSp;
-//    public bool isShield;
-
-//    // 기본이속
-//    public float BaseSpeed;
-//    // 달리기 가속 비율
-//    public float curSpeedRate;
-//    public float curSpeed
-//    {
-//        get
-//        {
-//            return BaseSpeed * curSpeedRate;
-//        }
-//    }
-//    public ItemCode curItem;
-
-//}
 
 
 
@@ -157,20 +81,32 @@ public class PlayerController : MovementController, IHitBox
 
     public Items curItems;
 
+    CharacterData myData;
+
     
-    [SerializeField]
-    bool IsMoving = false;
+   
+    //bool IsMoving = false;
     bool isSuperArmor = false;
     bool isUIOpen = false;
-    [SerializeField]
     bool IsRunning = false;
-    [SerializeField]
     bool isJump = false;
-    [SerializeField]
     bool isAbleMove = false;
+   
+
+
+    
     public bool isCrashed = false;
-    public bool isKeyReverse = false;
-    public bool isGrab = false;
+    public bool isKeyReverse
+    {
+        get => myData.isKeyReverse;
+        set => myData.isKeyReverse = value;
+    }
+    public bool isGrab
+    {
+        get { return myData.isGrab; }
+        set { myData.isGrab = value;}
+    }
+
     // 캐릭터 위치 검증여부
     bool isDenial = false;
     Vector2 acceleration = Vector2.zero;
@@ -291,6 +227,11 @@ public class PlayerController : MovementController, IHitBox
 
     }
 
+    public void InsertPlayerInfo()
+    {
+
+    }
+
     // 플레이어 정보주입 - 세션id , 팀 , 플레이어 id 
     public void CharacterInitalize(HitScanner.Team PlayerTeam,int SessionID,int PlayerID)
     {
@@ -321,20 +262,20 @@ public class PlayerController : MovementController, IHitBox
 
     public void SetIsMoving(bool isMoving)
     {
-        IsMoving = isMoving;
+        myData.isMoving = isMoving;
     }
     public bool GetIsmoving()
     {
-        return IsMoving;
+        return myData.isMoving;
     }
 
     public void SetRunning(bool isRunning)
     {
-        IsRunning = isRunning;
+        myData.isRunning = isRunning;
     }
     public bool GetIsRunning()
     {
-        return IsRunning;
+        return myData.isRunning;
     }
 
     public void MoveStateCheck()
@@ -391,7 +332,7 @@ public class PlayerController : MovementController, IHitBox
     /// <param name="e"></param>
     public void PlayerMove(Vector3 Pos, Vector3 Rot, bool isStatic, UnityAction e = null)
     {
-        if (isDenial)
+        if (myData.isDenial)
         {
             return;
         }
@@ -459,7 +400,7 @@ public class PlayerController : MovementController, IHitBox
     public void CurAxisMove()
     {
         //CharacterMove(AxisX, AxisY, isDenial);
-        CharacterMove(isDenial, AxisX, AxisY);
+        CharacterMove(myData.isDenial, AxisX, AxisY);
     }
 
     public void Move(float AxisX , float AxisY)
@@ -478,7 +419,7 @@ public class PlayerController : MovementController, IHitBox
 
         Vector3 Direction = Vector3.Normalize(new Vector3 (AxisX,0,AxisY));
 
-        float Speed = IsRunning ? MoveSpeed * RunSpeedRate : MoveSpeed;
+        float Speed = myData.isRunning ? MoveSpeed * RunSpeedRate : MoveSpeed;
 
         // 프로토콜 전송용 벡터
         Vector3 Dir = MakeDir(AxisX, AxisY);
@@ -496,7 +437,7 @@ public class PlayerController : MovementController, IHitBox
         myAnim.SetFloat("MoveAxisY", Mathf.Clamp(AxisY * MotionSpeed, -1.0f, 1.0f));
 
         myAnim.SetBool("IsMoving", true);
-        if(IsRunning)
+        if(myData.isRunning)
         {
             myAnim.SetBool("IsRunning", true);
         }
@@ -574,7 +515,7 @@ public class PlayerController : MovementController, IHitBox
 
         Vector3 Axis =  Quaternion.Euler(-transform.rotation.eulerAngles) * dir;
 
-        float Speed = IsRunning ? MoveSpeed * RunSpeedRate : MoveSpeed;
+        float Speed = myData.isRunning ? MoveSpeed * RunSpeedRate : MoveSpeed;
 
         float curSpeed = Mathf.Sqrt(Axis.x * Axis.x + Axis.z * Axis.z);
 
@@ -585,7 +526,7 @@ public class PlayerController : MovementController, IHitBox
         myAnim.SetFloat("MoveAxisX", Mathf.Clamp(Axis.x * MotionSpeed, -1.0f, 1.0f));
         myAnim.SetFloat("MoveAxisY", Mathf.Clamp(Axis.y * MotionSpeed, -1.0f, 1.0f));
         myAnim.SetBool("IsMoving", true);
-        if (IsRunning)
+        if (myData.isRunning)
         {
             myAnim.SetBool("IsRunning", true);
         }
@@ -619,21 +560,21 @@ public class PlayerController : MovementController, IHitBox
 
     public void CharacterJump()
     {
-        if (!isJump)
+        if (!myData.isJump)
         {
 
             GetComponent<Rigidbody>().AddForce(Vector3.up*JumpHeight, ForceMode.Impulse);
-            isJump = true;
+            myData.isJump = true;
         }
     }
 
     public void SetisJump(bool IsJump)
     {
-        isJump = IsJump;
+        myData.isJump = IsJump;
     }
     public bool GetisJump()
     {
-        return isJump;
+        return myData.isJump;
     }
 
     // 입력받은 타겟을 대상으로 입력받은 거리만큼 밀려나기
@@ -646,7 +587,7 @@ public class PlayerController : MovementController, IHitBox
     public IEnumerator KnockBackStart(Transform target, float dist, float Speed, UnityAction e = null)
     {
 
-        isDenial = true;
+        myData.isDenial = true;
 
         Vector3 dir = Vector3.Normalize(transform.position - target.position); 
         
@@ -662,13 +603,13 @@ public class PlayerController : MovementController, IHitBox
 
 
             // 물체 또는 벽에 충돌시 중단
-            if (isCrashed) break;
+            if (myData.isCrashed) break;
 
 
             yield return null;
         }
 
-        isDenial = false;   
+        myData.isDenial = false;   
     }
 
     #endregion
@@ -743,7 +684,9 @@ public class PlayerController : MovementController, IHitBox
         }
     }
 
-    // 현재 보유중인 아이템 사용
+    /// <summary>
+    /// 아이템 사용동작의 시작을 알리는 함수
+    /// </summary>
     public void ItemUse()
     {
         if(curItems != null)
@@ -756,6 +699,10 @@ public class PlayerController : MovementController, IHitBox
             }
         }
     }
+
+    /// <summary>
+    /// 아이템 사용동작이 끝남을 알리는 함수
+    /// </summary>
     public void ItemUseEnd()
     {
         if(PlayerSM.CurrentState == p_States[pState.ItemUse])
@@ -765,7 +712,9 @@ public class PlayerController : MovementController, IHitBox
         }
     }
 
-    // 아이템 지급받기
+    /// <summary>
+    /// 아이템을 지급받는 함수
+    /// </summary>
     public void GetItem()
     {
 
@@ -786,12 +735,17 @@ public class PlayerController : MovementController, IHitBox
     #region 판정관련
     [SerializeField] float RecoveryTime = 2.0f;
 
-    // 타격 판정 발생
+    /// <summary>
+    /// 플레이어가 직접적으로 공격할때
+    /// </summary>
+    /// <param name="comp"></param>
     void IHitBox.HitAction(Component comp)
     {
         //comp.GetComponent<myHitScanner>().MyDamage
-        //switch (comp.GetComponent<>)
+        //switch (comp.GetType())
         //{
+        //    case typeof(Item_BananaTrap):
+        //        break;
         //    default:
         //        break;
         //}
@@ -844,7 +798,7 @@ public class PlayerController : MovementController, IHitBox
         while(true)
         {
             // 스테 감소
-            if (IsRunning)
+            if (myData.isRunning)
             {
                 CurSP -= Time.deltaTime * SPRecovery;
             }
@@ -983,7 +937,7 @@ public class PlayerController : MovementController, IHitBox
             if(PlayerSM.CurrentState == p_States[pState.Jump])
             {
                 MoveStateCheck();
-                isJump = false;
+                myData.isJump = false;
             }
         }
     }
@@ -1008,7 +962,7 @@ public class PlayerController : MovementController, IHitBox
     {
         if (collision.gameObject.layer == groundMask)
         {
-            isJump = false;
+            myData.isJump = false;
         }
         if (PlayerSM.CurrentState == p_States[pState.Jump])
         {
