@@ -43,7 +43,7 @@ public class Login : LoginBase
 
     private void ResponseToLogin(string ID,string PW)
     {
-        Backend.BMember.CustomLogin(ID, PW, callback =>
+        Backend.BMember.CustomLogin (ID, PW, callback =>
         {
             StopCoroutine(nameof(LoginProcess));
 
@@ -53,6 +53,12 @@ public class Login : LoginBase
                 {
                     string nickname = nickNameCallback.GetReturnValuetoJSON()["row"]["nickname"].ToString();
                     SetMessage($"{nickname}님 환영합니다.");
+                    Action<bool, string> func = (success, message) =>
+                    {
+                        success = true;
+                        message = $"{nickname} 로그인 성공.";
+                    };
+                    BackEndMatchManager.GetInstance().GetMatchList(func);
                 });
                 OnLoadGameScene().Forget();
             }
@@ -108,6 +114,7 @@ public class Login : LoginBase
     {
         await UniTask.Yield();
 
+        //AsyncOperation loadSceneAsync = SceneManager.LoadSceneAsync("TestServer");
         AsyncOperation loadSceneAsync = SceneManager.LoadSceneAsync("MainMenuScene");
         loadSceneAsync.allowSceneActivation = false;
 

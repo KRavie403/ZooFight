@@ -53,14 +53,14 @@ namespace Protocol
     }
     */
 
-    // 조이스틱 키 이벤트 코드
-    //public static class KeyEventCode
-    //{
-    //    public const int NONE = 0;
-    //    public const int MOVE = 1;      // 이동 메시지
-    //    public const int ATTACK = 2;    // 공격 메시지
-    //    public const int NO_MOVE = 4;   // 이동 멈춤 메시지
-    //}
+    //조이스틱 키 이벤트 코드
+    public static class KeyEventCode
+    {
+        public const int NONE = 0;
+        public const int MOVE = 1;      // 이동 메시지
+        public const int ATTACK = 2;    // 공격 메시지
+        public const int NO_MOVE = 4;   // 이동 멈춤 메시지
+    }
 
 
 

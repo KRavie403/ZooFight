@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public class DataParser : MonoBehaviour
+public class DataParser : Singleton<DataParser>
 {
     #region json
     public static T ReadJsonData<T>(byte[] buf)
     {
         var strByte = Encoding.Default.GetString(buf);
-        //byte ¹è¿­À» stringÀ¸·Î º¯È¯
+        //byte ë°°ì—´ì„ stringìœ¼ë¡œ ë³€í™˜
         return JsonUtility.FromJson<T>(strByte);
     }
 
     public static byte[] DataToJsonData<T>(T obj)
     {
         var jsonData = JsonUtility.ToJson(obj);
-        //stringÀ» byte ¹è¿­·Î º¯È¯
+        //stringì„ byte ë°°ì—´ë¡œ ë³€í™˜
         return Encoding.UTF8.GetBytes(jsonData);
     }
     #endregion

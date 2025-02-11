@@ -13,7 +13,7 @@ public class BackEndServerManager : MonoBehaviour
     private string tempNickName;                        // 설정할 닉네임 (id와 동일)
     public string myNickName { get; private set; } = string.Empty;  // 로그인한 계정의 닉네임
     public string myIndate { get; private set; } = string.Empty;    // 로그인한 계정의 inDate
-    private Action<bool, string> loginSuccessFunc = null;
+    public Action<bool, string> loginSuccessFunc = null;
 
     private const string BackendError = "statusCode : {0}\nErrorCode : {1}\nMessage : {2}";
 
@@ -100,7 +100,7 @@ public class BackEndServerManager : MonoBehaviour
     }
 
     // 실제 유저 정보 불러오기
-    private void OnBackendAuthorized()
+    public void OnBackendAuthorized()
     {
         Enqueue(Backend.BMember.GetUserInfo, callback =>
         {
@@ -122,6 +122,7 @@ public class BackEndServerManager : MonoBehaviour
             myNickName = info["nickname"].ToString();
             myIndate = info["inDate"].ToString();
 
+            Debug.Log("loginSuccessFunc: " + loginSuccessFunc);
             if (loginSuccessFunc != null)
             {
                 BackEndMatchManager.GetInstance().GetMatchList(loginSuccessFunc);

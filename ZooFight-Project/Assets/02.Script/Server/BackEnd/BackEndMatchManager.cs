@@ -8,40 +8,40 @@ using Battlehub.Dispatcher;
 using System.Linq;
 
 /*
- * ¸ÅÄ¡¸Å´ÏÀú
- * BackEndMatchManager.cs¿¡¼­ Á¤ÀÇµÈ ±â´Éµé
- * ¸ÅÄ¡¸Å´ÏÀú¿¡¼­ ÇÊ¿äÇÑ º¯¼ö ¼±¾ğ
- * GameManager ÀÌº¥Æ® µî·Ï
- * ¸ÅÄ¡¸ŞÀÌÅ· ÇÚµé·¯ µî·Ï
- * ÀÎ°ÔÀÓ ÇÚµé·¯ µî·Ï
- * ¸ÅÄª °ü·Ã ±â´ÉÀº BackEndMatch.cs¿¡ Á¤ÀÇ
- * ÀÎ°ÔÀÓ °ü·Ã ±â´ÉÀº BackEndInGame.cs¿¡ Á¤ÀÇ
+ * ë§¤ì¹˜ë§¤ë‹ˆì €
+ * BackEndMatchManager.csì—ì„œ ì •ì˜ëœ ê¸°ëŠ¥ë“¤
+ * ë§¤ì¹˜ë§¤ë‹ˆì €ì—ì„œ í•„ìš”í•œ ë³€ìˆ˜ ì„ ì–¸
+ * GameManager ì´ë²¤íŠ¸ ë“±ë¡
+ * ë§¤ì¹˜ë©”ì´í‚¹ í•¸ë“¤ëŸ¬ ë“±ë¡
+ * ì¸ê²Œì„ í•¸ë“¤ëŸ¬ ë“±ë¡
+ * ë§¤ì¹­ ê´€ë ¨ ê¸°ëŠ¥ì€ BackEndMatch.csì— ì •ì˜
+ * ì¸ê²Œì„ ê´€ë ¨ ê¸°ëŠ¥ì€ BackEndInGame.csì— ì •ì˜
  */
 
 public partial class BackEndMatchManager : MonoBehaviour
 {
-    // ÄÜ¼Ö¿¡¼­ »ı¼ºÇÑ ¸ÅÄª Ä«µå Á¤º¸
+    // ì½˜ì†”ì—ì„œ ìƒì„±í•œ ë§¤ì¹­ ì¹´ë“œ ì •ë³´
     public class MatchInfo
     {
-        public string title;                // ¸ÅÄª ¸í
-        public string inDate;               // ¸ÅÄª inDate (UUID)
-        public MatchType matchType;         // ¸ÅÄ¡ Å¸ÀÔ
-        public MatchModeType matchModeType; // ¸ÅÄ¡ ¸ğµå Å¸ÀÔ
-        public string headCount;            // ¸ÅÄª ÀÎ¿ø
-        public bool isSandBoxEnable;        // »÷µå¹Ú½º ¸ğµå (AI¸ÅÄª)
+        public string title;                // ë§¤ì¹­ ëª…
+        public string inDate;               // ë§¤ì¹­ inDate (UUID)
+        public MatchType matchType;         // ë§¤ì¹˜ íƒ€ì…
+        public MatchModeType matchModeType; // ë§¤ì¹˜ ëª¨ë“œ íƒ€ì…
+        public string headCount;            // ë§¤ì¹­ ì¸ì›
+        public bool isSandBoxEnable;        // ìƒŒë“œë°•ìŠ¤ ëª¨ë“œ (AIë§¤ì¹­)
     }
 
-    private static BackEndMatchManager instance = null; // ÀÎ½ºÅÏ½º
+    private static BackEndMatchManager instance = null; // ì¸ìŠ¤í„´ìŠ¤
 
-    //public List<MatchInfo> matchInfos { get; private set; } = new List<MatchInfo>();  // ÄÜ¼Ö¿¡¼­ »ı¼ºÇÑ ¸ÅÄª Ä«µåµéÀÇ ¸®½ºÆ®
-    public MatchInfo matchInfos { get; private set; }
+    public List<MatchInfo> matchInfos { get; private set; } = new List<MatchInfo>();  // ì½˜ì†”ì—ì„œ ìƒì„±í•œ ë§¤ì¹­ ì¹´ë“œë“¤ì˜ ë¦¬ìŠ¤íŠ¸
+    //public MatchInfo matchInfos { get; private set; }
 
-    public List<SessionId> sessionIdList { get; private set; }  // ¸ÅÄ¡¿¡ Âü°¡ÁßÀÎ À¯ÀúµéÀÇ ¼¼¼Ç ¸ñ·Ï
-    public Dictionary<SessionId, int> teamInfo { get; private set; }    // ¸ÅÄ¡¿¡ Âü°¡ÁßÀÎ À¯ÀúµéÀÇ ÆÀ Á¤º¸ (MatchModeTypeÀÌ teamÀÎ °æ¿ì¿¡¸¸ »ç¿ë)
-    public Dictionary<SessionId, MatchUserGameRecord> gameRecords { get; private set; } = null;  // ¸ÅÄ¡¿¡ Âü°¡ÁßÀÎ À¯ÀúµéÀÇ ¸ÅÄª ±â·Ï
-    private string inGameRoomToken = string.Empty;  // °ÔÀÓ ·ë ÅäÅ« (ÀÎ°ÔÀÓ Á¢¼Ó ÅäÅ«)
-    public SessionId hostSession { get; private set; }  // È£½ºÆ® ¼¼¼Ç
-    private ServerInfo roomInfo = null;             // °ÔÀÓ ·ë Á¤º¸
+    public List<SessionId> sessionIdList { get; private set; }  // ë§¤ì¹˜ì— ì°¸ê°€ì¤‘ì¸ ìœ ì €ë“¤ì˜ ì„¸ì…˜ ëª©ë¡
+    public Dictionary<SessionId, int> teamInfo { get; private set; }    // ë§¤ì¹˜ì— ì°¸ê°€ì¤‘ì¸ ìœ ì €ë“¤ì˜ íŒ€ ì •ë³´ (MatchModeTypeì´ teamì¸ ê²½ìš°ì—ë§Œ ì‚¬ìš©)
+    public Dictionary<SessionId, MatchUserGameRecord> gameRecords { get; private set; } = null;  // ë§¤ì¹˜ì— ì°¸ê°€ì¤‘ì¸ ìœ ì €ë“¤ì˜ ë§¤ì¹­ ê¸°ë¡
+    private string inGameRoomToken = string.Empty;  // ê²Œì„ ë£¸ í† í° (ì¸ê²Œì„ ì ‘ì† í† í°)
+    public SessionId hostSession { get; private set; }  // í˜¸ìŠ¤íŠ¸ ì„¸ì…˜
+    private ServerInfo roomInfo = null;             // ê²Œì„ ë£¸ ì •ë³´
     public bool isReconnectEnable { get; private set; } = false;
 
     public bool isConnectMatchServer { get; private set; } = false;
@@ -50,11 +50,11 @@ public partial class BackEndMatchManager : MonoBehaviour
     public bool isReconnectProcess { get; private set; } = false;
     public bool isSandBoxGame { get; private set; } = false;
 
-    private int numOfClient = 2;                    // ¸ÅÄ¡¿¡ Âü°¡ÇÑ À¯ÀúÀÇ ÃÑ ¼ö
+    private int numOfClient = 2;                    // ë§¤ì¹˜ì— ì°¸ê°€í•œ ìœ ì €ì˜ ì´ ìˆ˜
 
     #region Host
-    private bool isHost = false;                    // È£½ºÆ® ¿©ºÎ (¼­¹ö¿¡¼­ ¼³Á¤ÇÑ SuperGamer Á¤º¸¸¦ °¡Á®¿È)
-    private Queue<KeyMessage> localQueue = null;    // È£½ºÆ®¿¡¼­ ·ÎÄÃ·Î Ã³¸®ÇÏ´Â ÆĞÅ¶À» ½×¾ÆµÎ´Â Å¥ (·ÎÄÃÃ³¸®ÇÏ´Â µ¥ÀÌÅÍ´Â ¼­¹ö·Î ¹ß¼Û ¾ÈÇÔ)
+    private bool isHost = false;                    // í˜¸ìŠ¤íŠ¸ ì—¬ë¶€ (ì„œë²„ì—ì„œ ì„¤ì •í•œ SuperGamer ì •ë³´ë¥¼ ê°€ì ¸ì˜´)
+    private Queue<KeyMessage> localQueue = null;    // í˜¸ìŠ¤íŠ¸ì—ì„œ ë¡œì»¬ë¡œ ì²˜ë¦¬í•˜ëŠ” íŒ¨í‚·ì„ ìŒ“ì•„ë‘ëŠ” í (ë¡œì»¬ì²˜ë¦¬í•˜ëŠ” ë°ì´í„°ëŠ” ì„œë²„ë¡œ ë°œì†¡ ì•ˆí•¨)
     #endregion
 
     void Awake()
@@ -70,7 +70,7 @@ public partial class BackEndMatchManager : MonoBehaviour
     {
         if (!instance)
         {
-            Debug.LogError("BackEndMatchManager ÀÎ½ºÅÏ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.LogError("BackEndMatchManager ì¸ìŠ¤í„´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
             return null;
         }
 
@@ -89,8 +89,9 @@ public partial class BackEndMatchManager : MonoBehaviour
     void Start()
     {
 
-        //GameManager.OnGameReconnect += OnGameReconnect; ÀÌ°Å °ÔÀÓ¸Å´ÏÀú¿¡ Ãß°¡ÇØ¾ßÇÒ°Í.
-        // ÇÚµé·¯ ¼³Á¤
+        Gamemanager.OnGameReconnect += OnGameReconnect; //ì´ê±° ê²Œì„ë§¤ë‹ˆì €ì— ì¶”ê°€í•´ì•¼í• ê²ƒ.
+        // í•¸ë“¤ëŸ¬ ì„¤ì •
+        Debug.Log("BackEndMatchManager ìŠ¤í¬ë¦½íŠ¸");
         MatchMakingHandler();
         GameHandler();
         ExceptionHandler();
@@ -119,14 +120,14 @@ public partial class BackEndMatchManager : MonoBehaviour
 
     private bool SetHostSession()
     {
-        // È£½ºÆ® ¼¼¼Ç Á¤ÇÏ±â
-        // °¢ Å¬¶óÀÌ¾ğÆ®°¡ ¸ğµÎ ¼öÇà (È£½ºÆ® ¼¼¼Ç Á¤ÇÏ´Â ·ÎÁ÷Àº ¸ğµÎ °°À¸¹Ç·Î °¢°¢ÀÇ Å¬¶óÀÌ¾ğÆ®°¡ ¸ğµÎ ·ÎÁ÷À» ¼öÇàÇÏÁö¸¸ °á°ú°ªÀº °°´Ù.)
+        // í˜¸ìŠ¤íŠ¸ ì„¸ì…˜ ì •í•˜ê¸°
+        // ê° í´ë¼ì´ì–¸íŠ¸ê°€ ëª¨ë‘ ìˆ˜í–‰ (í˜¸ìŠ¤íŠ¸ ì„¸ì…˜ ì •í•˜ëŠ” ë¡œì§ì€ ëª¨ë‘ ê°™ìœ¼ë¯€ë¡œ ê°ê°ì˜ í´ë¼ì´ì–¸íŠ¸ê°€ ëª¨ë‘ ë¡œì§ì„ ìˆ˜í–‰í•˜ì§€ë§Œ ê²°ê³¼ê°’ì€ ê°™ë‹¤.)
 
-        Debug.Log("È£½ºÆ® ¼¼¼Ç ¼³Á¤ ÁøÀÔ");
-        // È£½ºÆ® ¼¼¼Ç Á¤·Ä (°¢ Å¬¶óÀÌ¾ğÆ®¸¶´Ù ÀÔÀå ¼ø¼­°¡ ´Ù¸¦ ¼ö ÀÖ±â ¶§¹®¿¡ Á¤·Ä)
+        Debug.Log("í˜¸ìŠ¤íŠ¸ ì„¸ì…˜ ì„¤ì • ì§„ì…");
+        // í˜¸ìŠ¤íŠ¸ ì„¸ì…˜ ì •ë ¬ (ê° í´ë¼ì´ì–¸íŠ¸ë§ˆë‹¤ ì…ì¥ ìˆœì„œê°€ ë‹¤ë¥¼ ìˆ˜ ìˆê¸° ë•Œë¬¸ì— ì •ë ¬)
         sessionIdList.Sort();
         isHost = false;
-        // ³»°¡ È£½ºÆ® ¼¼¼ÇÀÎÁö
+        // ë‚´ê°€ í˜¸ìŠ¤íŠ¸ ì„¸ì…˜ì¸ì§€
         foreach (var record in gameRecords)
         {
             if (record.Value.m_isSuperGamer == true)
@@ -140,9 +141,9 @@ public partial class BackEndMatchManager : MonoBehaviour
             }
         }
 
-        Debug.Log("È£½ºÆ® ¿©ºÎ : " + isHost);
+        Debug.Log("í˜¸ìŠ¤íŠ¸ ì—¬ë¶€ : " + isHost);
 
-        // È£½ºÆ® ¼¼¼ÇÀÌ¸é ·ÎÄÃ¿¡¼­ Ã³¸®ÇÏ´Â ÆĞÅ¶ÀÌ ÀÖÀ¸¹Ç·Î ·ÎÄÃ Å¥¸¦ »ı¼ºÇØÁØ´Ù
+        // í˜¸ìŠ¤íŠ¸ ì„¸ì…˜ì´ë©´ ë¡œì»¬ì—ì„œ ì²˜ë¦¬í•˜ëŠ” íŒ¨í‚·ì´ ìˆìœ¼ë¯€ë¡œ ë¡œì»¬ íë¥¼ ìƒì„±í•´ì¤€ë‹¤
         if (isHost)
         {
             localQueue = new Queue<KeyMessage>();
@@ -152,16 +153,16 @@ public partial class BackEndMatchManager : MonoBehaviour
             localQueue = null;
         }
 
-        // È£½ºÆ® ¼³Á¤±îÁö ³¡³ª¸é ¸ÅÄ¡¼­¹ö¿Í Á¢¼Ó ²÷À½
+        // í˜¸ìŠ¤íŠ¸ ì„¤ì •ê¹Œì§€ ëë‚˜ë©´ ë§¤ì¹˜ì„œë²„ì™€ ì ‘ì† ëŠìŒ
         LeaveMatchServer();
         return true;
     }
 
     private void SetSubHost(SessionId hostSessionId)
     {
-        Debug.Log("¼­ºê È£½ºÆ® ¼¼¼Ç ¼³Á¤ ÁøÀÔ");
-        // ´©°¡ ¼­ºê È£½ºÆ® ¼¼¼ÇÀÎÁö ¼­¹ö¿¡¼­ º¸³½ Á¤º¸°ª È®ÀÎ
-        // ¼­¹ö¿¡¼­ º¸³½ SuperGamer Á¤º¸·Î GameRecordsÀÇ SuperGamer Á¤º¸ °»½Å
+        Debug.Log("ì„œë¸Œ í˜¸ìŠ¤íŠ¸ ì„¸ì…˜ ì„¤ì • ì§„ì…");
+        // ëˆ„ê°€ ì„œë¸Œ í˜¸ìŠ¤íŠ¸ ì„¸ì…˜ì¸ì§€ ì„œë²„ì—ì„œ ë³´ë‚¸ ì •ë³´ê°’ í™•ì¸
+        // ì„œë²„ì—ì„œ ë³´ë‚¸ SuperGamer ì •ë³´ë¡œ GameRecordsì˜ SuperGamer ì •ë³´ ê°±ì‹ 
         foreach (var record in gameRecords)
         {
             if (record.Value.m_sessionId.Equals(hostSessionId))
@@ -173,7 +174,7 @@ public partial class BackEndMatchManager : MonoBehaviour
                 record.Value.m_isSuperGamer = false;
             }
         }
-        // ³»°¡ È£½ºÆ® ¼¼¼ÇÀÎÁö È®ÀÎ
+        // ë‚´ê°€ í˜¸ìŠ¤íŠ¸ ì„¸ì…˜ì¸ì§€ í™•ì¸
         if (hostSessionId.Equals(Backend.Match.GetMySessionId()))
         {
             isHost = true;
@@ -185,8 +186,8 @@ public partial class BackEndMatchManager : MonoBehaviour
 
         hostSession = hostSessionId;
 
-        Debug.Log("¼­ºê È£½ºÆ® ¿©ºÎ : " + isHost);
-        // È£½ºÆ® ¼¼¼ÇÀÌ¸é ·ÎÄÃ¿¡¼­ Ã³¸®ÇÏ´Â ÆĞÅ¶ÀÌ ÀÖÀ¸¹Ç·Î ·ÎÄÃ Å¥¸¦ »ı¼ºÇØÁØ´Ù
+        Debug.Log("ì„œë¸Œ í˜¸ìŠ¤íŠ¸ ì—¬ë¶€ : " + isHost);
+        // í˜¸ìŠ¤íŠ¸ ì„¸ì…˜ì´ë©´ ë¡œì»¬ì—ì„œ ì²˜ë¦¬í•˜ëŠ” íŒ¨í‚·ì´ ìˆìœ¼ë¯€ë¡œ ë¡œì»¬ íë¥¼ ìƒì„±í•´ì¤€ë‹¤
         if (isHost)
         {
             localQueue = new Queue<KeyMessage>();
@@ -196,45 +197,47 @@ public partial class BackEndMatchManager : MonoBehaviour
             localQueue = null;
         }
 
-        Debug.Log("¼­ºê È£½ºÆ® ¼³Á¤ ¿Ï·á");
+        Debug.Log("ì„œë¸Œ í˜¸ìŠ¤íŠ¸ ì„¤ì • ì™„ë£Œ");
     }
 
-    // ¸ÅÄª ¼­¹ö °ü·Ã ÀÌº¥Æ® ÇÚµé·¯
+    /// <summary>
+    /// ë§¤ì¹­ ì„œë²„ ê´€ë ¨ ì´ë²¤íŠ¸ í•¸ë“¤ëŸ¬
+    /// </summary>
     private void MatchMakingHandler()
     {
         Backend.Match.OnJoinMatchMakingServer += (args) =>
         {
             Debug.Log("OnJoinMatchMakingServer : " + args.ErrInfo);
-            // ¸ÅÄª ¼­¹ö¿¡ Á¢¼ÓÇÏ¸é È£Ãâ
+            // ë§¤ì¹­ ì„œë²„ì— ì ‘ì†í•˜ë©´ í˜¸ì¶œ
             ProcessAccessMatchMakingServer(args.ErrInfo);
         };
         Backend.Match.OnMatchMakingResponse += (args) =>
         {
             Debug.Log("OnMatchMakingResponse : " + args.ErrInfo + " : " + args.Reason);
-            // ¸ÅÄª ½ÅÃ» °ü·Ã ÀÛ¾÷¿¡ ´ëÇÑ È£Ãâ
+            // ë§¤ì¹­ ì‹ ì²­ ê´€ë ¨ ì‘ì—…ì— ëŒ€í•œ í˜¸ì¶œ
             ProcessMatchMakingResponse(args);
         };
 
         Backend.Match.OnLeaveMatchMakingServer += (args) =>
         {
-            // ¸ÅÄª ¼­¹ö¿¡¼­ Á¢¼Ó Á¾·áÇÒ ¶§ È£Ãâ
+            // ë§¤ì¹­ ì„œë²„ì—ì„œ ì ‘ì† ì¢…ë£Œí•  ë•Œ í˜¸ì¶œ
             Debug.Log("OnLeaveMatchMakingServer : " + args.ErrInfo);
             isConnectMatchServer = false;
 
             if (args.ErrInfo.Category.Equals(ErrorCode.DisconnectFromRemote) || args.ErrInfo.Category.Equals(ErrorCode.Exception)
                 || args.ErrInfo.Category.Equals(ErrorCode.NetworkTimeout))
             {
-                //// ¼­¹ö¿¡¼­ °­Á¦·Î ²÷Àº °æ¿ì
+                //// ì„œë²„ì—ì„œ ê°•ì œë¡œ ëŠì€ ê²½ìš°
                 //if (LobbyUI.GetInstance())
                 //{
                 //    LobbyUI.GetInstance().MatchRequestCallback(false);
                 //    LobbyUI.GetInstance().CloseRoomUIOnly();
-                //    LobbyUI.GetInstance().SetErrorObject("¸ÅÄª¼­¹ö¿Í ¿¬°áÀÌ ²÷¾îÁ³½À´Ï´Ù.\n\n" + args.ErrInfo.Reason);
+                //    LobbyUI.GetInstance().SetErrorObject("ë§¤ì¹­ì„œë²„ì™€ ì—°ê²°ì´ ëŠì–´ì¡ŒìŠµë‹ˆë‹¤.\n\n" + args.ErrInfo.Reason);
                 //}
             }
         };
 
-        // ´ë±â ¹æ »ı¼º/½ÇÆĞ ¿©ºÎ
+        // ëŒ€ê¸° ë°© ìƒì„±/ì‹¤íŒ¨ ì—¬ë¶€
         Backend.Match.OnMatchMakingRoomCreate += (args) =>
         {
             Debug.Log("OnMatchMakingRoomCreate : " + args.ErrInfo + " : " + args.Reason);
@@ -242,18 +245,18 @@ public partial class BackEndMatchManager : MonoBehaviour
             //LobbyUI.GetInstance().CreateRoomResult(args.ErrInfo.Equals(ErrorCode.Success) == true);
         };
 
-        // ´ë±â¹æ¿¡ À¯Àú ÀÔÀå ¸Ş½ÃÁö
+        // ëŒ€ê¸°ë°©ì— ìœ ì € ì…ì¥ ë©”ì‹œì§€
         Backend.Match.OnMatchMakingRoomJoin += (args) =>
         {
             Debug.Log(string.Format("OnMatchMakingRoomJoin : {0} : {1}", args.ErrInfo, args.Reason));
             if (args.ErrInfo.Equals(ErrorCode.Success))
             {
                 Debug.Log("user join in loom : " + args.UserInfo.m_nickName);
-                //LobbyUI.GetInstance().InsertReadyUserPrefab(args.UserInfo.m_nickName);
+                //LobbyUI.GetInstance().InsertReadyUserPrefab(args.UserInfo.m_nickName);        // UI ì—†ì´ ì§„í–‰
             }
         };
 
-        // ´ë±â¹æ¿¡ ÇöÀç ÀÔÀåÇØ ÀÖ´Â À¯Àú ¸®½ºÆ® ¸Ş½ÃÁö
+        // ëŒ€ê¸°ë°©ì— í˜„ì¬ ì…ì¥í•´ ìˆëŠ” ìœ ì € ë¦¬ìŠ¤íŠ¸ ë©”ì‹œì§€
         Backend.Match.OnMatchMakingRoomUserList += (args) =>
         {
             Debug.Log(string.Format("OnMatchMakingRoomUserList : {0} : {1}", args.ErrInfo, args.Reason));
@@ -267,7 +270,7 @@ public partial class BackEndMatchManager : MonoBehaviour
             MatchingTest.GetInstance().CreateRoomResult(args.ErrInfo.Equals(ErrorCode.Success) == true, userList);
         };
 
-        // ´ë±â¹æ¿¡ À¯Àú ÅğÀå ¸Ş½ÃÁö
+        // ëŒ€ê¸°ë°©ì— ìœ ì € í‡´ì¥ ë©”ì‹œì§€
         Backend.Match.OnMatchMakingRoomLeave += (args) =>
         {
             Debug.Log(string.Format("OnMatchMakingRoomLeave : {0} : {1}", args.ErrInfo, args.Reason));
@@ -278,9 +281,9 @@ public partial class BackEndMatchManager : MonoBehaviour
                 {
                     if (args.ErrInfo.Equals(ErrorCode.Match_Making_KickedByOwner))
                     {
-                        //LobbyUI.GetInstance().SetErrorObject("°­Åğ´çÇß½À´Ï´Ù.");
+                        //LobbyUI.GetInstance().SetErrorObject("ê°•í‡´ë‹¹í–ˆìŠµë‹ˆë‹¤.");
                     }
-                    Debug.Log("ÀÚ±âÀÚ½ÅÀÌ ¹æ¿¡¼­ ³ª°¬½À´Ï´Ù.");
+                    Debug.Log("ìê¸°ìì‹ ì´ ë°©ì—ì„œ ë‚˜ê°”ìŠµë‹ˆë‹¤.");
                     //LobbyUI.GetInstance().CloseRoomUIOnly();
                     return;
                 }
@@ -288,28 +291,28 @@ public partial class BackEndMatchManager : MonoBehaviour
             }
         };
 
-        // ¹æÀåÀÌ ´ë±â¹æ¿¡¼­ ³ª°¡ ´ë±â¹æ ÆÄ±â µÈ ¸Ş½ÃÁö
+        // ë°©ì¥ì´ ëŒ€ê¸°ë°©ì—ì„œ ë‚˜ê°€ ëŒ€ê¸°ë°© íŒŒê¸° ëœ ë©”ì‹œì§€
         Backend.Match.OnMatchMakingRoomDestory += (args) =>
         {
             Debug.Log(string.Format("OnMatchMakingRoomDestory : {0} : {1}", args.ErrInfo, args.Reason));
             //LobbyUI.GetInstance().CloseRoomUIOnly();
-            //LobbyUI.GetInstance().SetErrorObject("¹æÀåÀÌ ´ë±â¹æÀ» ÆÄ±âÇÏ¿´½À´Ï´Ù.");
+            //LobbyUI.GetInstance().SetErrorObject("ë°©ì¥ì´ ëŒ€ê¸°ë°©ì„ íŒŒê¸°í•˜ì˜€ìŠµë‹ˆë‹¤.");
         };
 
-        // ´ë±â¹æ¿¡ À¯Àú ÃÊ´ë ¼º°ø/½ÇÆĞ ¿©ºÎ. (À¯ÀúÀÇ ÃÊ´ë ¼ö¶ô/°ÅÀıÀÌ ¾Æ´Ô.)
+        // ëŒ€ê¸°ë°©ì— ìœ ì € ì´ˆëŒ€ ì„±ê³µ/ì‹¤íŒ¨ ì—¬ë¶€. (ìœ ì €ì˜ ì´ˆëŒ€ ìˆ˜ë½/ê±°ì ˆì´ ì•„ë‹˜.)
         Backend.Match.OnMatchMakingRoomInvite += (args) =>
         {
             Debug.Log(string.Format("OnMatchMakingRoomInvite : {0} : {1}", args.ErrInfo, args.Reason));
-            //LobbyUI.GetInstance().SetErrorObject(args.ErrInfo.Equals(ErrorCode.Success) == true ? "ÃÊ´ë¿¡ ¼º°øÇß½À´Ï´Ù." : "ÃÊ´ë¿¡ ½ÇÆĞÇß½À´Ï´Ù.\n\n" + args.Reason);
+            //LobbyUI.GetInstance().SetErrorObject(args.ErrInfo.Equals(ErrorCode.Success) == true ? "ì´ˆëŒ€ì— ì„±ê³µí–ˆìŠµë‹ˆë‹¤." : "ì´ˆëŒ€ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.\n\n" + args.Reason);
         };
 
-        // ÃÊ´ëÇÑ À¯Àú°¡ ÃÊ´ë ¼ö¶ô/°ÅÀı ¿©ºÎ.
+        // ì´ˆëŒ€í•œ ìœ ì €ê°€ ì´ˆëŒ€ ìˆ˜ë½/ê±°ì ˆ ì—¬ë¶€.
         Backend.Match.OnMatchMakingRoomInviteResponse += (args) =>
         {
             Debug.Log(string.Format("OnMatchMakingRoomInviteResponse : {0} : {1}", args.ErrInfo, args.Reason));
         };
 
-        // À¯Àú °­Åğ °á°ú ¸Ş½ÃÁö
+        // ìœ ì € ê°•í‡´ ê²°ê³¼ ë©”ì‹œì§€
         Backend.Match.OnMatchMakingRoomKick += (args) =>
         {
             Debug.Log(string.Format("OnMatchMakingRoomKick : {0} : {1}", args.ErrInfo, args.Reason));
@@ -319,7 +322,7 @@ public partial class BackEndMatchManager : MonoBehaviour
             }
         };
 
-        // ´©±º°¡ ³ª¸¦ ÃÊ´ëÇßÀ»¶§ ¸®ÅÏµÊ
+        // ëˆ„êµ°ê°€ ë‚˜ë¥¼ ì´ˆëŒ€í–ˆì„ë•Œ ë¦¬í„´ë¨
         Backend.Match.OnMatchMakingRoomSomeoneInvited += (args) =>
         {
             Debug.Log(string.Format("OnMatchMakingRoomSomeoneInvited : {0} : {1}", args.ErrInfo, args.Reason));
@@ -327,40 +330,40 @@ public partial class BackEndMatchManager : MonoBehaviour
             var roomToken = args.RoomToken;
             Debug.Log(string.Format("room id : {0} / token : {1}", roomId, roomToken));
             MatchMakingUserInfo userInfo = args.InviteUserInfo;
-            //LobbyUI.GetInstance().SetSelectObject(userInfo.m_nickName + " À¯Àú°¡ ÃÊ´ëÇß½À´Ï´Ù. ÃÊ´ë¸¦ ¼ö¶ôÇÒ±î¿ä?",
+            //LobbyUI.GetInstance().SetSelectObject(userInfo.m_nickName + " ìœ ì €ê°€ ì´ˆëŒ€í–ˆìŠµë‹ˆë‹¤. ì´ˆëŒ€ë¥¼ ìˆ˜ë½í• ê¹Œìš”?",
             //() =>
             //{
-            //    Debug.Log("ÃÊ´ë¸¦ ¼ö¶ôÇÕ´Ï´Ù.");
+            //    Debug.Log("ì´ˆëŒ€ë¥¼ ìˆ˜ë½í•©ë‹ˆë‹¤.");
             //    Backend.Match.AcceptInvitation(roomId, roomToken);
             //},
             //() =>
             //{
-            //    Debug.Log("ÃÊ´ë¸¦ °ÅÀıÇÕ´Ï´Ù.");
+            //    Debug.Log("ì´ˆëŒ€ë¥¼ ê±°ì ˆí•©ë‹ˆë‹¤.");
             //    Backend.Match.DeclineInvitation(roomId, roomToken);
             //});
         };
     }
 
-    // ÀÎ°ÔÀÓ ¼­¹ö °ü·Ã ÀÌº¥Æ® ÇÚµé·¯
+    // ì¸ê²Œì„ ì„œë²„ ê´€ë ¨ ì´ë²¤íŠ¸ í•¸ë“¤ëŸ¬
     private void GameHandler()
     {
         Backend.Match.OnSessionJoinInServer += (args) =>
         {
             Debug.Log("OnSessionJoinInServer : " + args.ErrInfo);
-            // ÀÎ°ÔÀÓ ¼­¹ö¿¡ Á¢¼ÓÇÏ¸é È£Ãâ
+            // ì¸ê²Œì„ ì„œë²„ì— ì ‘ì†í•˜ë©´ í˜¸ì¶œ
             if (args.ErrInfo != ErrorInfo.Success)
             {
                 if (isReconnectProcess)
                 {
                     if (args.ErrInfo.Reason.Equals("Reconnect Success"))
                     {
-                        //ÀçÁ¢¼Ó ¼º°ø
-                        // GameManager.GetInstance().ChangeState(GameManager.GameState.Reconnect); °ÔÀÓ¸Å´ÏÀú¿¡¼­ °íÃÄ¾ßÇÔ.
-                        Debug.Log("ÀçÁ¢¼Ó ¼º°ø");
+                        //ì¬ì ‘ì† ì„±ê³µ
+                        // GameManager.GetInstance().ChangeState(GameManager.GameState.Reconnect); ê²Œì„ë§¤ë‹ˆì €ì—ì„œ ê³ ì³ì•¼í•¨.
+                        Debug.Log("ì¬ì ‘ì† ì„±ê³µ");
                     }
                     else if (args.ErrInfo.Reason.Equals("Fail To Reconnect"))
                     {
-                        Debug.Log("ÀçÁ¢¼Ó ½ÇÆĞ");
+                        Debug.Log("ì¬ì ‘ì† ì‹¤íŒ¨");
                         JoinMatchServer();
                         isConnectInGameServer = false;
                     }
@@ -373,19 +376,19 @@ public partial class BackEndMatchManager : MonoBehaviour
             }
             if (inGameRoomToken == string.Empty)
             {
-                Debug.LogError("ÀÎ°ÔÀÓ ¼­¹ö Á¢¼Ó ¼º°øÇßÀ¸³ª ·ë ÅäÅ«ÀÌ ¾ø½À´Ï´Ù.");
+                Debug.LogError("ì¸ê²Œì„ ì„œë²„ ì ‘ì† ì„±ê³µí–ˆìœ¼ë‚˜ ë£¸ í† í°ì´ ì—†ìŠµë‹ˆë‹¤.");
                 return;
             }
-            Debug.Log("ÀÎ°ÔÀÓ ¼­¹ö Á¢¼Ó ¼º°ø");
+            Debug.Log("ì¸ê²Œì„ ì„œë²„ ì ‘ì† ì„±ê³µ");
             isJoinGameRoom = true;
             AccessInGameRoom(inGameRoomToken);
         };
 
         Backend.Match.OnSessionListInServer += (args) =>
         {
-            // ¼¼¼Ç ¸®½ºÆ® È£Ãâ ÈÄ Á¶ÀÎ Ã¤³ÎÀÌ È£ÃâµÊ
-            // ÇöÀç °°Àº °ÔÀÓ(¹æ)¿¡ Âü°¡ÁßÀÎ ÇÃ·¹ÀÌ¾îµé Áß ³ªº¸´Ù ¸ÕÀú ÀÌ ¹æ¿¡ µé¾î¿Í ÀÖ´Â ÇÃ·¹ÀÌ¾îµé°ú ³ªÀÇ Á¤º¸°¡ µé¾îÀÖ´Ù.
-            // ³ªº¸´Ù ´Ê°Ô µé¾î¿Â ÇÃ·¹ÀÌ¾îµéÀÇ Á¤º¸´Â OnMatchInGameAccess ¿¡¼­ ¼ö½ÅµÊ
+            // ì„¸ì…˜ ë¦¬ìŠ¤íŠ¸ í˜¸ì¶œ í›„ ì¡°ì¸ ì±„ë„ì´ í˜¸ì¶œë¨
+            // í˜„ì¬ ê°™ì€ ê²Œì„(ë°©)ì— ì°¸ê°€ì¤‘ì¸ í”Œë ˆì´ì–´ë“¤ ì¤‘ ë‚˜ë³´ë‹¤ ë¨¼ì € ì´ ë°©ì— ë“¤ì–´ì™€ ìˆëŠ” í”Œë ˆì´ì–´ë“¤ê³¼ ë‚˜ì˜ ì •ë³´ê°€ ë“¤ì–´ìˆë‹¤.
+            // ë‚˜ë³´ë‹¤ ëŠ¦ê²Œ ë“¤ì–´ì˜¨ í”Œë ˆì´ì–´ë“¤ì˜ ì •ë³´ëŠ” OnMatchInGameAccess ì—ì„œ ìˆ˜ì‹ ë¨
             Debug.Log("OnSessionListInServer : " + args.ErrInfo);
 
             ProcessMatchInGameSessionList(args);
@@ -394,21 +397,21 @@ public partial class BackEndMatchManager : MonoBehaviour
         Backend.Match.OnMatchInGameAccess += (args) =>
         {
             Debug.Log("OnMatchInGameAccess : " + args.ErrInfo);
-            // ¼¼¼ÇÀÌ ÀÎ°ÔÀÓ ·ë¿¡ Á¢¼ÓÇÒ ¶§¸¶´Ù È£Ãâ (°¢ Å¬¶óÀÌ¾ğÆ®°¡ ÀÎ°ÔÀÓ ·ë¿¡ Á¢¼ÓÇÒ ¶§¸¶´Ù È£ÃâµÊ)
+            // ì„¸ì…˜ì´ ì¸ê²Œì„ ë£¸ì— ì ‘ì†í•  ë•Œë§ˆë‹¤ í˜¸ì¶œ (ê° í´ë¼ì´ì–¸íŠ¸ê°€ ì¸ê²Œì„ ë£¸ì— ì ‘ì†í•  ë•Œë§ˆë‹¤ í˜¸ì¶œë¨)
             ProcessMatchInGameAccess(args);
         };
 
         Backend.Match.OnMatchInGameStart += () =>
         {
-            // ¼­¹ö¿¡¼­ °ÔÀÓ ½ÃÀÛ ÆĞÅ¶À» º¸³»¸é È£Ãâ
+            // ì„œë²„ì—ì„œ ê²Œì„ ì‹œì‘ íŒ¨í‚·ì„ ë³´ë‚´ë©´ í˜¸ì¶œ
             GameSetup();
         };
 
         Backend.Match.OnMatchResult += (args) =>
         {
-            Debug.Log("°ÔÀÓ °á°ú°ª ¾÷·Îµå °á°ú : " + string.Format("{0} : {1}", args.ErrInfo, args.Reason));
-            // ¼­¹ö¿¡¼­ °ÔÀÓ °á°ú ÆĞÅ¶À» º¸³»¸é È£Ãâ
-            // ³»°¡(Å¬¶óÀÌ¾ğÆ®°¡) ¼­¹ö·Î º¸³½ °á°ú°ªÀÌ Á¤»óÀûÀ¸·Î ¾÷µ¥ÀÌÆ® µÇ¾ú´ÂÁö È®ÀÎ
+            Debug.Log("ê²Œì„ ê²°ê³¼ê°’ ì—…ë¡œë“œ ê²°ê³¼ : " + string.Format("{0} : {1}", args.ErrInfo, args.Reason));
+            // ì„œë²„ì—ì„œ ê²Œì„ ê²°ê³¼ íŒ¨í‚·ì„ ë³´ë‚´ë©´ í˜¸ì¶œ
+            // ë‚´ê°€(í´ë¼ì´ì–¸íŠ¸ê°€) ì„œë²„ë¡œ ë³´ë‚¸ ê²°ê³¼ê°’ì´ ì •ìƒì ìœ¼ë¡œ ì—…ë°ì´íŠ¸ ë˜ì—ˆëŠ”ì§€ í™•ì¸
 
             if (args.ErrInfo == BackEnd.Tcp.ErrorCode.Success)
             {         
@@ -416,32 +419,32 @@ public partial class BackEndMatchManager : MonoBehaviour
             }
             else if (args.ErrInfo == BackEnd.Tcp.ErrorCode.Match_InGame_Timeout)
             {
-                Debug.Log("°ÔÀÓ ÀÔÀå ½ÇÆĞ : " + args.ErrInfo);
+                Debug.Log("ê²Œì„ ì…ì¥ ì‹¤íŒ¨ : " + args.ErrInfo);
                 // LobbyUI.GetInstance().MatchCancelCallback();
             }
             else
             {
-                Debug.Log("°ÔÀÓ °á°ú ¾÷·Îµå ½ÇÆĞ : " + args.ErrInfo);
+                Debug.Log("ê²Œì„ ê²°ê³¼ ì—…ë¡œë“œ ì‹¤íŒ¨ : " + args.ErrInfo);
             }
-            // ¼¼¼Ç¸®½ºÆ® ÃÊ±âÈ­
+            // ì„¸ì…˜ë¦¬ìŠ¤íŠ¸ ì´ˆê¸°í™”
             sessionIdList = null;
         };
 
         Backend.Match.OnMatchRelay += (args) =>
         {
-            // °¢ Å¬¶óÀÌ¾ğÆ®µéÀÌ ¼­¹ö¸¦ ÅëÇØ ÁÖ°í¹ŞÀº ÆĞÅ¶µé
-            // ¼­¹ö´Â ´Ü¼ø ºê·ÎµåÄ³½ºÆÃ¸¸ Áö¿ø (¼­¹ö¿¡¼­ ¾î¶°ÇÑ ¿¬»êµµ ¼öÇàÇÏÁö ¾ÊÀ½)
+            // ê° í´ë¼ì´ì–¸íŠ¸ë“¤ì´ ì„œë²„ë¥¼ í†µí•´ ì£¼ê³ ë°›ì€ íŒ¨í‚·ë“¤
+            // ì„œë²„ëŠ” ë‹¨ìˆœ ë¸Œë¡œë“œìºìŠ¤íŒ…ë§Œ ì§€ì› (ì„œë²„ì—ì„œ ì–´ë– í•œ ì—°ì‚°ë„ ìˆ˜í–‰í•˜ì§€ ì•ŠìŒ)
 
-            // °ÔÀÓ »çÀü ¼³Á¤
+            // ê²Œì„ ì‚¬ì „ ì„¤ì •
             if (PrevGameMessage(args.BinaryUserData) == true)
             {
-                // °ÔÀÓ »çÀü ¼³Á¤À» ÁøÇàÇÏ¿´À¸¸é ¹Ù·Î ¸®ÅÏ
+                // ê²Œì„ ì‚¬ì „ ì„¤ì •ì„ ì§„í–‰í•˜ì˜€ìœ¼ë©´ ë°”ë¡œ ë¦¬í„´
                 return;
             }
 
             if (WorldManager.instance == null)
             {
-                // ¿ùµå ¸Å´ÏÀú°¡ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é ¹Ù·Î ¸®ÅÏ
+                // ì›”ë“œ ë§¤ë‹ˆì €ê°€ ì¡´ì¬í•˜ì§€ ì•Šìœ¼ë©´ ë°”ë¡œ ë¦¬í„´
                 return;
             }
 
@@ -450,7 +453,7 @@ public partial class BackEndMatchManager : MonoBehaviour
 
         Backend.Match.OnMatchChat += (args) =>
         {
-            // Ã¤ÆÃ±â´ÉÀº Æ©Åä¸®¾ó¿¡ ±¸ÇöµÇÁö ¾Ê¾Ò½À´Ï´Ù.
+            // ì±„íŒ…ê¸°ëŠ¥ì€ íŠœí† ë¦¬ì–¼ì— êµ¬í˜„ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.
         };
 
         Backend.Match.OnLeaveInGameServer += (args) =>
@@ -465,35 +468,35 @@ public partial class BackEndMatchManager : MonoBehaviour
 
         Backend.Match.OnSessionOnline += (args) =>
         {
-            // ´Ù¸¥ À¯Àú°¡ ÀçÁ¢¼Ó ÇßÀ» ¶§ È£Ãâ
+            // ë‹¤ë¥¸ ìœ ì €ê°€ ì¬ì ‘ì† í–ˆì„ ë•Œ í˜¸ì¶œ
             var nickName = Backend.Match.GetNickNameBySessionId(args.GameRecord.m_sessionId);
-            Debug.Log(string.Format("[{0}] ¿Â¶óÀÎµÇ¾ú½À´Ï´Ù. - {1} : {2}", nickName, args.ErrInfo, args.Reason));
+            Debug.Log(string.Format("[{0}] ì˜¨ë¼ì¸ë˜ì—ˆìŠµë‹ˆë‹¤. - {1} : {2}", nickName, args.ErrInfo, args.Reason));
             ProcessSessionOnline(args.GameRecord.m_sessionId, nickName);
         };
 
         Backend.Match.OnSessionOffline += (args) =>
         {
-            // ´Ù¸¥ À¯Àú È¤Àº ÀÚ±âÀÚ½ÅÀÌ Á¢¼ÓÀÌ ²÷¾îÁ³À» ¶§ È£Ãâ
-            Debug.Log(string.Format("[{0}] ¿ÀÇÁ¶óÀÎµÇ¾ú½À´Ï´Ù. - {1} : {2}", args.GameRecord.m_nickname, args.ErrInfo, args.Reason));
-            // ÀÎÁõ ¿À·ù°¡ ¾Æ´Ï¸é ¿ÀÇÁ¶óÀÎ ÇÁ·Î¼¼½º ½ÇÇà
+            // ë‹¤ë¥¸ ìœ ì € í˜¹ì€ ìê¸°ìì‹ ì´ ì ‘ì†ì´ ëŠì–´ì¡Œì„ ë•Œ í˜¸ì¶œ
+            Debug.Log(string.Format("[{0}] ì˜¤í”„ë¼ì¸ë˜ì—ˆìŠµë‹ˆë‹¤. - {1} : {2}", args.GameRecord.m_nickname, args.ErrInfo, args.Reason));
+            // ì¸ì¦ ì˜¤ë¥˜ê°€ ì•„ë‹ˆë©´ ì˜¤í”„ë¼ì¸ í”„ë¡œì„¸ìŠ¤ ì‹¤í–‰
             if (args.ErrInfo != ErrorCode.AuthenticationFailed)
             {
                 ProcessSessionOffline(args.GameRecord.m_sessionId);
             }
             else
             {
-                // Àß¸øµÈ ÀçÁ¢¼Ó ½Ãµµ ½Ã ÀÎÁõ¿À·ù°¡ ¹ß»ı
+                // ì˜ëª»ëœ ì¬ì ‘ì† ì‹œë„ ì‹œ ì¸ì¦ì˜¤ë¥˜ê°€ ë°œìƒ
             }
         };
 
         Backend.Match.OnChangeSuperGamer += (args) =>
         {
-            Debug.Log(string.Format("ÀÌÀü ¹æÀå : {0} / »õ ¹æÀå : {1}", args.OldSuperUserRecord.m_nickname, args.NewSuperUserRecord.m_nickname));
-            // È£½ºÆ® Àç¼³Á¤
+            Debug.Log(string.Format("ì´ì „ ë°©ì¥ : {0} / ìƒˆ ë°©ì¥ : {1}", args.OldSuperUserRecord.m_nickname, args.NewSuperUserRecord.m_nickname));
+            // í˜¸ìŠ¤íŠ¸ ì¬ì„¤ì •
             SetSubHost(args.NewSuperUserRecord.m_sessionId);
             if (isHost)
             {
-                // ¸¸¾à ¼­ºêÈ£½ºÆ®·Î ¼³Á¤µÇ¸é ´Ù¸¥ ¸ğµç Å¬¶óÀÌ¾ğÆ®¿¡ ½ÌÅ©¸Ş½ÃÁö Àü¼Û
+                // ë§Œì•½ ì„œë¸Œí˜¸ìŠ¤íŠ¸ë¡œ ì„¤ì •ë˜ë©´ ë‹¤ë¥¸ ëª¨ë“  í´ë¼ì´ì–¸íŠ¸ì— ì‹±í¬ë©”ì‹œì§€ ì „ì†¡
                 Invoke("SendGameSyncMessage", 1.0f);
             }
         };
@@ -501,7 +504,7 @@ public partial class BackEndMatchManager : MonoBehaviour
 
     private void ExceptionHandler()
     {
-        // ¿¹¿Ü°¡ ¹ß»ıÇßÀ» ¶§ È£Ãâ
+        // ì˜ˆì™¸ê°€ ë°œìƒí–ˆì„ ë•Œ í˜¸ì¶œ
         Backend.Match.OnException += (e) =>
         {
             Debug.Log(e);
@@ -514,8 +517,8 @@ public partial class BackEndMatchManager : MonoBehaviour
         {
             Backend.Match.Poll();
 
-            // È£½ºÆ®ÀÇ °æ¿ì ·ÎÄÃ Å¥°¡ Á¸Àç
-            // Å¥¿¡ ÀÖ´Â ÆĞÅ¶À» ·ÎÄÃ¿¡¼­ Ã³¸®
+            // í˜¸ìŠ¤íŠ¸ì˜ ê²½ìš° ë¡œì»¬ íê°€ ì¡´ì¬
+            // íì— ìˆëŠ” íŒ¨í‚·ì„ ë¡œì»¬ì—ì„œ ì²˜ë¦¬
             if (localQueue != null)
             {
                 while (localQueue.Count > 0)
@@ -527,27 +530,78 @@ public partial class BackEndMatchManager : MonoBehaviour
         }
     }
 
+    //public void GetMyMatchRecord(int index, Action<MatchRecord, bool> func)
+    //{
+    //    var inDate = BackEndServerManager.GetInstance().myIndate;
+
+    //    SendQueue.Enqueue(Backend.Match.GetMatchRecord, inDate, matchInfos.matchType, matchInfos.matchModeType, matchInfos.inDate, callback =>
+    //    {
+    //        MatchRecord record = new MatchRecord();
+    //        record.matchTitle = matchInfos.title;
+    //        record.matchType = matchInfos.matchType;
+    //        record.modeType = matchInfos.matchModeType;
+
+    //        if (!callback.IsSuccess())
+    //        {
+    //            Debug.LogError("ë§¤ì¹­ ê¸°ë¡ ì¡°íšŒ ì‹¤íŒ¨\n" + callback);
+    //            func(record, false);
+    //            return;
+    //        }
+
+    //        if (callback.Rows().Count <= 0)
+    //        {
+    //            Debug.Log("ë§¤ì¹­ ê¸°ë¡ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.\n" + callback);
+    //            func(record, true);
+    //            return;
+    //        }
+    //        var data = callback.Rows()[0];
+    //        var win = Convert.ToInt32(data["victory"]["N"].ToString());
+    //        var draw = Convert.ToInt32(data["draw"]["N"].ToString());
+    //        var defeat = Convert.ToInt32(data["defeat"]["N"].ToString());
+    //        var numOfMatch = win + draw + defeat;
+    //        string point = string.Empty;
+    //        if (matchInfos.matchType == MatchType.MMR)
+    //        {
+    //            point = data["mmr"]["N"].ToString();
+    //        }
+    //        else if (matchInfos.matchType == MatchType.Point)
+    //        {
+    //            point = data["point"]["N"].ToString() + " P";
+    //        }
+    //        else
+    //        {
+    //            point = "-";
+    //        }
+
+    //        record.win = win;
+    //        record.numOfMatch = numOfMatch;
+    //        record.winRate = Math.Round(((float)win / numOfMatch) * 100 * 100) / 100;
+    //        record.score = point;
+
+    //        func(record, true);
+    //    });
+    //}
     public void GetMyMatchRecord(int index, Action<MatchRecord, bool> func)
     {
         var inDate = BackEndServerManager.GetInstance().myIndate;
 
-        SendQueue.Enqueue(Backend.Match.GetMatchRecord, inDate, matchInfos.matchType, matchInfos.matchModeType, matchInfos.inDate, callback =>
+        SendQueue.Enqueue(Backend.Match.GetMatchRecord, inDate, matchInfos[index].matchType, matchInfos[index].matchModeType, matchInfos[index].inDate, callback =>
         {
             MatchRecord record = new MatchRecord();
-            record.matchTitle = matchInfos.title;
-            record.matchType = matchInfos.matchType;
-            record.modeType = matchInfos.matchModeType;
+            record.matchTitle = matchInfos[index].title;
+            record.matchType = matchInfos[index].matchType;
+            record.modeType = matchInfos[index].matchModeType;
 
             if (!callback.IsSuccess())
             {
-                Debug.LogError("¸ÅÄª ±â·Ï Á¶È¸ ½ÇÆĞ\n" + callback);
+                Debug.LogError("ë§¤ì¹­ ê¸°ë¡ ì¡°íšŒ ì‹¤íŒ¨\n" + callback);
                 func(record, false);
                 return;
             }
 
             if (callback.Rows().Count <= 0)
             {
-                Debug.Log("¸ÅÄª ±â·ÏÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.\n" + callback);
+                Debug.Log("ë§¤ì¹­ ê¸°ë¡ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.\n" + callback);
                 func(record, true);
                 return;
             }
@@ -557,11 +611,11 @@ public partial class BackEndMatchManager : MonoBehaviour
             var defeat = Convert.ToInt32(data["defeat"]["N"].ToString());
             var numOfMatch = win + draw + defeat;
             string point = string.Empty;
-            if (matchInfos.matchType == MatchType.MMR)
+            if (matchInfos[index].matchType == MatchType.MMR)
             {
                 point = data["mmr"]["N"].ToString();
             }
-            else if (matchInfos.matchType == MatchType.Point)
+            else if (matchInfos[index].matchType == MatchType.Point)
             {
                 point = data["point"]["N"].ToString() + " P";
             }
@@ -587,17 +641,66 @@ public partial class BackEndMatchManager : MonoBehaviour
         JoinMatchServer();
     }
 
+    //public void GetMatchList(Action<bool, string> func)
+    //{
+    //    // ë§¤ì¹­ ì¹´ë“œ ì •ë³´ ì´ˆê¸°í™”
+    //    matchInfos.Clear();
+
+    //    Backend.Match.GetMatchList(callback =>
+    //    {
+    //        // ìš”ì²­ ì‹¤íŒ¨í•˜ëŠ” ê²½ìš° ì¬ìš”ì²­
+    //        if (callback.IsSuccess() == false)
+    //        {
+    //            Debug.Log("ë§¤ì¹­ì¹´ë“œ ë¦¬ìŠ¤íŠ¸ ë¶ˆëŸ¬ì˜¤ê¸° ì‹¤íŒ¨\n" + callback);
+    //            Dispatcher.Current.BeginInvoke(() =>
+    //            {
+    //                GetMatchList(func);
+    //            });
+    //            return;
+    //        }
+
+    //        foreach (LitJson.JsonData row in callback.Rows())
+    //        {
+    //            MatchInfo matchInfo = new MatchInfo();
+    //            matchInfo.title = row["matchTitle"]["S"].ToString();
+    //            matchInfo.inDate = row["inDate"]["S"].ToString();
+    //            matchInfo.headCount = row["matchHeadCount"]["N"].ToString();
+    //            matchInfo.isSandBoxEnable = row["enable_sandbox"]["BOOL"].ToString().Equals("True") ? true : false;
+
+    //            foreach (MatchType type in Enum.GetValues(typeof(MatchType)))
+    //            {
+    //                if (type.ToString().ToLower().Equals(row["matchType"]["S"].ToString().ToLower()))
+    //                {
+    //                    matchInfo.matchType = type;
+    //                }
+    //            }
+
+    //            foreach (MatchModeType type in Enum.GetValues(typeof(MatchModeType)))
+    //            {
+    //                if (type.ToString().ToLower().Equals(row["matchModeType"]["S"].ToString().ToLower()))
+    //                {
+    //                    matchInfo.matchModeType = type;
+    //                }
+    //            }
+
+    //            matchInfos.Add(matchInfo);
+    //        }
+    //        Debug.Log("ë§¤ì¹­ì¹´ë“œ ë¦¬ìŠ¤íŠ¸ ë¶ˆëŸ¬ì˜¤ê¸° ì„±ê³µ : " + matchInfos.title);
+    //        func(true, string.Empty);
+    //    });
+    //}
+
     public void GetMatchList(Action<bool, string> func)
     {
-        // ¸ÅÄª Ä«µå Á¤º¸ ÃÊ±âÈ­
-        //matchInfos.Clear();
+        // ë§¤ì¹­ ì¹´ë“œ ì •ë³´ ì´ˆê¸°í™”
+        matchInfos.Clear();
 
         Backend.Match.GetMatchList(callback =>
         {
-            // ¿äÃ» ½ÇÆĞÇÏ´Â °æ¿ì Àç¿äÃ»
+            // ìš”ì²­ ì‹¤íŒ¨í•˜ëŠ” ê²½ìš° ì¬ìš”ì²­
             if (callback.IsSuccess() == false)
             {
-                Debug.Log("¸ÅÄªÄ«µå ¸®½ºÆ® ºÒ·¯¿À±â ½ÇÆĞ\n" + callback);
+                Debug.Log("ë§¤ì¹­ì¹´ë“œ ë¦¬ìŠ¤íŠ¸ ë¶ˆëŸ¬ì˜¤ê¸° ì‹¤íŒ¨\n" + callback);
                 Dispatcher.Current.BeginInvoke(() =>
                 {
                     GetMatchList(func);
@@ -629,16 +732,16 @@ public partial class BackEndMatchManager : MonoBehaviour
                     }
                 }
 
-                //matchInfos.Add(matchInfo);
+                matchInfos.Add(matchInfo);
             }
-            Debug.Log("¸ÅÄªÄ«µå ¸®½ºÆ® ºÒ·¯¿À±â ¼º°ø : " + matchInfos.title);
+            Debug.Log("ë§¤ì¹­ì¹´ë“œ ë¦¬ìŠ¤íŠ¸ ë¶ˆëŸ¬ì˜¤ê¸° ì„±ê³µ : " + matchInfos.Count);
             func(true, string.Empty);
         });
     }
 
     public void AddMsgToLocalQueue(KeyMessage message)
     {
-        // ·ÎÄÃ Å¥¿¡ ¸Ş½ÃÁö Ãß°¡
+        // ë¡œì»¬ íì— ë©”ì‹œì§€ ì¶”ê°€
         if (isHost == false || localQueue == null)
         {
             return;
@@ -657,14 +760,23 @@ public partial class BackEndMatchManager : MonoBehaviour
         return gameRecords[sessionId].m_teamNumber;
     }
 
+    //public MatchInfo GetMatchInfo(string indate)
+    //{
+    //    //var result = matchInfos.FirstOrDefault(x => x.inDate == indate);
+    //    var result=new MatchInfo();
+    //    if (matchInfos.inDate == indate)
+    //    {
+    //        result = matchInfos;
+    //    }
+    //    if (result.Equals(default(MatchInfo)) == true)
+    //    {
+    //        return null;
+    //    }
+    //    return result;
+    //}
     public MatchInfo GetMatchInfo(string indate)
     {
-        //var result = matchInfos.FirstOrDefault(x => x.inDate == indate);
-        var result=new MatchInfo();
-        if (matchInfos.inDate == indate)
-        {
-            result = matchInfos;
-        }
+        var result = matchInfos.FirstOrDefault(x => x.inDate == indate);
         if (result.Equals(default(MatchInfo)) == true)
         {
             return null;
