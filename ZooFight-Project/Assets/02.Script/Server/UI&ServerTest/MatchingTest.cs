@@ -56,7 +56,7 @@ public class MatchingTest : MonoBehaviour
 
     public void RequestMatch()
     {
-        BackEndMatchManager.GetInstance().RequestMatchMaking();
+        //BackEndMatchManager.GetInstance().RequestMatchMaking(index);
     }
 
     public void LeaveMatchRoom()
@@ -68,7 +68,7 @@ public class MatchingTest : MonoBehaviour
     {
         if (BackEndMatchManager.GetInstance().CreateMatchRoom() == true)
         {
-            Debug.Log("¹æÀÌ ¸¸µé¾îÁı´Ï´Ù.");
+            Debug.Log("ë°©ì´ ë§Œë“¤ì–´ì§‘ë‹ˆë‹¤.");
         }
     }
 
@@ -76,11 +76,11 @@ public class MatchingTest : MonoBehaviour
     {
         if(isSuccess == true)
         {
-            Debug.Log("¹æÀÌ ¸¸µé¾îÁ³½À´Ï´Ù.");
+            Debug.Log("ë°©ì´ ë§Œë“¤ì–´ì¡ŒìŠµë‹ˆë‹¤.");
         }
         else
         {
-            Debug.Log("´ë±â¹æ »ı¼º¿¡ ½ÇÆĞÇß½À´Ï´Ù.\n\nÀá½Ã ÈÄ ´Ù½Ã ½ÃµµÇØÁÖ¼¼¿ä.");
+            Debug.Log("ëŒ€ê¸°ë°© ìƒì„±ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.\n\nì ì‹œ í›„ ë‹¤ì‹œ ì‹œë„í•´ì£¼ì„¸ìš”.");
         }
     }
 }

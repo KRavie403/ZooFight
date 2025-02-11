@@ -22,8 +22,9 @@ public class BackendGameData : Singleton<BackendGameData>
 
         Param param = new Param()
         {
-            { "character",          userGameData.character },
-            { "team",          userGameData.team }
+            { "character",          userGameData.character }
+            //{ "character",          userGameData.character },
+            //{ "team",          userGameData.team }
         };
 
         // 비동기로 테이블에 데이터 추가 시도
@@ -79,7 +80,7 @@ public class BackendGameData : Singleton<BackendGameData>
 
                         // 불러온 게임 정보를 userGameData 변수에 저장
                         userGameData.character = int.Parse(gameDataJson[0]["character"].ToString());
-                        userGameData.character = int.Parse(gameDataJson[1]["user"].ToString());
+                        //userGameData.character = int.Parse(gameDataJson[1]["user"].ToString());
 
                         onGameDataLoadEvent?.Invoke();
                     }
@@ -118,8 +119,9 @@ public class BackendGameData : Singleton<BackendGameData>
 
         Param param = new Param()
         {
-            { "character",          userGameData.character },
-            { "team",          userGameData.team }
+            { "character",          userGameData.character }
+            //{ "character",          userGameData.character },
+            //{ "team",          userGameData.team }
         };
 
         if (string.IsNullOrEmpty(gameDataRowInDate))

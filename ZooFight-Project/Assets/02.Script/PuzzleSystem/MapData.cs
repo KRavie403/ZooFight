@@ -11,6 +11,9 @@ public class MapData : ScriptableObject
 [System.Serializable]
 public class BlockData
 {
-    public int id;
-    public Vector3 position;
+    public int blockNum;                            // 블록 번호
+    public int type;                                     // 블록 종류
+    public float x;                                        // 블록 위치-x
+    public float y;                                        // 블록 위치-y
+    public float z;                                        // 블록 위치-z
 }

@@ -8,37 +8,37 @@ using static UnityEngine.InputSystem.InputControlScheme;
 using System.Runtime.CompilerServices;
 
 /*
- * ¸ÅÄ¡¸Å´ÏÀú (ÀÎ°ÔÀÓ °ü·Ã ±â´É)
- * BackEndInGame.cs¿¡¼­ Á¤ÀÇµÈ ±â´Éµé
- * ÀÎ°ÔÀÓ¿¡ ÇÊ¿äÇÑ º¯¼öµé
- * ÀÎ°ÔÀÓ¼­¹ö °ÔÀÓ·ë Á¢¼ÓÇÏ±â (ÀÎ°ÔÀÓ¼­¹ö Á¢¼ÓÀº BackEndMatch.cs¿¡¼­ Á¤ÀÇ)
- * ÀÎ°ÔÀÓ¼­¹ö Á¢¼ÓÁ¾·á
- * °ÔÀÓ½ÃÀÛ
- * °ÔÀÓ°á°ú°ª Àü¼Û
- * °ÔÀÓ°á°ú°ª Á¶ÇÕ (1:1 / °³ÀÎÀü / ÆÀÀü)
- * ¼­¹ö·Î µ¥ÀÌÅÍ ÆĞÅ¶ Àü¼Û
+ * ë§¤ì¹˜ë§¤ë‹ˆì € (ì¸ê²Œì„ ê´€ë ¨ ê¸°ëŠ¥)
+ * BackEndInGame.csì—ì„œ ì •ì˜ëœ ê¸°ëŠ¥ë“¤
+ * ì¸ê²Œì„ì— í•„ìš”í•œ ë³€ìˆ˜ë“¤
+ * ì¸ê²Œì„ì„œë²„ ê²Œì„ë£¸ ì ‘ì†í•˜ê¸° (ì¸ê²Œì„ì„œë²„ ì ‘ì†ì€ BackEndMatch.csì—ì„œ ì •ì˜)
+ * ì¸ê²Œì„ì„œë²„ ì ‘ì†ì¢…ë£Œ
+ * ê²Œì„ì‹œì‘
+ * ê²Œì„ê²°ê³¼ê°’ ì „ì†¡
+ * ê²Œì„ê²°ê³¼ê°’ ì¡°í•© (1:1 / ê°œì¸ì „ / íŒ€ì „)
+ * ì„œë²„ë¡œ ë°ì´í„° íŒ¨í‚· ì „ì†¡
  */
 
 public partial class BackEndMatchManager : MonoBehaviour
 {
-    private bool isSetHost = false;                 // È£½ºÆ® ¼¼¼Ç °áÁ¤Çß´ÂÁö ¿©ºÎ
+    private bool isSetHost = false;                 // í˜¸ìŠ¤íŠ¸ ì„¸ì…˜ ê²°ì •í–ˆëŠ”ì§€ ì—¬ë¶€
 
     private MatchGameResult matchGameResult;
 
-    // °ÔÀÓ ·Î±×
-    private string FAIL_ACCESS_INGAME = "ÀÎ°ÔÀÓ Á¢¼Ó ½ÇÆĞ : {0} - {1}";
-    private string SUCCESS_ACCESS_INGAME = "À¯Àú ÀÎ°ÔÀÓ Á¢¼Ó ¼º°ø : {0}";
-    private string NUM_INGAME_SESSION = "ÀÎ°ÔÀÓ ³» ¼¼¼Ç °¹¼ö : {0}";
+    // ê²Œì„ ë¡œê·¸
+    private string FAIL_ACCESS_INGAME = "ì¸ê²Œì„ ì ‘ì† ì‹¤íŒ¨ : {0} - {1}";
+    private string SUCCESS_ACCESS_INGAME = "ìœ ì € ì¸ê²Œì„ ì ‘ì† ì„±ê³µ : {0}";
+    private string NUM_INGAME_SESSION = "ì¸ê²Œì„ ë‚´ ì„¸ì…˜ ê°¯ìˆ˜ : {0}";
 
-    // °ÔÀÓ ·¹µğ »óÅÂÀÏ ¶§ È£ÃâµÊ
+    // ê²Œì„ ë ˆë”” ìƒíƒœì¼ ë•Œ í˜¸ì¶œë¨
     public void OnGameReady()
     {
         if (isSetHost == false)
         {
-            // È£½ºÆ®°¡ ¼³Á¤µÇÁö ¾ÊÀº »óÅÂÀÌ¸é È£½ºÆ® ¼³Á¤
+            // í˜¸ìŠ¤íŠ¸ê°€ ì„¤ì •ë˜ì§€ ì•Šì€ ìƒíƒœì´ë©´ í˜¸ìŠ¤íŠ¸ ì„¤ì •
             isSetHost = SetHostSession();
         }
-        Debug.Log("È£½ºÆ® ¼³Á¤ ¿Ï·á");
+        Debug.Log("í˜¸ìŠ¤íŠ¸ ì„¤ì • ì™„ë£Œ");
 
         if (isSandBoxGame == true && IsHost() == true)
         {
@@ -47,7 +47,7 @@ public partial class BackEndMatchManager : MonoBehaviour
 
         if (IsHost() == true)
         {
-            // 0.5ÃÊ ÈÄ ReadyToLoadRoom ÇÔ¼ö È£Ãâ
+            // 0.5ì´ˆ í›„ ReadyToLoadRoom í•¨ìˆ˜ í˜¸ì¶œ
             Invoke("ReadyToLoadRoom", 0.5f);
         }
     }
@@ -56,12 +56,12 @@ public partial class BackEndMatchManager : MonoBehaviour
     {
         isHost = false;
         localQueue = null;
-        Debug.Log("ÀçÁ¢¼Ó ÇÁ·Î¼¼½º ÁøÇàÁß... È£½ºÆ® ¹× ·ÎÄÃ Å¥ ¼³Á¤ ¿Ï·á");
+        Debug.Log("ì¬ì ‘ì† í”„ë¡œì„¸ìŠ¤ ì§„í–‰ì¤‘... í˜¸ìŠ¤íŠ¸ ë° ë¡œì»¬ í ì„¤ì • ì™„ë£Œ");
     }
 
-    // ÇöÀç ·ë¿¡ Á¢¼ÓÇÑ ¼¼¼ÇµéÀÇ Á¤º¸
-    // ÃÖÃÊ ·ë¿¡ Á¢¼ÓÇßÀ» ¶§ 1È¸ ¼ö½ÅµÊ
-    // ÀçÁ¢¼Ó ÇßÀ» ¶§µµ 1È¸ ¼ö½ÅµÊ
+    // í˜„ì¬ ë£¸ì— ì ‘ì†í•œ ì„¸ì…˜ë“¤ì˜ ì •ë³´
+    // ìµœì´ˆ ë£¸ì— ì ‘ì†í–ˆì„ ë•Œ 1íšŒ ìˆ˜ì‹ ë¨
+    // ì¬ì ‘ì† í–ˆì„ ë•Œë„ 1íšŒ ìˆ˜ì‹ ë¨
     private void ProcessMatchInGameSessionList(MatchInGameSessionListEventArgs args)
     {
         sessionIdList = new List<SessionId>();
@@ -75,16 +75,16 @@ public partial class BackEndMatchManager : MonoBehaviour
         sessionIdList.Sort();
     }
 
-    // Å¬¶óÀÌ¾ğÆ® µéÀÇ °ÔÀÓ ·ë Á¢¼Ó¿¡ ´ëÇÑ ¸®ÅÏ°ª
-    // Å¬¶óÀÌ¾ğÆ®°¡ °ÔÀÓ ·ë¿¡ Á¢¼ÓÇÒ ¶§¸¶´Ù È£ÃâµÊ
-    // ÀçÁ¢¼Ó ÇßÀ» ¶§´Â ¼ö½ÅµÇÁö ¾ÊÀ½
+    // í´ë¼ì´ì–¸íŠ¸ ë“¤ì˜ ê²Œì„ ë£¸ ì ‘ì†ì— ëŒ€í•œ ë¦¬í„´ê°’
+    // í´ë¼ì´ì–¸íŠ¸ê°€ ê²Œì„ ë£¸ì— ì ‘ì†í•  ë•Œë§ˆë‹¤ í˜¸ì¶œë¨
+    // ì¬ì ‘ì† í–ˆì„ ë•ŒëŠ” ìˆ˜ì‹ ë˜ì§€ ì•ŠìŒ
     private void ProcessMatchInGameAccess(MatchInGameSessionEventArgs args)
     {
         if (isReconnectProcess)
         {
-            // ÀçÁ¢¼Ó ÇÁ·Î¼¼½º ÀÎ °æ¿ì
-            // ÀÌ ¸Ş½ÃÁö´Â ¼ö½ÅµÇÁö ¾Ê°í, ¸¸¾à ¼ö½ÅµÇ¾îµµ ¹«½ÃÇÔ
-            Debug.Log("ÀçÁ¢¼Ó ÇÁ·Î¼¼½º ÁøÇàÁß... ÀçÁ¢¼Ó ÇÁ·Î¼¼½º¿¡¼­´Â ProcessMatchInGameAccess ¸Ş½ÃÁö´Â ¼ö½ÅµÇÁö ¾Ê½À´Ï´Ù.\n" + args.ErrInfo);
+            // ì¬ì ‘ì† í”„ë¡œì„¸ìŠ¤ ì¸ ê²½ìš°
+            // ì´ ë©”ì‹œì§€ëŠ” ìˆ˜ì‹ ë˜ì§€ ì•Šê³ , ë§Œì•½ ìˆ˜ì‹ ë˜ì–´ë„ ë¬´ì‹œí•¨
+            Debug.Log("ì¬ì ‘ì† í”„ë¡œì„¸ìŠ¤ ì§„í–‰ì¤‘... ì¬ì ‘ì† í”„ë¡œì„¸ìŠ¤ì—ì„œëŠ” ProcessMatchInGameAccess ë©”ì‹œì§€ëŠ” ìˆ˜ì‹ ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.\n" + args.ErrInfo);
             return;
         }
 
@@ -92,22 +92,22 @@ public partial class BackEndMatchManager : MonoBehaviour
 
         if (args.ErrInfo != ErrorCode.Success)
         {
-            // °ÔÀÓ ·ë Á¢¼Ó ½ÇÆĞ
+            // ê²Œì„ ë£¸ ì ‘ì† ì‹¤íŒ¨
             var errorLog = string.Format(FAIL_ACCESS_INGAME, args.ErrInfo, args.Reason);
             Debug.Log(errorLog);
             LeaveInGameRoom();
             return;
         }
 
-        // °ÔÀÓ ·ë Á¢¼Ó ¼º°ø
-        // ÀÎÀÚ°ª¿¡ ¹æ±İ Á¢¼ÓÇÑ Å¬¶óÀÌ¾ğÆ®(¼¼¼Ç)ÀÇ ¼¼¼ÇID¿Í ¸ÅÄª ±â·ÏÀÌ µé¾îÀÖ´Ù.
-        // ¼¼¼Ç Á¤º¸´Â ´©ÀûµÇ¾î µé¾îÀÖ±â ¶§¹®¿¡ ÀÌ¹Ì ÀúÀåÇÑ ¼¼¼ÇÀÌ¸é °Ç³Ê¶Ú´Ù.
+        // ê²Œì„ ë£¸ ì ‘ì† ì„±ê³µ
+        // ì¸ìê°’ì— ë°©ê¸ˆ ì ‘ì†í•œ í´ë¼ì´ì–¸íŠ¸(ì„¸ì…˜)ì˜ ì„¸ì…˜IDì™€ ë§¤ì¹­ ê¸°ë¡ì´ ë“¤ì–´ìˆë‹¤.
+        // ì„¸ì…˜ ì •ë³´ëŠ” ëˆ„ì ë˜ì–´ ë“¤ì–´ìˆê¸° ë•Œë¬¸ì— ì´ë¯¸ ì €ì¥í•œ ì„¸ì…˜ì´ë©´ ê±´ë„ˆë›´ë‹¤.
 
         var record = args.GameRecord;
-        Debug.Log(string.Format(string.Format("ÀÎ°ÔÀÓ Á¢¼Ó À¯Àú Á¤º¸ [{0}] : {1}", args.GameRecord.m_sessionId, args.GameRecord.m_nickname)));
+        Debug.Log(string.Format(string.Format("ì¸ê²Œì„ ì ‘ì† ìœ ì € ì •ë³´ [{0}] : {1}", args.GameRecord.m_sessionId, args.GameRecord.m_nickname)));
         if (!sessionIdList.Contains(args.GameRecord.m_sessionId))
         {
-            // ¼¼¼Ç Á¤º¸, °ÔÀÓ ±â·Ï µîÀ» ÀúÀå
+            // ì„¸ì…˜ ì •ë³´, ê²Œì„ ê¸°ë¡ ë“±ì„ ì €ì¥
             sessionIdList.Add(record.m_sessionId);
             gameRecords.Add(record.m_sessionId, record);
 
@@ -115,25 +115,25 @@ public partial class BackEndMatchManager : MonoBehaviour
         }
     }
 
-    // ÀÎ°ÔÀÓ ·ë Á¢¼Ó
+    // ì¸ê²Œì„ ë£¸ ì ‘ì†
     private void AccessInGameRoom(string roomToken)
     {
         Backend.Match.JoinGameRoom(roomToken);
     }
 
-    // ÀÎ°ÔÀÓ ¼­¹ö Á¢¼Ó Á¾·á
+    // ì¸ê²Œì„ ì„œë²„ ì ‘ì† ì¢…ë£Œ
     public void LeaveInGameRoom()
     {
         isConnectInGameServer = false;
         Backend.Match.LeaveGameServer();
     }
 
-    // ¼­¹ö¿¡¼­ °ÔÀÓ ½ÃÀÛ ÆĞÅ¶À» º¸³ÂÀ» ¶§ È£Ãâ
-    // ¸ğµç ¼¼¼ÇÀÌ °ÔÀÓ ·ë¿¡ Âü¿© ÈÄ "ÄÜ¼Ö¿¡¼­ ¼³Á¤ÇÑ ½Ã°£" ÈÄ¿¡ °ÔÀÓ ½ÃÀÛ ÆĞÅ¶ÀÌ ¼­¹ö¿¡¼­ ¿Â´Ù
+    // ì„œë²„ì—ì„œ ê²Œì„ ì‹œì‘ íŒ¨í‚·ì„ ë³´ëƒˆì„ ë•Œ í˜¸ì¶œ
+    // ëª¨ë“  ì„¸ì…˜ì´ ê²Œì„ ë£¸ì— ì°¸ì—¬ í›„ "ì½˜ì†”ì—ì„œ ì„¤ì •í•œ ì‹œê°„" í›„ì— ê²Œì„ ì‹œì‘ íŒ¨í‚·ì´ ì„œë²„ì—ì„œ ì˜¨ë‹¤
     private void GameSetup()
     {
-        Debug.Log("°ÔÀÓ ½ÃÀÛ ¸Ş½ÃÁö ¼ö½Å. °ÔÀÓ ¼³Á¤ ½ÃÀÛ");
-        // °ÔÀÓ ½ÃÀÛ ¸Ş½ÃÁö°¡ ¿À¸é °ÔÀÓÀ» ·¹µğ »óÅÂ·Î º¯°æ
+        Debug.Log("ê²Œì„ ì‹œì‘ ë©”ì‹œì§€ ìˆ˜ì‹ . ê²Œì„ ì„¤ì • ì‹œì‘");
+        // ê²Œì„ ì‹œì‘ ë©”ì‹œì§€ê°€ ì˜¤ë©´ ê²Œì„ì„ ë ˆë”” ìƒíƒœë¡œ ë³€ê²½
         //if (GameManager.GetInstance().GetGameState() != GameManager.GameState.Ready)
         //{
         //    isHost = false;
@@ -147,37 +147,37 @@ public partial class BackEndMatchManager : MonoBehaviour
     {
         if (BackEndMatchManager.GetInstance().isSandBoxGame == true)
         {
-            Debug.Log("»÷µå¹Ú½º ¸ğµå È°¼ºÈ­. AI Á¤º¸ ¼Û½Å");
-            // »÷µå¹Ú½º ¸ğµå¸é ai Á¤º¸ ¼Û½Å
+            Debug.Log("ìƒŒë“œë°•ìŠ¤ ëª¨ë“œ í™œì„±í™”. AI ì •ë³´ ì†¡ì‹ ");
+            // ìƒŒë“œë°•ìŠ¤ ëª¨ë“œë©´ ai ì •ë³´ ì†¡ì‹ 
             foreach (var tmp in gameRecords)
             {
                 if ((int)tmp.Key > (int)SessionId.Reserve)
                 {
                     continue;
                 }
-                Debug.Log("aiÁ¤º¸ ¼Û½Å : " + (int)tmp.Key);
+                Debug.Log("aiì •ë³´ ì†¡ì‹  : " + (int)tmp.Key);
                 SendDataToInGame(new Protocol.AIPlayerInfo(tmp.Value));
             }
         }
 
-        Debug.Log("1ÃÊ ÈÄ ·ë ¾À ÀüÈ¯ ¸Ş½ÃÁö ¼Û½Å");
+        Debug.Log("1ì´ˆ í›„ ë£¸ ì”¬ ì „í™˜ ë©”ì‹œì§€ ì†¡ì‹ ");
         Invoke("SendChangeRoomScene", 1f);
     }
 
     private void SendChangeRoomScene()
     {
-        Debug.Log("·ë ¾À ÀüÈ¯ ¸Ş½ÃÁö ¼Û½Å");
+        Debug.Log("ë£¸ ì”¬ ì „í™˜ ë©”ì‹œì§€ ì†¡ì‹ ");
         SendDataToInGame(new Protocol.LoadRoomSceneMessage());
     }
 
     private void SendChangeGameScene()
     {
-        Debug.Log("°ÔÀÓ ¾À ÀüÈ¯ ¸Ş½ÃÁö ¼Û½Å");
+        Debug.Log("ê²Œì„ ì”¬ ì „í™˜ ë©”ì‹œì§€ ì†¡ì‹ ");
         SendDataToInGame(new Protocol.LoadGameSceneMessage());
     }
 
-    // ¼­¹ö·Î °ÔÀÓ °á°ú Àü¼Û
-    // ¼­¹ö¿¡¼­ °¢ Å¬¶óÀÌ¾ğÆ®°¡ º¸³½ °á°ú¸¦ Á¾ÇÕ
+    // ì„œë²„ë¡œ ê²Œì„ ê²°ê³¼ ì „ì†¡
+    // ì„œë²„ì—ì„œ ê° í´ë¼ì´ì–¸íŠ¸ê°€ ë³´ë‚¸ ê²°ê³¼ë¥¼ ì¢…í•©
     public void MatchGameOver(Stack<SessionId> record)
     {
         if (nowModeType == MatchModeType.OneOnOne)
@@ -194,7 +194,7 @@ public partial class BackEndMatchManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("°ÔÀÓ °á°ú Á¾ÇÕ ½ÇÆĞ - ¾Ë¼ö¾ø´Â ¸ÅÄ¡¸ğµåÅ¸ÀÔÀÔ´Ï´Ù.\n" + nowModeType);
+            Debug.LogError("ê²Œì„ ê²°ê³¼ ì¢…í•© ì‹¤íŒ¨ - ì•Œìˆ˜ì—†ëŠ” ë§¤ì¹˜ëª¨ë“œíƒ€ì…ì…ë‹ˆë‹¤.\n" + nowModeType);
             return;
         }
 
@@ -209,7 +209,7 @@ public partial class BackEndMatchManager : MonoBehaviour
         List<SessionId> aiSession = new List<SessionId>();
         if (matchGameResult.m_winners != null)
         {
-            str += "½ÂÀÚ : ";
+            str += "ìŠ¹ì : ";
             foreach (var tmp in matchGameResult.m_winners)
             {
                 if ((int)tmp < (int)SessionId.Reserve)
@@ -228,7 +228,7 @@ public partial class BackEndMatchManager : MonoBehaviour
         aiSession.Clear();
         if (matchGameResult.m_losers != null)
         {
-            str += "ÆĞÀÚ : ";
+            str += "íŒ¨ì : ";
             foreach (var tmp in matchGameResult.m_losers)
             {
                 if ((int)tmp < (int)SessionId.Reserve)
@@ -247,7 +247,7 @@ public partial class BackEndMatchManager : MonoBehaviour
     }
 
 
-    // 1:1 °ÔÀÓ °á°ú
+    // 1:1 ê²Œì„ ê²°ê³¼
     private MatchGameResult OneOnOneRecord(Stack<SessionId> record)
     {
         MatchGameResult nowGameResult = new MatchGameResult();
@@ -263,7 +263,7 @@ public partial class BackEndMatchManager : MonoBehaviour
         return nowGameResult;
     }
 
-    // °³ÀÎÀü °ÔÀÓ °á°ú
+    // ê°œì¸ì „ ê²Œì„ ê²°ê³¼
     private MatchGameResult MeleeRecord(Stack<SessionId> record)
     {
         MatchGameResult nowGameResult = new MatchGameResult();
@@ -279,7 +279,7 @@ public partial class BackEndMatchManager : MonoBehaviour
         return nowGameResult;
     }
 
-    // ÆÀÀü °ÔÀÓ °á°ú
+    // íŒ€ì „ ê²Œì„ ê²°ê³¼
     private MatchGameResult TeamRecord(Stack<SessionId> record)
     {
         var winnerSession = record.Pop();
@@ -305,14 +305,14 @@ public partial class BackEndMatchManager : MonoBehaviour
         return nowGameResult;
     }
 
-    // È£½ºÆ®¿¡¼­ º¸³½ ¼¼¼Ç¸®½ºÆ®·Î °»½Å
+    // í˜¸ìŠ¤íŠ¸ì—ì„œ ë³´ë‚¸ ì„¸ì…˜ë¦¬ìŠ¤íŠ¸ë¡œ ê°±ì‹ 
     public void SetPlayerSessionList(List<SessionId> sessions)
     {
         sessionIdList = sessions;
     }
 
-    // ¼­¹ö·Î µ¥ÀÌÅÍ ÆĞÅ¶ Àü¼Û
-    // ¼­¹ö¿¡¼­´Â ÀÌ ÆĞÅ¶À» ¹Ş¾Æ ¸ğµç Å¬¶óÀÌ¾ğÆ®(ÆĞÅ¶ º¸³½ Å¬¶óÀÌ¾ğÆ® Æ÷ÇÔ)·Î ºê·ÎµåÄ³½ºÆÃ ÇØÁØ´Ù.
+    // ì„œë²„ë¡œ ë°ì´í„° íŒ¨í‚· ì „ì†¡
+    // ì„œë²„ì—ì„œëŠ” ì´ íŒ¨í‚·ì„ ë°›ì•„ ëª¨ë“  í´ë¼ì´ì–¸íŠ¸(íŒ¨í‚· ë³´ë‚¸ í´ë¼ì´ì–¸íŠ¸ í¬í•¨)ë¡œ ë¸Œë¡œë“œìºìŠ¤íŒ… í•´ì¤€ë‹¤.
     public void SendDataToInGame<T>(T msg)
     {
         var byteArray = DataParser.DataToJsonData<T>(msg);
@@ -323,31 +323,31 @@ public partial class BackEndMatchManager : MonoBehaviour
     {
         if (hostSession.Equals(sessionId))
         {
-            // È£½ºÆ® ¿¬°á ´ë±â¸¦ ¶ç¿ò
+            // í˜¸ìŠ¤íŠ¸ ì—°ê²° ëŒ€ê¸°ë¥¼ ë„ì›€
             //InGameUiManager.GetInstance().SetHostWaitBoard();
         }
         else
         {
-            // È£½ºÆ®°¡ ¾Æ´Ï¸é ´Ü¼øÈ÷ UI ¸¸ ¶ç¿î´Ù.
+            // í˜¸ìŠ¤íŠ¸ê°€ ì•„ë‹ˆë©´ ë‹¨ìˆœíˆ UI ë§Œ ë„ìš´ë‹¤.
         }
     }
 
     private void ProcessSessionOnline(SessionId sessionId, string nickName)
     {
         //InGameUiManager.GetInstance().SetReconnectBoard(nickName);
-        // È£½ºÆ®°¡ ¾Æ´Ï¸é ¾Æ¹« ÀÛ¾÷ ¾ÈÇÔ (È£½ºÆ®°¡ ÇØÁÜ)
+        // í˜¸ìŠ¤íŠ¸ê°€ ì•„ë‹ˆë©´ ì•„ë¬´ ì‘ì—… ì•ˆí•¨ (í˜¸ìŠ¤íŠ¸ê°€ í•´ì¤Œ)
         if (isHost)
         {
-            // ÀçÁ¢¼Ó ÇÑ Å¬¶óÀÌ¾ğÆ®°¡ ÀÎ°ÔÀÓ ¾À¿¡ Á¢¼ÓÇÏ±â Àü °ÔÀÓ Á¤º¸°ªÀ» Àü¼Û ½Ã nullptr ¿¹¿Ü°¡ ¹ß»ıÇÏ¹Ç·Î Á¶±İ
-            // 2ÃÊÁ¤µµ ±â´Ù¸° ÈÄ °ÔÀÓ Á¤º¸ ¸Ş½ÃÁö¸¦ º¸³¿
+            // ì¬ì ‘ì† í•œ í´ë¼ì´ì–¸íŠ¸ê°€ ì¸ê²Œì„ ì”¬ì— ì ‘ì†í•˜ê¸° ì „ ê²Œì„ ì •ë³´ê°’ì„ ì „ì†¡ ì‹œ nullptr ì˜ˆì™¸ê°€ ë°œìƒí•˜ë¯€ë¡œ ì¡°ê¸ˆ
+            // 2ì´ˆì •ë„ ê¸°ë‹¤ë¦° í›„ ê²Œì„ ì •ë³´ ë©”ì‹œì§€ë¥¼ ë³´ëƒ„
             Invoke("SendGameSyncMessage", 2.0f);
         }
     }
 
-    // Invoke·Î ½ÇÇàµÊ
+    // Invokeë¡œ ì‹¤í–‰ë¨
     private void SendGameSyncMessage()
     {
-        // ÇöÀç °ÔÀÓ »óÈ² (À§Ä¡, hp µîµî...)
+        // í˜„ì¬ ê²Œì„ ìƒí™© (ìœ„ì¹˜, hp ë“±ë“±...)
         var message = WorldManager.instance.GetNowGameState(hostSession);
         SendDataToInGame(message);
     }
@@ -358,7 +358,7 @@ public partial class BackEndMatchManager : MonoBehaviour
         int numOfTeamOne = 0;
         int numOfTeamTwo = 0;
 
-        Debug.Log("AI ÇÃ·¹ÀÌ¾î ¼³Á¤ : aiCount : " + aiCount);
+        Debug.Log("AI í”Œë ˆì´ì–´ ì„¤ì • : aiCount : " + aiCount);
 
         if (nowModeType == MatchModeType.TeamOnTeam)
         {
@@ -420,7 +420,7 @@ public partial class BackEndMatchManager : MonoBehaviour
             return false;
         }
 
-        // °ÔÀÓ ¼³Á¤ »çÀü ÀÛ¾÷ ÆĞÅ¶ °Ë»ç 
+        // ê²Œì„ ì„¤ì • ì‚¬ì „ ì‘ì—… íŒ¨í‚· ê²€ì‚¬ 
         switch (msg.type)
         {
             case Protocol.Type.AIPlayerInfo:
@@ -431,7 +431,7 @@ public partial class BackEndMatchManager : MonoBehaviour
                 //LobbyUI.GetInstance().ChangeRoomLoadScene();
                 if (IsHost() == true)
                 {
-                    Debug.Log("5ÃÊ ÈÄ °ÔÀÓ ¾À ÀüÈ¯ ¸Ş½ÃÁö ¼Û½Å");
+                    Debug.Log("5ì´ˆ í›„ ê²Œì„ ì”¬ ì „í™˜ ë©”ì‹œì§€ ì†¡ì‹ ");
                     Invoke("SendChangeGameScene", 5f);
                 }
                 return true;

@@ -12,7 +12,7 @@ public class WorldManager : MonoBehaviour
 
     private SessionId myPlayerIndex = SessionId.None;
 
-    #region ÇÃ·¹ÀÌ¾î
+    #region í”Œë ˆì´ì–´
     public GameObject playerPool;
     public GameObject playerPrefeb;
     public int numOfPlayer = 0;
@@ -41,14 +41,14 @@ public class WorldManager : MonoBehaviour
         }
         if (matchInstance.isReconnectProcess)
         {
-            //InGameUiManager.GetInstance().SetStartCount(0, false);
-            //InGameUiManager.GetInstance().SetReconnectBoard(BackEndServerManager.GetInstance().myNickName);
+            InGameUiManager.GetInstance().SetStartCount(0, false);
+            InGameUiManager.GetInstance().SetReconnectBoard(BackEndServerManager.GetInstance().myNickName);
         }
     }
 
     /*
-	 * ÇÃ·¹ÀÌ¾î ¼³Á¤
-	 * °ÔÀÓ »óÅÂ ÇÔ¼ö ¼³Á¤
+	 * í”Œë ˆì´ì–´ ì„¤ì •
+	 * ê²Œì„ ìƒíƒœ í•¨ìˆ˜ ì„¤ì •
 	 */
     public bool InitializeGame()
     {
@@ -57,7 +57,7 @@ public class WorldManager : MonoBehaviour
             Debug.Log("Player Pool Not Exist!");
             return false;
         }
-        Debug.Log("°ÔÀÓ ÃÊ±âÈ­ ÁøÇà");
+        Debug.Log("ê²Œì„ ì´ˆê¸°í™” ì§„í–‰");
         gameRecord = new Stack<SessionId>();
         //GameManager.OnGameOver += OnGameOver;
         //GameManager.OnGameResult += OnGameResult;
@@ -69,7 +69,7 @@ public class WorldManager : MonoBehaviour
 
     public void SetPlayerAttribute()
     {
-        // ½ÃÀÛÁ¡
+        // ì‹œì‘ì 
         statringPoints = new List<Vector4>();
 
         int num = startPointObject.transform.childCount;
@@ -84,12 +84,12 @@ public class WorldManager : MonoBehaviour
         dieEvent += PlayerDieEvent;
     }
 
-    private void PlayerDieEvent(SessionId index) // Ä³¸¯ÅÍ Á×À½ ÀÌº¥Æ®¸¦ Á¾·á ÀÌº¥Æ®·Î ¹Ù²ã¾ßÇÏ³ª? <<
+    private void PlayerDieEvent(SessionId index) // ìºë¦­í„° ì£½ìŒ ì´ë²¤íŠ¸ë¥¼ ì¢…ë£Œ ì´ë²¤íŠ¸ë¡œ ë°”ê¿”ì•¼í•˜ë‚˜? <<
     {
         alivePlayer -= 1;
         //players[index].gameObject.SetActive(false);
 
-        //ÆÄÆ¼Å¬
+        //íŒŒí‹°í´
         //var expObject = Instantiate(particle, players[index].GetPosition(), Quaternion.identity);
         //Destroy(expObject, 5);
 
@@ -98,7 +98,7 @@ public class WorldManager : MonoBehaviour
 
         //Debug.Log(string.Format("Player Die : " + players[index].GetNickName()));
 
-        // È£½ºÆ®°¡ ¾Æ´Ï¸é ¹Ù·Î ¸®ÅÏ
+        // í˜¸ìŠ¤íŠ¸ê°€ ì•„ë‹ˆë©´ ë°”ë¡œ ë¦¬í„´
         if (!BackEndMatchManager.GetInstance().IsHost())
         {
             return;
@@ -123,7 +123,7 @@ public class WorldManager : MonoBehaviour
             //        }
             //        else if (remainTeamNumber == BackEndMatchManager.GetInstance().GetTeamInfo(player.Key))
             //        {
-            //            //³²Àº ÇÃ·¹ÀÌ¾îµéÀÌ °°ÀºÆíÀÌ¸é ±×´ë·Î °ÔÀÓÁ¾·á ¸Ş½ÃÁö¸¦ º¸³¿
+            //            //ë‚¨ì€ í”Œë ˆì´ì–´ë“¤ì´ ê°™ì€í¸ì´ë©´ ê·¸ëŒ€ë¡œ ê²Œì„ì¢…ë£Œ ë©”ì‹œì§€ë¥¼ ë³´ëƒ„
             //            gameRecord.Push(remainSession);
             //            gameRecord.Push(player.Key);
             //            SendGameEndOrder();
@@ -132,7 +132,7 @@ public class WorldManager : MonoBehaviour
             //    }
             //}
         }
-        // 1¸í ÀÌÇÏ·Î ÇÃ·¹ÀÌ¾î°¡ ³²À¸¸é ¹Ù·Î Á¾·á Ã¼Å©
+        // 1ëª… ì´í•˜ë¡œ í”Œë ˆì´ì–´ê°€ ë‚¨ìœ¼ë©´ ë°”ë¡œ ì¢…ë£Œ ì²´í¬
         if (alivePlayer <= 1)
         {
             SendGameEndOrder();
@@ -141,7 +141,7 @@ public class WorldManager : MonoBehaviour
 
     private void SendGameEndOrder()
     {
-        // °ÔÀÓ Á¾·á ÀüÈ¯ ¸Ş½ÃÁö´Â È£½ºÆ®¿¡¼­¸¸ º¸³¿
+        // ê²Œì„ ì¢…ë£Œ ì „í™˜ ë©”ì‹œì§€ëŠ” í˜¸ìŠ¤íŠ¸ì—ì„œë§Œ ë³´ëƒ„
         Debug.Log("Make GameResult & Send Game End Order");
         foreach (SessionId session in BackEndMatchManager.GetInstance().sessionIdList)
         {
@@ -163,7 +163,7 @@ public class WorldManager : MonoBehaviour
     {
         if (BackEndMatchManager.GetInstance().sessionIdList == null)
         {
-            // ÇöÀç ¼¼¼ÇID ¸®½ºÆ®°¡ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é, 0.5ÃÊ ÈÄ ´Ù½Ã ½ÇÇà
+            // í˜„ì¬ ì„¸ì…˜ID ë¦¬ìŠ¤íŠ¸ê°€ ì¡´ì¬í•˜ì§€ ì•Šìœ¼ë©´, 0.5ì´ˆ í›„ ë‹¤ì‹œ ì‹¤í–‰
             Invoke("SetPlayerInfo", 0.5f);
             return;
         }
@@ -202,7 +202,7 @@ public class WorldManager : MonoBehaviour
         }
         Debug.Log("Num Of Current Player : " + size);
 
-        // ½ºÄÚ¾î º¸µå ¼³Á¤
+        // ìŠ¤ì½”ì–´ ë³´ë“œ ì„¤ì •
         alivePlayer = size;
         //InGameUiManager.GetInstance().SetScoreBoard(alivePlayer);
 
@@ -216,21 +216,21 @@ public class WorldManager : MonoBehaviour
     {
         if (BackEndMatchManager.GetInstance() == null)
         {
-            // Ä«¿îÆ® ´Ù¿î : Á¾·á
+            // ì¹´ìš´íŠ¸ ë‹¤ìš´ : ì¢…ë£Œ
             //InGameUiManager.GetInstance().SetStartCount(0, false);
             return;
         }
         if (BackEndMatchManager.GetInstance().IsHost())
         {
-            Debug.Log("ÇÃ·¹ÀÌ¾î ¼¼¼ÇÁ¤º¸ È®ÀÎ");
+            Debug.Log("í”Œë ˆì´ì–´ ì„¸ì…˜ì •ë³´ í™•ì¸");
 
             if (BackEndMatchManager.GetInstance().IsSessionListNull())
             {
                 Debug.Log("Player Index Not Exist!");
-                // È£½ºÆ® ±âÁØ ¼¼¼Çµ¥ÀÌÅÍ°¡ ¾øÀ¸¸é °ÔÀÓÀ» ¹Ù·Î Á¾·áÇÑ´Ù.
+                // í˜¸ìŠ¤íŠ¸ ê¸°ì¤€ ì„¸ì…˜ë°ì´í„°ê°€ ì—†ìœ¼ë©´ ê²Œì„ì„ ë°”ë¡œ ì¢…ë£Œí•œë‹¤.
                 foreach (var session in BackEndMatchManager.GetInstance().sessionIdList)
                 {
-                    // ¼¼¼Ç ¼ø¼­´ë·Î ½ºÅÃ¿¡ Ãß°¡
+                    // ì„¸ì…˜ ìˆœì„œëŒ€ë¡œ ìŠ¤íƒì— ì¶”ê°€
                     gameRecord.Push(session);
                 }
                 GameEndMessage gameEndMessage = new GameEndMessage(gameRecord);
@@ -245,15 +245,15 @@ public class WorldManager : MonoBehaviour
     {
         StartCountMessage msg = new StartCountMessage(START_COUNT);
 
-        // Ä«¿îÆ® ´Ù¿î
+        // ì¹´ìš´íŠ¸ ë‹¤ìš´
         for (int i = 0; i < START_COUNT + 1; ++i)
         {
             msg.time = START_COUNT - i;
             BackEndMatchManager.GetInstance().SendDataToInGame<StartCountMessage>(msg);
-            yield return new WaitForSeconds(1); //1ÃÊ ´ÜÀ§
+            yield return new WaitForSeconds(1); //1ì´ˆ ë‹¨ìœ„
         }
 
-        // °ÔÀÓ ½ÃÀÛ ¸Ş½ÃÁö¸¦ Àü¼Û
+        // ê²Œì„ ì‹œì‘ ë©”ì‹œì§€ë¥¼ ì „ì†¡
         GameStartMessage gameStartMessage = new GameStartMessage();
         BackEndMatchManager.GetInstance().SendDataToInGame<GameStartMessage>(gameStartMessage);
     }
@@ -271,7 +271,7 @@ public class WorldManager : MonoBehaviour
         Debug.Log("Game End");
         if (BackEndMatchManager.GetInstance() == null)
         {
-            Debug.LogError("¸ÅÄ¡¸Å´ÏÀú°¡ null ÀÔ´Ï´Ù.");
+            Debug.LogError("ë§¤ì¹˜ë§¤ë‹ˆì €ê°€ null ì…ë‹ˆë‹¤.");
             return;
         }
         BackEndMatchManager.GetInstance().MatchGameOver(gameRecord);
@@ -291,8 +291,8 @@ public class WorldManager : MonoBehaviour
     {
         if (args.BinaryUserData == null)
         {
-            Debug.LogWarning(string.Format("ºó µ¥ÀÌÅÍ°¡ ºê·ÎµåÄ³½ºÆÃ µÇ¾ú½À´Ï´Ù.\n{0} - {1}", args.From, args.ErrInfo));
-            // µ¥ÀÌÅÍ°¡ ¾øÀ¸¸é ±×³É ¸®ÅÏ
+            Debug.LogWarning(string.Format("ë¹ˆ ë°ì´í„°ê°€ ë¸Œë¡œë“œìºìŠ¤íŒ… ë˜ì—ˆìŠµë‹ˆë‹¤.\n{0} - {1}", args.From, args.ErrInfo));
+            // ë°ì´í„°ê°€ ì—†ìœ¼ë©´ ê·¸ëƒ¥ ë¦¬í„´
             return;
         }
         Message msg = DataParser.ReadJsonData<Message>(args.BinaryUserData);
@@ -306,7 +306,7 @@ public class WorldManager : MonoBehaviour
         }
         if (players == null)
         {
-            Debug.LogError("Players Á¤º¸°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.LogError("Players ì •ë³´ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
             return;
         }
         switch (msg.type)
@@ -370,14 +370,14 @@ public class WorldManager : MonoBehaviour
     {
         if (BackEndMatchManager.GetInstance().IsHost() == false)
         {
-            //È£½ºÆ®¸¸ ¼öÇà
+            //í˜¸ìŠ¤íŠ¸ë§Œ ìˆ˜í–‰
             return;
         }
         bool isMove = false;
         bool isAttack = false;
         bool isNoMove = false;
 
-        int keyData = keyMessage.keyData;
+        //int keyData = keyMessage.keyData;
 
         Vector3 moveVector = Vector3.zero;
         Vector3 attackPos = Vector3.zero;
@@ -429,11 +429,11 @@ public class WorldManager : MonoBehaviour
     {
         if (BackEndMatchManager.GetInstance().IsHost() == true)
         {
-            //È£½ºÆ®¸é ¸®ÅÏ
+            //í˜¸ìŠ¤íŠ¸ë©´ ë¦¬í„´
             return;
         }
         Vector3 moveVector = new Vector3(data.xDir, data.yDir, data.zDir);
-        //moveVector°¡ °°À¸¸é ¹æÇâ & ÀÌµ¿·® °°À¸¹Ç·Î Àû¿ë ±»ÀÌ ¾ÈÇÔ
+        //moveVectorê°€ ê°™ìœ¼ë©´ ë°©í–¥ & ì´ë™ëŸ‰ ê°™ìœ¼ë¯€ë¡œ ì ìš© êµ³ì´ ì•ˆí•¨
         //if (!moveVector.Equals(players[data.playerSession].moveVector))
         //{
         //    players[data.playerSession].SetPosition(data.xPos, data.yPos, data.zPos);
@@ -449,7 +449,7 @@ public class WorldManager : MonoBehaviour
     {
         if (BackEndMatchManager.GetInstance().IsHost() == true)
         {
-            //È£½ºÆ®¸é ¸®ÅÏ
+            //í˜¸ìŠ¤íŠ¸ë©´ ë¦¬í„´
             return;
         }
         //players[data.playerSession].Attack(new Vector3(data.dir_x, data.dir_y, data.dir_z));
@@ -462,7 +462,7 @@ public class WorldManager : MonoBehaviour
 
     private void ProcessSyncData(GameSyncMessage syncMessage)
     {
-        // ÇÃ·¹ÀÌ¾î µ¥ÀÌÅÍ µ¿±âÈ­
+        // í”Œë ˆì´ì–´ ë°ì´í„° ë™ê¸°í™”
         int index = 0;
         //if (players == null)
         //{
@@ -494,7 +494,7 @@ public class WorldManager : MonoBehaviour
     private void SetGameRecord(int count, int[] arr)
     {
         gameRecord = new Stack<SessionId>();
-        // ½ºÅÃ¿¡ ³Ö¾î¾ß ÇÏ¹Ç·Î Á¦ÀÏ µÚ¿¡¼­ ºÎÅÍ ½ºÅÃ¿¡ push
+        // ìŠ¤íƒì— ë„£ì–´ì•¼ í•˜ë¯€ë¡œ ì œì¼ ë’¤ì—ì„œ ë¶€í„° ìŠ¤íƒì— push
         for (int i = count - 1; i >= 0; --i)
         {
             gameRecord.Push((SessionId)arr[i]);
